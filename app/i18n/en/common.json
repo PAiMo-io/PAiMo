@@ -1,0 +1,11 @@
+{
+    "app.title": "Game Planer",
+    "nav.home": "Home",
+    "nav.login": "Login",
+    "nav.profile": "Profile",
+    "nav.myClubs": "My Clubs",
+    "nav.eventEdit": "Event Edit",
+    "nav.manage": "Manage",
+    "nav.logout": "Logout"
+  }
+  
