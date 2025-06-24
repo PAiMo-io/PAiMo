@@ -19,6 +19,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
+    "i18next": "^25.2.1",
     "lucide-react": "^0.386.0",
     "mongodb": "^6.17.0",
     "mongoose": "^8.0.0",
@@ -26,6 +27,7 @@
     "next-auth": "^4.24.11",
     "react": "^18",
     "react-dom": "^18",
+    "react-i18next": "^15.5.3",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7"
   },
