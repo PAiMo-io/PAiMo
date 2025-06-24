@@ -55,3 +55,4 @@ npm run fill-avatars
 The script scans for users without an avatar, generates one using Boring
 Avatars, uploads it to R2, and updates each user record with the new image URL.
 
+# test
