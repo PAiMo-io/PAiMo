@@ -1,0 +1,9 @@
+{
+  "welcomeTitle": "欢迎使用拍盟活动规划",
+  "welcomeSubtitle": "为我们可爱的 PIV 俱乐部成员安排游戏活动。",
+  "login": "登录",
+  "signup": "注册",
+  "loadError": "加载失败。",
+  "availableEvents": "可用活动",
+  "noEvents": "暂无活动。"
+}

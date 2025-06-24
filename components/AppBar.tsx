@@ -10,8 +10,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
+import LanguageSwitcher from './LanguageSwitcher'
+import { useTranslation } from 'react-i18next'
 
 export default function AppBar() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { data: session } = useSession()
 
@@ -22,11 +25,11 @@ export default function AppBar() {
 
   return (
     <nav className="sticky top-0 z-50 flex items-center justify-between bg-gray-100 border-b px-4 py-2">
-      <Link href="/" className="font-semibold">Game Planer</Link>
+      <Link href="/" className="font-semibold">{t('app.title')}</Link>
       <div className="space-x-4 flex items-center relative">
-        <Link href="/" className="hover:underline">Home</Link>
+        <Link href="/" className="hover:underline">{t('nav.home')}</Link>
         {!session ? (
-          <Link href="/login" className="hover:underline">Login</Link>
+          <Link href="/login" className="hover:underline">{t('nav.login')}</Link>
         ) : (
           <>
             <DropdownMenu>
@@ -37,28 +40,29 @@ export default function AppBar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onSelect={() => router.push('/profile')}>
-                  Profile
+                {t('nav.profile')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => router.push('/user')}>
-                  My Clubs
+                {t('nav.myClubs')}
                 </DropdownMenuItem>
                 {(session.user?.role === 'super-admin' || session.user?.role === 'admin') && (
                   <DropdownMenuItem onSelect={() => router.push('/event-edit')}>
-                    Event Edit
+                    {t('nav.eventEdit')}
                   </DropdownMenuItem>
                 )}
                 {session.user?.role === 'super-admin' && (
                   <DropdownMenuItem onSelect={() => router.push('/manage')}>
-                    Manage
+                     {t('nav.manage')}
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem onSelect={handleLogout}>
-                  Logout
+                {t('nav.logout')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </>
         )}
+        <LanguageSwitcher />
       </div>
     </nav>
   )

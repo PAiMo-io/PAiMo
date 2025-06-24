@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button'
 import EventCard from '../components/EventCard'
 import PageSkeleton from '../components/PageSkeleton'
 import { useApi } from '../lib/useApi'
-
+import { useTranslation } from 'react-i18next'
 interface EventItem {
   id: string
   name: string
@@ -21,7 +21,7 @@ export default function Home() {
   const { data: session, status } = useSession()
   const { request, loading, error } = useApi()
   const [events, setEvents] = useState<EventItem[]>([])
-
+  const { t } = useTranslation('home')
   useEffect(() => {
     if (status !== 'authenticated') return
     const fetchEvents = async () => {
@@ -38,14 +38,14 @@ export default function Home() {
   if (!session) {
     return (
       <div className="flex flex-col items-center justify-center py-10 space-y-4">
-        <h1 className="text-3xl font-bold">Welcome to Game Planer</h1>
-        <p className="text-center">Plan games for our lovely PIV Club members.</p>
+        <h1 className="text-3xl font-bold pl-4 pr-4">{t('welcomeTitle')}</h1>
+        <p className="text-center pl-4 pr-4">{t('welcomeSubtitle')}</p>
         <div className="space-x-4">
           <Button asChild>
-            <Link href="/login">Login</Link>
+            <Link href="/login">{t('login')}</Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/signup">Sign Up</Link>
+            <Link href="/signup">{t('signup')}</Link>
           </Button>
         </div>
       </div>
@@ -53,14 +53,14 @@ export default function Home() {
   }
 
   if (error) {
-    return <div className="p-4">Failed to load.</div>
+    return <div className="p-4">{t('loadError')}</div>
   }
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-2xl mb-2">Available Events</h1>
+      <h1 className="text-2xl mb-2">{t('availableEvents')}</h1>
       {events.length === 0 ? (
-        <p>No events.</p>
+        <p>{t('noEvents')}</p>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {events.map(e => (
