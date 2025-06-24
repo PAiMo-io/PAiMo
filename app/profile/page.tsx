@@ -7,6 +7,7 @@ import PageSkeleton from "../../components/PageSkeleton";
 import { useApi } from "../../lib/useApi";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
+import { useTranslation } from "react-i18next"; 
 
 interface ProfileData {
   email: string;
@@ -23,7 +24,7 @@ export default function ProfilePage() {
   const [usernameEdit, setUsernameEdit] = useState('');
   const [passwordEdit, setPasswordEdit] = useState('');
   const [message, setMessage] = useState('');
-
+  const { t } = useTranslation('profile');
   useEffect(() => {
     const fetchProfile = async () => {
       if (!session?.user?.email) return;
@@ -42,12 +43,12 @@ export default function ProfilePage() {
   }
 
   if (error) {
-    return <div className="p-4">Failed to load.</div>;
+    return <div className="p-4">{t('failedToLoad')}</div>;
   }
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-2xl mb-4">Profile</h1>
+      <h1 className="text-2xl mb-4">{t('profile')}</h1>
       {data.image ? (
         <Image
           src={data.image}
@@ -61,27 +62,27 @@ export default function ProfilePage() {
         <Avatar size={96} name={data.username || data.email} variant="beam" />
       )}
       <p>
-        <strong>Email:</strong> {data.email}
+        <strong>{t('email')}:</strong> {data.email}
       </p>
       {data.username && (
         <p>
-          <strong>Username:</strong> {data.username}
+          <strong>{t('username')}:</strong> {data.username}
         </p>
       )}
       {data.role && (
         <p>
-          <strong>Role:</strong> {data.role}
+          <strong>{t('role')}:</strong> {data.role}
         </p>
       )}
       {data.clubs && data.clubs.length > 0 && (
         <p>
-          <strong>Clubs:</strong> {data.clubs.join(', ')}
+          <strong>{t('clubs')}:</strong> {data.clubs.join(', ')}
         </p>
       )}
       <div className="space-y-2 pt-4">
-        <h2 className="text-xl">Update Username</h2>
+        <h2 className="text-xl">{t('updateUsername')}</h2>
         <Input
-          placeholder="New username"
+          placeholder={t('newUsername')}
           value={usernameEdit}
           onChange={e => setUsernameEdit(e.target.value)}
         />
@@ -104,14 +105,14 @@ export default function ProfilePage() {
             }
           }}
         >
-          Save Username
+          {t('saveUsername')}
         </Button>
       </div>
       <div className="space-y-2 pt-4">
-        <h2 className="text-xl">Change Password</h2>
+        <h2 className="text-xl">{t('changePassword')}</h2>
         <Input
           type="password"
-          placeholder="New password"
+          placeholder={t('newPassword')}
           value={passwordEdit}
           onChange={e => setPasswordEdit(e.target.value)}
         />
@@ -131,10 +132,10 @@ export default function ProfilePage() {
             }
           }}
         >
-          Save Password
+          {t('savePassword')}
         </Button>
       </div>
-      {message && <p className="text-green-500">{message}</p>}
+      {message && <p className="text-green-500">{t(message)}</p>}
     </div>
   );
 }

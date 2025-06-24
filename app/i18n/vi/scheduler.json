@@ -1,0 +1,23 @@
+{
+  "title": "Trình tạo trận cầu lông",
+  "teamAListPlaceholder": "Danh sách thành viên Đội A",
+  "teamBListPlaceholder": "Danh sách thành viên Đội B",
+  "teamACount": "Số người chơi Đội A: {{count}}",
+  "teamBCount": "Số người chơi Đội B: {{count}}",
+  "numCourts": "Số sân",
+  "maxRounds": "Số vòng tối đa",
+  "generateMatch": "Tạo trận đấu",
+  "clearMatch": "Xóa trận đấu",
+  "confirmClearTitle": "Xác nhận xóa trận",
+  "confirmClearMessage": "Bạn có chắc chắn muốn xóa lịch thi đấu và điểm số hiện tại không? Hành động này không thể hoàn tác.",
+  "cancel": "Hủy",
+  "duplicatePairEnable": "Cho phép trùng cặp đôi",
+  "scoreType": "Loại điểm số",
+  "totalScore": "Tổng điểm",
+  "scoreDiff": "Chênh lệch điểm",
+  "teamAScore": "Điểm Đội A",
+  "teamBScore": "Điểm Đội B",
+  "round": "V",
+  "court": "S",
+  "errorTeamCountMismatch": "Hai đội phải có cùng số lượng người chơi."
+}

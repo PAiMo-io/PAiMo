@@ -11,6 +11,7 @@ import {
 } from './ui/select'
 import UserCard from './UserCard'
 import { EventStep } from './StepIndicator'
+import { useTranslation } from 'react-i18next'
 
 interface Participant {
   id: string
@@ -66,24 +67,24 @@ export default function EventContent({
   generateMatches,
 }: EventContentProps) {
   const [activeTab, setActiveTab] = useState<'draw' | 'ranking' | 'umpire'>('draw')
-
+  const { t } = useTranslation('common')
   const form = (
     <div className="space-y-2 max-w-xs mx-auto">
       <Input value={editingName} onChange={e => setEditingName(e.target.value)} placeholder="name" />
       <Select value={editingVisibility} onValueChange={setEditingVisibility}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="visibility" />
+          <SelectValue placeholder={t('visibility')} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="private">private</SelectItem>
-          <SelectItem value="public-view">public-view</SelectItem>
-          <SelectItem value="public-join">public-join</SelectItem>
+          <SelectItem value="private">{t('private')}</SelectItem>
+          <SelectItem value="public-view">{t('publicView')}</SelectItem>
+          <SelectItem value="public-join">{t('publicJoin')}</SelectItem>
         </SelectContent>
       </Select>
       <Input
         value={editingGameStyle}
         onChange={e => setEditingGameStyle(e.target.value)}
-        placeholder="game style"
+        placeholder={t('gameStyle')}
       />
       <Input
         type="datetime-local"
@@ -93,23 +94,23 @@ export default function EventContent({
       <Input
         value={editingLocation}
         onChange={e => setEditingLocation(e.target.value)}
-        placeholder="location"
+        placeholder={t('locationPlace')}
       />
       {status === 'arranging-matches' && (
         <>
           <Input
             value={editingMaxPoint}
             onChange={e => setEditingMaxPoint(e.target.value)}
-            placeholder="max point"
+            placeholder={t('maxPoint')}
           />
           <Input
             value={editingCourtCount}
             onChange={e => setEditingCourtCount(e.target.value)}
-            placeholder="total court"
+            placeholder={t('totalCourt')}
           />
         </>
       )}
-      <Button onClick={saveInfo}>Save</Button>
+      <Button onClick={saveInfo}>{t('save')}</Button>
     </div>
   )
 
@@ -122,14 +123,14 @@ export default function EventContent({
       <div className="space-y-4">
         {isAdmin && form}
         <div>
-          <h2 className="text-lg mb-2">Participants</h2>
+          <h2 className="text-lg mb-2">{t('participants')}</h2>
           <div className="space-y-1">
             {participants.map(p => (
               <div key={p.id} className="flex items-center justify-between">
                 <UserCard user={p} />
                 {(isAdmin || p.id === currentUserId) && (
                   <Button variant="ghost" onClick={() => removeParticipant(p.id)}>
-                    {p.id === currentUserId ? 'Leave' : 'Remove'}
+                    {p.id === currentUserId ? t('leave') : t('remove')}
                   </Button>
                 )}
               </div>
@@ -145,7 +146,7 @@ export default function EventContent({
       <div className="space-y-4">
         {isAdmin && form}
         {isAdmin && (
-          <Button onClick={generateMatches}>Refresh Matches</Button>
+          <Button onClick={generateMatches}>{t('refreshMatches')}</Button>
         )}
       </div>
     )
@@ -159,24 +160,24 @@ export default function EventContent({
             variant={activeTab === 'draw' ? 'default' : 'outline'}
             onClick={() => setActiveTab('draw')}
           >
-            Draw
+            {t('draw')}
           </Button>
           <Button
             variant={activeTab === 'ranking' ? 'default' : 'outline'}
             onClick={() => setActiveTab('ranking')}
           >
-            Ranking
+            {t('ranking')}
           </Button>
           <Button
             variant={activeTab === 'umpire' ? 'default' : 'outline'}
             onClick={() => setActiveTab('umpire')}
           >
-            Umpire
+            {t('umpire')}
           </Button>
         </div>
-        {activeTab === 'draw' && <div>Draw view</div>}
-        {activeTab === 'ranking' && <div>Ranking view</div>}
-        {activeTab === 'umpire' && <div>Umpire view</div>}
+        {activeTab === 'draw' && <div>{t('drawView')}</div>}
+        {activeTab === 'ranking' && <div>{t('rankingView')}</div>}
+        {activeTab === 'umpire' && <div>{t('umpireView')}</div>}
       </div>
     )
   }

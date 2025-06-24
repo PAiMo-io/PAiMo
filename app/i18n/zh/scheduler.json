@@ -1,0 +1,23 @@
+{
+  "title": "羽毛球赛程",
+  "teamAListPlaceholder": "A队成员列表",
+  "teamBListPlaceholder": "B队成员列表",
+  "teamACount": "A队人数：{{count}}",
+  "teamBCount": "B队人数：{{count}}",
+  "numCourts": "场地数量",
+  "maxRounds": "最大轮数",
+  "generateMatch": "生成比赛",
+  "clearMatch": "清除比赛",
+  "confirmClearTitle": "确认清除比赛",
+  "confirmClearMessage": "你确定要清除当前比赛安排和比分吗？此操作无法撤销。",
+  "cancel": "取消",
+  "duplicatePairEnable": "允许重复配对",
+  "scoreType": "分数类型",
+  "totalScore": "总得分",
+  "scoreDiff": "分差",
+  "teamAScore": "A队得分",
+  "teamBScore": "B队得分",
+  "round": "轮次",
+  "court": "场地",
+  "errorTeamCountMismatch": "两个队伍的球员数量必须相同。"
+}

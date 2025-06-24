@@ -3,6 +3,7 @@
 import React from 'react'
 import { Check, ChevronRight } from 'lucide-react'
 import { cn } from '../lib/utils'
+import { useTranslation } from 'react-i18next'
 
 export const EVENT_STEPS = [
   'preparing',
@@ -13,6 +14,14 @@ export const EVENT_STEPS = [
 ] as const
 
 export type EventStep = typeof EVENT_STEPS[number]
+
+const stepI18nKeyMap: Record<(typeof EVENT_STEPS)[number], string> = {
+  'preparing': 'preparing',
+  'registration': 'registration',
+  'arranging-matches': 'arrangingMatches',
+  'match-running': 'matchRunning',
+  'ended': 'ended',
+};
 
 export interface StepIndicatorProps {
   step: EventStep
@@ -63,12 +72,15 @@ const Step = ({ title, isCompleted, isActive }: StepProps) => {
 
 export default function StepIndicator({ step }: StepIndicatorProps) {
   const currentIndex = EVENT_STEPS.indexOf(step)
+  const { t } = useTranslation('common')
   return (
     <div className="flex flex-nowrap items-center gap-4 mb-4 overflow-x-auto">
-      {EVENT_STEPS.map((s, index) => (
+      {EVENT_STEPS.map((s, index) => {
+        const titleKey = stepI18nKeyMap[s];
+        return (
         <React.Fragment key={s}>
           <Step
-            title={s.replace('-', ' ')}
+            title={t(titleKey)}
             isCompleted={index < currentIndex}
             isActive={index === currentIndex}
           />
@@ -76,7 +88,8 @@ export default function StepIndicator({ step }: StepIndicatorProps) {
             <ChevronRight className="text-muted-foreground shrink-0" />
           )}
         </React.Fragment>
-      ))}
+        )
+})}
     </div>
   )
 }

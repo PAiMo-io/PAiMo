@@ -1,0 +1,18 @@
+{
+  "failedToLoad": "加载失败。",
+  "profile": "个人资料",
+  "email": "邮箱",
+  "username": "用户名",
+  "role": "权限",
+  "clubs": "俱乐部",
+  "updateUsername": "更新用户名",
+  "newUsername": "新用户名",
+  "saveUsername": "保存用户名",
+  "changePassword": "修改密码",
+  "newPassword": "新密码",
+  "savePassword": "保存密码",
+  "Username updated": "用户名已更新",
+  "Failed to update username": "用户名更新失败",
+  "Password updated": "密码已更新",
+  "Failed to update password": "密码更新失败"
+}

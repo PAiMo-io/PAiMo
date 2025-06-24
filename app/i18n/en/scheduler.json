@@ -1,0 +1,23 @@
+{
+  "title": "Badminton Match Scheduler",
+  "teamAListPlaceholder": "Team A Member List",
+  "teamBListPlaceholder": "Team B Member List",
+  "teamACount": "Number of players in Team A: {{count}}",
+  "teamBCount": "Number of players in Team B: {{count}}",
+  "numCourts": "Number of Courts",
+  "maxRounds": "Maximum Number of Rounds",
+  "generateMatch": "Generate Match",
+  "clearMatch": "Clear Match",
+  "confirmClearTitle": "Confirm Clear Match",
+  "confirmClearMessage": "Are you sure you want to clear the current match schedule and scores? This action cannot be undone.",
+  "cancel": "Cancel",
+  "duplicatePairEnable": "Duplicate Pair Enable",
+  "scoreType": "Score Type",
+  "totalScore": "Total Score",
+  "scoreDiff": "Score Diff.",
+  "teamAScore": "Team A Score",
+  "teamBScore": "Team B Score",
+  "round": "R",
+  "court": "C",
+  "errorTeamCountMismatch": "Both teams must have the same number of players."
+}

@@ -10,6 +10,7 @@ import ClubCard from '../../../components/ClubCard';
 import UserCard from '../../../components/UserCard';
 import PageSkeleton from '../../../components/PageSkeleton'
 import { useApi } from '../../../lib/useApi'
+import { useTranslation } from 'react-i18next'
 
 interface Member {
   id: string;
@@ -30,6 +31,7 @@ interface EventItem {
 }
 
 export default function ClubHome({ params }: { params: { id: string } }) {
+  const { t } = useTranslation('common')
   const router = useRouter();
   const { data: session, status } = useSession();
   const { request, loading, error } = useApi();
@@ -133,9 +135,9 @@ export default function ClubHome({ params }: { params: { id: string } }) {
       />
       {showEvents && (
         <div>
-          <h2 className="text-xl mb-2">Ongoing Events</h2>
+          <h2 className="text-xl mb-2">{t('ongoingEvents')}</h2>
           {events.filter(e => isMember || e.visibility !== 'private').length === 0 ? (
-            <p>No events.</p>
+            <p>{t('noEvents')}</p>
           ) : (
             <div className="space-y-2">
               {events
@@ -152,16 +154,16 @@ export default function ClubHome({ params }: { params: { id: string } }) {
               <Input
                 value={newEventName}
                 onChange={e => setNewEventName(e.target.value)}
-                placeholder="Event name"
+                placeholder={t('eventTitle')}
                 className="w-48"
               />
-              <Button onClick={createEvent}>Create Event</Button>
+              <Button onClick={createEvent}>{t('createEvent')}</Button>
             </div>
           )}
         </div>
       )}
       <div>
-        <h2 className="text-xl mb-2">Members</h2>
+        <h2 className="text-xl mb-2">{t('membersJoined')}</h2>
         <div className="space-y-1">
           {members?.map(m => (
             <UserCard key={m.id} user={m} />
@@ -169,7 +171,7 @@ export default function ClubHome({ params }: { params: { id: string } }) {
         </div>
       </div>
       {!isMember && (
-        <Button onClick={joinClub}>Join us!</Button>
+        <Button onClick={joinClub}>{t('joinClub')}</Button>
       )}
     </div>
   );

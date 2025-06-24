@@ -5,10 +5,11 @@ import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
+import { useTranslation } from 'react-i18next';
 
 export default function LoginPage() {
   const router = useRouter();
-
+  const { t } = useTranslation('common');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -20,7 +21,7 @@ export default function LoginPage() {
       password,
     });
     if (res?.error) {
-      setError('Invalid credentials');
+      setError(t('invalidCredentials'));
     } else {
       router.push('/user');
     }
@@ -32,24 +33,24 @@ export default function LoginPage() {
 
   return (
     <div className="mx-auto max-w-xs py-8">
-      <h1 className="text-2xl font-semibold mb-4">Login</h1>
+      <h1 className="text-2xl font-semibold mb-4">{t('loginTitle')}</h1>
       <div className="space-y-4">
         <Input
-          placeholder="Email"
+          placeholder={t('emailPlaceholder')}
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
         <Input
           type="password"
-          placeholder="Password"
+          placeholder={t('passwordPlaceholder')}
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        <Button className="w-full" onClick={handleEmailLogin}>Login</Button>
-        <Button className="w-full" onClick={handleGoogle}>Login With Google</Button>
+        <Button className="w-full" onClick={handleEmailLogin}>{t('loginButton')}</Button>
+        <Button className="w-full" onClick={handleGoogle}>{t('loginWithGoogle')}</Button>
         <Button variant="outline" className="w-full" asChild>
-          <Link href="/signup">Sign Up</Link>
+          <Link href="/signup">{t('signupLink')}</Link>
         </Button>
       </div>
     </div>

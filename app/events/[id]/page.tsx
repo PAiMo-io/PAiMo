@@ -11,7 +11,7 @@ import StepIndicator, {
   EventStep,
 } from '../../../components/StepIndicator'
 import dayjs from 'dayjs';
-
+import { useTranslation } from 'react-i18next'
 interface Participant {
   id: string;
   username: string;
@@ -20,6 +20,7 @@ interface Participant {
 
 export default function EventPage({ params }: { params: { id: string } }) {
   const router = useRouter();
+  const { t } = useTranslation('common')
   const { data: session, status } = useSession();
   const { request, loading, error } = useApi();
   const [name, setName] = useState('');
@@ -202,41 +203,41 @@ export default function EventPage({ params }: { params: { id: string } }) {
   };
 
   if (error) {
-    return <div className="p-4">Failed to load.</div>
+    return <div className="p-4">{t('loadFailed')}</div>
   }
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-2xl font-semibold">Event</h1>
+      <h1 className="text-2xl font-semibold">{t('eventTitle')}</h1>
       <StepIndicator step={statusText} />
       {isAdmin && (
         <div className="flex space-x-2 mb-4">
           <Button onClick={prevStep} disabled={statusText === steps[0]}>
-            Previous
+            {t('previous')}
           </Button>
           <Button onClick={nextStep} disabled={statusText === steps[steps.length - 1]}>
-            Next
+            {t('next')}
           </Button>
         </div>
       )}
       <p className="text-xl">{name}</p>
       {clubName && (
-        <p className="text-sm text-muted-foreground">Host: {clubName}</p>
+        <p className="text-sm text-muted-foreground">{t('host', { club: clubName })}</p>
       )}
       {location && (
-        <p className="text-sm text-muted-foreground">Location: {location}</p>
+        <p className="text-sm text-muted-foreground">{t('location', { location })}</p>
       )}
-      <p className="text-sm text-muted-foreground">Status: {statusText}</p>
+      <p className="text-sm text-muted-foreground">{t('status', { status: statusText })}</p>
       {registrationEndTime && (
         <p className="text-sm text-muted-foreground">
-          Register by: {dayjs(registrationEndTime).format('YYYY-MM-DD HH:mm')}
+          {t('registerBy', { time: dayjs(registrationEndTime).format('YYYY-MM-DD HH:mm') })}
         </p>
       )}
       <p className="text-sm text-muted-foreground">
-        Created: {dayjs(createdAt).format('YYYY-MM-DD HH:mm')}
+        {t('created', { time: dayjs(createdAt).format('YYYY-MM-DD HH:mm') })}
       </p>
-      {canRegister && <Button onClick={joinEvent}>Register</Button>}
-      {canUnregister && <Button onClick={leaveEvent}>Leave</Button>}
+      {canRegister && <Button onClick={joinEvent}>{t('registerButton')}</Button>}
+      {canUnregister && <Button onClick={leaveEvent}>{t('leaveButton')}</Button>}
       <EventContent
         status={statusText}
         isAdmin={isAdmin}

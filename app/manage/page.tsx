@@ -15,6 +15,7 @@ import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import ClubCard from '../../components/ClubCard';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 interface User {
   username: string;
@@ -32,6 +33,7 @@ interface ClubOption {
 }
 
 export default function ManagePage() {
+  const { t } = useTranslation('common')
   const router = useRouter();
   const { data: session, status } = useSession();
   const { request, loading, error } = useApi();
@@ -110,13 +112,13 @@ export default function ManagePage() {
 
   return (
     <div className="container mx-auto mt-8">
-      <h1 className="text-xl font-semibold mb-4">Role Management</h1>
+      <h1 className="text-xl font-semibold mb-4">{t('roleManagement')}</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm border">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border p-2 text-left">Username</th>
-              <th className="border p-2 text-left">Role</th>
+              <th className="border p-2 text-left">{t('username')}</th>
+              <th className="border p-2 text-left">{t('role')}</th>
             </tr>
           </thead>
           <tbody>
@@ -132,9 +134,9 @@ export default function ManagePage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="super-admin">super-admin</SelectItem>
-                      <SelectItem value="admin">admin</SelectItem>
-                      <SelectItem value="member">member</SelectItem>
+                      <SelectItem value="super-admin">{t('superAdmin')}</SelectItem>
+                      <SelectItem value="admin">{t('admin')}</SelectItem>
+                      <SelectItem value="member">{t('member')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </td>
@@ -145,18 +147,18 @@ export default function ManagePage() {
       </div>
       <div className="mt-8 space-y-4">
         <div className="flex items-center space-x-2">
-          <Input placeholder="New Club Name" value={clubName} onChange={e => setClubName(e.target.value)} />
-          <Button onClick={handleCreateClub}>Create Club</Button>
+          <Input placeholder={t('newClubName')} value={clubName} onChange={e => setClubName(e.target.value)} />
+          <Button onClick={handleCreateClub}>{t('createClub')}</Button>
         </div>
         <div className="flex items-center space-x-2">
           <Input
-            placeholder="New Event Name"
+            placeholder={t('newEventName')}
             value={eventName}
             onChange={e => setEventName(e.target.value)}
           />
           <Select value={selectedClub} onValueChange={setSelectedClub}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Club" />
+              <SelectValue placeholder={t('selectClub')} />
             </SelectTrigger>
             <SelectContent>
               {clubs.map((c, idx) => (
@@ -164,10 +166,10 @@ export default function ManagePage() {
               ))}
             </SelectContent>
           </Select>
-          <Button onClick={handleCreateEvent}>Create Event</Button>
+          <Button onClick={handleCreateEvent}>{t('createEvent')}</Button>
         </div>
         <div>
-          <h2 className="text-lg font-semibold mt-4">All Clubs</h2>
+          <h2 className="text-lg font-semibold mt-4">{t('allClubs')}</h2>
           <div className="space-y-2">
             {clubs.map(c => (
               <Link key={c.id} href={`/clubs/${c.id}`}> 

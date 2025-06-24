@@ -1,0 +1,18 @@
+{
+  "failedToLoad": "No se pudo cargar.",
+  "profile": "Perfil",
+  "email": "Correo electrónico",
+  "username": "Nombre de usuario",
+  "role": "Rol",
+  "clubs": "Clubes",
+  "updateUsername": "Actualizar nombre de usuario",
+  "newUsername": "Nuevo nombre de usuario",
+  "saveUsername": "Guardar nombre de usuario",
+  "changePassword": "Cambiar contraseña",
+  "newPassword": "Nueva contraseña",
+  "savePassword": "Guardar contraseña",
+  "Username updated": "Nombre de usuario actualizado",
+  "Failed to update username": "No se pudo actualizar el nombre de usuario",
+  "Password updated": "Contraseña actualizada",
+  "Failed to update password": "No se pudo actualizar la contraseña"
+}

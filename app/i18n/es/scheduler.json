@@ -1,0 +1,23 @@
+{
+  "title": "Generador de Partidos de Bádminton",
+  "teamAListPlaceholder": "Lista de miembros del Equipo A",
+  "teamBListPlaceholder": "Lista de miembros del Equipo B",
+  "teamACount": "Número de jugadores en el Equipo A: {{count}}",
+  "teamBCount": "Número de jugadores en el Equipo B: {{count}}",
+  "numCourts": "Número de canchas",
+  "maxRounds": "Número máximo de rondas",
+  "generateMatch": "Generar Partido",
+  "clearMatch": "Borrar Partido",
+  "confirmClearTitle": "Confirmar Borrar Partido",
+  "confirmClearMessage": "¿Estás seguro de que deseas borrar el calendario de partidos y las puntuaciones actuales? Esta acción no se puede deshacer.",
+  "cancel": "Cancelar",
+  "duplicatePairEnable": "Permitir pareja duplicada",
+  "scoreType": "Tipo de puntuación",
+  "totalScore": "Puntuación total",
+  "scoreDiff": "Diferencia de puntos",
+  "teamAScore": "Puntos Equipo A",
+  "teamBScore": "Puntos Equipo B",
+  "round": "R",
+  "court": "C",
+  "errorTeamCountMismatch": "Ambos equipos deben tener el mismo número de jugadores."
+}

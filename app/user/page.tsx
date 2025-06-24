@@ -6,6 +6,7 @@ import Link from 'next/link'
 import ClubCard from '../../components/ClubCard'
 import PageSkeleton from '../../components/PageSkeleton'
 import { useApi } from '../../lib/useApi'
+import { useTranslation } from 'react-i18next'
 
 interface Club {
   id: string
@@ -22,7 +23,8 @@ export default function UserPage() {
   const { data: session, status } = useSession()
   const { request, loading, error } = useApi()
   const [clubs, setClubs] = useState<Club[]>([])
-
+  const { t } = useTranslation('common')
+  
   useEffect(() => {
     if (status === 'loading') return
     if (!session) {
@@ -41,14 +43,14 @@ export default function UserPage() {
   }
 
   if (error) {
-    return <div className="p-4">Failed to load.</div>
+    return <div className="p-4">{t('loadFailed')}</div>
   }
 
   return (
     <div className="p-4 space-y-2">
-      <h1 className="text-2xl mb-4">My Clubs</h1>
+      <h1 className="text-2xl mb-4">{t('userTitle')}</h1>
       {clubs.length === 0 ? (
-        <p>You are not a member of any clubs.</p>
+        <p>{t('noClubs')}</p>
       ) : (
         <div className="space-y-2">
           {clubs.map(c => (
