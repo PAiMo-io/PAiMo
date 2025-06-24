@@ -71,6 +71,13 @@ export function useEventPage(eventId: string) {
     // All your action functions:
     const joinEvent = async () => { await request({ url: `/api/events/${eventId}`, method: 'post' }); fetchEvent() };
     const leaveEvent = async () => { await request({ url: `/api/events/${eventId}/leave`, method: 'delete', }); fetchEvent(); };
+    const removeParticipant = async (pid: string) => {
+        await request({
+            url: `/api/events/${eventId}?participantId=${pid}`,
+            method: 'delete',
+        });
+        fetchEvent();
+    };
     const saveInfo = async (data: any) => {
         await request({
             url: `/api/events/${eventId}`,
@@ -84,6 +91,14 @@ export function useEventPage(eventId: string) {
                 maxPoint: event.editingMaxPoint ? Number(event.editingMaxPoint) : undefined,
                 courtCount: event.editingCourtCount ? Number(event.editingCourtCount) : undefined,
             },
+        });
+        fetchEvent();
+    };
+    const updateInfo = async (info: any) => {
+        await request({
+            url: `/api/events/${eventId}`,
+            method: 'put',
+            data: info,
         });
         fetchEvent();
     };
@@ -166,7 +181,8 @@ export function useEventPage(eventId: string) {
         canRegister, canUnregister,
         actions: {
             fetchEvent, joinEvent, leaveEvent,
-            saveInfo, nextStep, prevStep,
+            removeParticipant,
+            saveInfo, updateInfo, nextStep, prevStep,
             generateGroups, saveGroups,
             generateMatches, deleteAllMatches,
             updateCourtCount, updateMatchScore,
