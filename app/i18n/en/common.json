@@ -6,6 +6,25 @@
     "nav.myClubs": "My Clubs",
     "nav.eventEdit": "Event Edit",
     "nav.manage": "Manage",
-    "nav.logout": "Logout"
+    "nav.logout": "Logout",
+    "title": "Sign Up",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "invalidEmail": "Invalid email",
+    "emailTaken": "Email already registered",
+    "emailCheckError": "Error checking email",
+    "signupButton": "Sign Up",
+    "backToLogin": "Back to Login",
+    "profileTitle": "Create Your Profile",
+    "usernamePlaceholder": "Username",
+    "nicknamePlaceholder": "Nickname",
+    "genderPlaceholder": "Gender",
+    "genderMale": "Male",
+    "genderFemale": "Female",
+    "wechatPlaceholder": "WeChat ID",
+    "genderRequired": "Gender is required",
+    "signupFailed": "Signup failed. Please try again.",
+    "saveProfile": "Save Profile",
+    "loadFailed": "Failed to load."
   }
   

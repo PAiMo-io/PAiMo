@@ -6,6 +6,25 @@
     "nav.myClubs": "Mis Clubes",
     "nav.eventEdit": "Editar Evento",
     "nav.manage": "Administrar",
-    "nav.logout": "Cerrar sesión"
+    "nav.logout": "Cerrar sesión",
+    "title": "Registrarse",
+    "emailPlaceholder": "Correo electrónico",
+    "passwordPlaceholder": "Contraseña",
+    "invalidEmail": "Correo inválido",
+    "emailTaken": "Correo ya registrado",
+    "emailCheckError": "Error al verificar el correo",
+    "signupFailed": "Registro fallido.",
+    "signupButton": "Registrarse",
+    "backToLogin": "Volver a iniciar sesión",
+    "profileTitle": "Crea tu perfil",
+    "usernamePlaceholder": "Nombre de usuario",
+    "nicknamePlaceholder": "Apodo",
+    "genderPlaceholder": "Género",
+    "genderMale": "Hombre",
+    "genderFemale": "Mujer",
+    "wechatPlaceholder": "ID de WeChat",
+    "genderRequired": "Se requiere el género",
+    "saveProfile": "Guardar perfil",
+    "loadFailed": "Error al cargar."
   }
   

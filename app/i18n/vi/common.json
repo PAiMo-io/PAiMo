@@ -6,6 +6,25 @@
     "nav.myClubs": "Câu lạc bộ của tôi",
     "nav.eventEdit": "Chỉnh sửa sự kiện",
     "nav.manage": "Quản lý",
-    "nav.logout": "Đăng xuất"
+    "nav.logout": "Đăng xuất",
+    "title": "Đăng ký",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Mật khẩu",
+    "invalidEmail": "Email không hợp lệ",
+    "emailTaken": "Email đã được đăng ký",
+    "emailCheckError": "Lỗi khi kiểm tra email",
+    "signupFailed": "Đăng ký thất bại.",
+    "signupButton": "Đăng ký",
+    "backToLogin": "Quay lại đăng nhập",
+    "profileTitle": "Tạo hồ sơ của bạn",
+    "usernamePlaceholder": "Tên người dùng",
+    "nicknamePlaceholder": "Biệt danh",
+    "genderPlaceholder": "Giới tính",
+    "genderMale": "Nam",
+    "genderFemale": "Nữ",
+    "wechatPlaceholder": "ID WeChat",
+    "genderRequired": "Vui lòng chọn giới tính",
+    "saveProfile": "Lưu hồ sơ",
+    "loadFailed": "Tải thất bại."
   }
   

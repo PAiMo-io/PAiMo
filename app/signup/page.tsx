@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { useApi } from '../../lib/useApi';
+import { useTranslation } from 'react-i18next';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -13,11 +14,12 @@ export default function SignupPage() {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [error, setError] = useState('');
+  const { t } = useTranslation('common');
 
   const handleEmailBlur = async () => {
     const valid = /\S+@\S+\.\S+/.test(email);
     if (!valid) {
-      setEmailError('Invalid email');
+      setEmailError(t('invalidEmail'));
       return;
     }
     try {
@@ -26,12 +28,12 @@ export default function SignupPage() {
         method: 'get',
       });
       if (res.exists) {
-        setEmailError('Email already registered');
+        setEmailError(t('emailTaken'));
       } else {
         setEmailError('');
       }
     } catch {
-      setEmailError('Error checking email');
+      setEmailError(t('emailCheckError'));
     }
   };
 
@@ -45,16 +47,16 @@ export default function SignupPage() {
       });
       router.push(`/create-profile?email=${encodeURIComponent(email)}`);
     } catch {
-      setError('Signup failed.');
+      setError(t('signupFailed'));
     }
   };
 
   return (
     <div className="mx-auto max-w-xs py-8">
-      <h1 className="text-2xl font-semibold mb-4">Sign Up</h1>
+      <h1 className="text-2xl font-semibold mb-4">{t('title')}</h1>
       <div className="space-y-4">
         <Input
-          placeholder="Email"
+          placeholder={t('emailPlaceholder')}
           value={email}
           onChange={e => setEmail(e.target.value)}
           onBlur={handleEmailBlur}
@@ -62,14 +64,14 @@ export default function SignupPage() {
         {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
         <Input
           type="password"
-          placeholder="Password"
+          placeholder={t('passwordPlaceholder')}
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        <Button className="w-full" onClick={handleSubmit}>Sign Up</Button>
+        <Button className="w-full" onClick={handleSubmit}>{t('signupButton')}</Button>
         <Button variant="outline" className="w-full" asChild>
-          <Link href="/login">Back to Login</Link>
+          <Link href="/login">{t('backToLogin')}</Link>
         </Button>
       </div>
     </div>

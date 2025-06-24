@@ -1,11 +1,30 @@
 {
-    "app.title": "活动规划",
+    "app.title": "拍盟活动规划",
     "nav.home": "首页",
     "nav.login": "登录",
     "nav.profile": "个人资料",
     "nav.myClubs": "我的俱乐部",
     "nav.eventEdit": "活动编辑",
     "nav.manage": "管理后台",
-    "nav.logout": "登出"
+    "nav.logout": "登出",
+    "title": "注册",
+    "emailPlaceholder": "邮箱",
+    "passwordPlaceholder": "密码",
+    "invalidEmail": "邮箱格式不正确",
+    "emailTaken": "该邮箱已注册",
+    "emailCheckError": "检查邮箱时出错",
+    "signupButton": "注册",
+    "backToLogin": "返回登录",
+    "profileTitle": "创建个人资料",
+    "usernamePlaceholder": "用户名",
+    "nicknamePlaceholder": "昵称",
+    "genderPlaceholder": "性别",
+    "genderMale": "男",
+    "genderFemale": "女",
+    "wechatPlaceholder": "微信号",
+    "genderRequired": "请选择性别",
+    "signupFailed": "注册失败，请稍后重试。",
+    "saveProfile": "保存资料",
+    "loadFailed": "加载失败。"
   }
   

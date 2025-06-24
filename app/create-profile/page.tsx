@@ -15,6 +15,7 @@ import {
 } from '../../components/ui/select';
 import PageSkeleton from '../../components/PageSkeleton'
 import { useApi } from '../../lib/useApi'
+import { useTranslation } from 'react-i18next';
 
 
 import { Suspense } from 'react';
@@ -31,6 +32,7 @@ function CreateProfileClient() {
   const [nickname, setNickname] = useState('');
   const [wechatId, setWechatId] = useState('');
   const [error, setError] = useState('');
+  const { t } = useTranslation('common');
 
   // Populate email from NextAuth session or query param
   useEffect(() => {
@@ -44,7 +46,7 @@ function CreateProfileClient() {
 
   const handleSubmit = async () => {
     if (!gender) {
-      setError('Gender is required');
+      setError(t('genderRequired'));
       return;
     }
     try {
@@ -55,7 +57,7 @@ function CreateProfileClient() {
       });
       router.push('/login');
     } catch (e: any) {
-      setError('Signup failed. Please try again.');
+      setError(t('signupFailed'));
     }
   };
 
@@ -64,43 +66,43 @@ function CreateProfileClient() {
   }
 
   if (apiError) {
-    return <div className="p-4">Failed to load.</div>;
+    return <div className="p-4">{t('loadFailed')}</div>;
   }
 
   return (
     <div className="mx-auto max-w-xs py-8">
-      <h1 className="text-2xl font-semibold mb-4">Create Your Profile</h1>
+      <h1 className="text-2xl font-semibold mb-4">{t('profileTitle')}</h1>
       <div className="space-y-4">
         <Input
-          placeholder="Username"
+          placeholder={t('usernamePlaceholder')}
           value={username}
           onChange={e => setUsername(e.target.value)}
         />
         <Input
-          placeholder="Nickname"
+          placeholder={t('nicknamePlaceholder')}
           value={nickname}
           onChange={e => setNickname(e.target.value)}
         />
         <Select value={gender} onValueChange={setGender}>
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Gender" />
+            <SelectValue placeholder={t('genderPlaceholder')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Male">Male</SelectItem>
-            <SelectItem value="Female">Female</SelectItem>
+            <SelectItem value="Male">{t('genderMale')}</SelectItem>
+            <SelectItem value="Female">{t('genderFemale')}</SelectItem>
           </SelectContent>
         </Select>
         <Input
-          placeholder="WeChat ID"
+          placeholder={t('wechatPlaceholder')}
           value={wechatId}
           onChange={e => setWechatId(e.target.value)}
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <Button className="w-full" onClick={handleSubmit}>
-          Save Profile
+          {t('saveProfile')}
         </Button>
         <Button variant="outline" className="w-full" asChild>
-          <Link href="/login">Back to Login</Link>
+          <Link href="/login">{t('backToLogin')}</Link>
         </Button>
       </div>
     </div>
