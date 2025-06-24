@@ -10,6 +10,10 @@ export interface EventCardProps {
     registrationEndTime?: string
     createdAt: string
     participantCount?: number
+    club?: {
+      id: string
+      name: string
+    } | null
   }
 }
 
@@ -32,6 +36,11 @@ export default function EventCard({ event }: EventCardProps) {
       <p className="text-sm text-muted-foreground">
         Members: {event.participantCount ?? 0}
       </p>
+      {event.club && (
+        <p className="text-sm text-muted-foreground">
+          Club: {event.club.name}
+        </p>
+      )}
     </div>
   )
 }

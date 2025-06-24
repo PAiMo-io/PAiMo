@@ -23,23 +23,13 @@ interface EventContentProps {
   isAdmin: boolean
   participants: Participant[]
   currentUserId?: string
-  editingName: string
-  setEditingName: (v: string) => void
-  editingVisibility: string
-  setEditingVisibility: (v: string) => void
-  editingGameStyle: string
-  setEditingGameStyle: (v: string) => void
-  editingRegEnd: string
-  setEditingRegEnd: (v: string) => void
-  editingLocation: string
-  setEditingLocation: (v: string) => void
-  editingMaxPoint: string
-  setEditingMaxPoint: (v: string) => void
-  editingCourtCount: string
-  setEditingCourtCount: (v: string) => void
+  event: any
+  setEventField: (field: string, value: any) => void
   saveInfo: () => void
   removeParticipant: (id: string) => void
   generateMatches: () => void
+  generateGroups: () => void
+  groups?: any[] // Assuming groups is an array of some kind, adjust type as needed
 }
 
 export default function EventContent({
@@ -47,64 +37,54 @@ export default function EventContent({
   isAdmin,
   participants,
   currentUserId,
-  editingName,
-  setEditingName,
-  editingVisibility,
-  setEditingVisibility,
-  editingGameStyle,
-  setEditingGameStyle,
-  editingRegEnd,
-  setEditingRegEnd,
-  editingLocation,
-  setEditingLocation,
-  editingMaxPoint,
-  setEditingMaxPoint,
-  editingCourtCount,
-  setEditingCourtCount,
+  event,
+  setEventField,
   saveInfo,
   removeParticipant,
   generateMatches,
+  generateGroups,
+  groups
 }: EventContentProps) {
   const [activeTab, setActiveTab] = useState<'draw' | 'ranking' | 'umpire'>('draw')
 
   const form = (
-    <div className="space-y-2 max-w-xs mx-auto">
-      <Input value={editingName} onChange={e => setEditingName(e.target.value)} placeholder="name" />
-      <Select value={editingVisibility} onValueChange={setEditingVisibility}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="visibility" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="private">private</SelectItem>
-          <SelectItem value="public-view">public-view</SelectItem>
-          <SelectItem value="public-join">public-join</SelectItem>
-        </SelectContent>
-      </Select>
-      <Input
-        value={editingGameStyle}
-        onChange={e => setEditingGameStyle(e.target.value)}
-        placeholder="game style"
-      />
-      <Input
-        type="datetime-local"
-        value={editingRegEnd}
-        onChange={e => setEditingRegEnd(e.target.value)}
-      />
-      <Input
-        value={editingLocation}
-        onChange={e => setEditingLocation(e.target.value)}
-        placeholder="location"
-      />
-      {status === 'arranging-matches' && (
+    <div className="space-y-2 max-w-xs mx-auto mb-2">
+      {status !== 'arranging' && (<><Input value={event.editingName} onChange={e => setEventField('editingName', e.target.value)} placeholder="name" />
+        <Select value={event.editingVisibility} onValueChange={v => setEventField('editingVisibility', v)}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="visibility" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="private">private</SelectItem>
+            <SelectItem value="public-view">public-view</SelectItem>
+            <SelectItem value="public-join">public-join</SelectItem>
+          </SelectContent>
+        </Select>
+        <Input
+          value={event.editingGameStyle}
+          onChange={e => setEventField('editingGameStyle', e.target.value)}
+          placeholder="game style"
+        />
+        <Input
+          type="datetime-local"
+          value={event.editingRegEnd}
+          onChange={e => setEventField('editingRegEnd', e.target.value)}
+        />
+        <Input
+          value={event.editingLocation}
+          onChange={e => setEventField('editingLocation', e.target.value)}
+          placeholder="location"
+        /></>)}
+      {status === 'arranging' && (
         <>
           <Input
-            value={editingMaxPoint}
-            onChange={e => setEditingMaxPoint(e.target.value)}
+            value={event.editingMaxPoint}
+            onChange={e => setEventField('editingMaxPoint', e.target.value)}
             placeholder="max point"
           />
           <Input
-            value={editingCourtCount}
-            onChange={e => setEditingCourtCount(e.target.value)}
+            value={event.editingCourtCount}
+            onChange={e => setEventField('editingCourtCount', e.target.value)}
             placeholder="total court"
           />
         </>
@@ -140,18 +120,21 @@ export default function EventContent({
     )
   }
 
-  if (status === 'arranging-matches') {
+  if (status === 'arranging') {
     return (
-      <div className="space-y-4">
+      <div className="space-x-2">
         {isAdmin && form}
         {isAdmin && (
-          <Button onClick={generateMatches}>Refresh Matches</Button>
+          <Button onClick={generateGroups}>Generate Groups</Button>
+        )}
+        {isAdmin && groups && groups.length > 0 && (
+          <Button onClick={generateMatches}>Generate Match</Button>
         )}
       </div>
     )
   }
 
-  if (status === 'match-running') {
+  if (status === 'running') {
     return (
       <div>
         <div className="flex space-x-2 mb-4">

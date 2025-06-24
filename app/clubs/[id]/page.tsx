@@ -5,6 +5,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Input } from '../../../components/ui/input';
 import { Button } from '../../../components/ui/button';
+import ConfirmLeaveDialog from '../../../components/club/ConfirmLeaveDialog';
+import ClubMap from '../../../components/club/ClubMap';
 import EventCard from '../../../components/EventCard';
 import ClubCard from '../../../components/ClubCard';
 import UserCard from '../../../components/UserCard';
@@ -43,6 +45,8 @@ export default function ClubHome({ params }: { params: { id: string } }) {
   const [clubLogo, setClubLogo] = useState('');
   const [isMember, setIsMember] = useState(false);
   const [newEventName, setNewEventName] = useState('');
+  const [savingLocation, setSavingLocation] = useState(false);
+  const [showLeave, setShowLeave] = useState(false);
 
   useEffect(() => {
     if (status === 'loading') return;
@@ -89,6 +93,23 @@ export default function ClubHome({ params }: { params: { id: string } }) {
     setIsMember(res.members.some((m: Member) => m.id === session?.user?.id));
   };
 
+  const leaveClub = async () => {
+    await request({ url: `/api/clubs/${params.id}/leave`, method: 'delete' });
+    const res = await request<{ club: any; members: Member[]; events: EventItem[] }>({
+      url: `/api/clubs/${params.id}`,
+      method: 'get',
+    });
+    setMembers(res.members);
+    setEvents(res.events.map(e => ({ ...e, clubName: res.club.name })));
+    setClubName(res.club.name);
+    setClubDesc(res.club.description || '');
+    setClubLocation(res.club.location || '');
+    setClubCreatedBy(res.club.createdBy || '');
+    setClubCreatedAt(res.club.createdAt || '');
+    setClubLogo(res.club.logoUrl || '');
+    setIsMember(res.members.some((m: Member) => m.id === session?.user?.id));
+  };
+
   const createEvent = async () => {
     if (!newEventName) return;
     await request({
@@ -108,6 +129,16 @@ export default function ClubHome({ params }: { params: { id: string } }) {
     setClubCreatedBy(res.club.createdBy || '');
     setClubCreatedAt(res.club.createdAt || '');
     setClubLogo(res.club.logoUrl || '');
+  };
+
+  const updateLocation = async () => {
+    setSavingLocation(true);
+    await request({
+      url: `/api/clubs/${params.id}`,
+      method: 'put',
+      data: { location: clubLocation },
+    });
+    setSavingLocation(false);
   };
 
   if (status === 'loading' || loading) {
@@ -131,6 +162,23 @@ export default function ClubHome({ params }: { params: { id: string } }) {
           logoUrl: clubLogo,
         }}
       />
+      {clubLocation && (
+        <div>
+          <h2 className="text-xl mb-2">Location Map</h2>
+          <ClubMap location={clubLocation} />
+        </div>
+      )}
+      {isAdmin && (
+        <div className="space-x-2 mt-2 flex items-center">
+          <Input
+            placeholder="Club location"
+            value={clubLocation}
+            onChange={e => setClubLocation(e.target.value)}
+            className="flex-1"
+          />
+          <Button onClick={updateLocation} disabled={savingLocation}>Save</Button>
+        </div>
+      )}
       {showEvents && (
         <div>
           <h2 className="text-xl mb-2">Ongoing Events</h2>
@@ -168,8 +216,18 @@ export default function ClubHome({ params }: { params: { id: string } }) {
           ))}
         </div>
       </div>
-      {!isMember && (
-        <Button onClick={joinClub}>Join us!</Button>
+      {!isMember && <Button onClick={joinClub}>Join us!</Button>}
+      {isMember && (
+        <>
+          <Button variant="destructive" onClick={() => setShowLeave(true)}>
+            Leave Club
+          </Button>
+          <ConfirmLeaveDialog
+            open={showLeave}
+            onClose={() => setShowLeave(false)}
+            onConfirm={leaveClub}
+          />
+        </>
       )}
     </div>
   );

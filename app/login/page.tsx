@@ -22,7 +22,7 @@ export default function LoginPage() {
     if (res?.error) {
       setError('Invalid credentials');
     } else {
-      router.push('/user');
+      router.push('/myclub');
     }
   };
 

@@ -91,3 +91,25 @@ export async function POST(
   }
   return NextResponse.json({ success: true });
 }
+
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  const session = await getServerSession(authOptions);
+  if (!session || !(session.user?.role === 'super-admin' || session.user?.role === 'admin')) {
+    return NextResponse.json({ success: false }, { status: 403 });
+  }
+  const { name, description, location, logoUrl } = await request.json();
+  await connect();
+  const club = await Club.findById(params.id);
+  if (!club) {
+    return NextResponse.json({ success: false }, { status: 404 });
+  }
+  if (name !== undefined) club.name = name;
+  if (description !== undefined) club.description = description;
+  if (location !== undefined) club.location = location;
+  if (logoUrl !== undefined) club.logoUrl = logoUrl;
+  await club.save();
+  return NextResponse.json({ success: true });
+}

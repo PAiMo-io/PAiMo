@@ -36,10 +36,14 @@ export default function ManagePage() {
   const { data: session, status } = useSession();
   const { request, loading, error } = useApi();
   const [users, setUsers] = useState<User[]>([]);
+  const [search, setSearch] = useState('');
   const [clubName, setClubName] = useState('');
+  const [clubLocation, setClubLocation] = useState('');
+  const [clubVisibility, setClubVisibility] = useState<'private' | 'public'>('private');
   const [eventName, setEventName] = useState('');
   const [clubs, setClubs] = useState<ClubOption[]>([]);
   const [selectedClub, setSelectedClub] = useState<string>('');
+  const [pendingUsers, setPendingUsers] = useState<{ id: string; email: string; createdAt: string }[]>([]);
 
   const fetchUsers = useCallback(async () => {
     const res = await request<{ users: User[] }>({ url: '/api/users', method: 'get' });
@@ -56,13 +60,19 @@ export default function ManagePage() {
   };
 
   const handleCreateClub = async () => {
-    await request({ url: '/api/clubs', method: 'post', data: { name: clubName } });
+    await request({
+      url: '/api/clubs',
+      method: 'post',
+      data: { name: clubName, location: clubLocation, visibility: clubVisibility },
+    });
     setClubName('');
+    setClubLocation('');
+    setClubVisibility('private');
     fetchClubs();
   };
 
   const fetchClubs = useCallback(async () => {
-    const res = await request<{ clubs: any[] }>({ url: '/api/clubs', method: 'get' });
+    const res = await request<{ clubs: any[] }>({ url: '/api/clubs?all=1', method: 'get' });
     setClubs(
       res.clubs.map((c: any) => ({
         id: c._id || c.id,
@@ -76,6 +86,11 @@ export default function ManagePage() {
     );
   }, [request]);
 
+  const fetchPending = useCallback(async () => {
+    const res = await request<{ users: { id: string; email: string; createdAt: string }[] }>({ url: '/api/pending-users', method: 'get' });
+    setPendingUsers(res.users);
+  }, [request]);
+
   const handleCreateEvent = async () => {
     if (!selectedClub) return;
     await request({
@@ -84,6 +99,16 @@ export default function ManagePage() {
       data: { name: eventName, clubId: selectedClub },
     });
     setEventName('');
+  };
+
+  const handleResend = async (id: string) => {
+    await request({ url: `/api/pending-users/${id}/resend`, method: 'post' });
+  };
+
+
+  const handleRemove = async (id: string) => {
+    await request({ url: `/api/pending-users/${id}`, method: 'delete' });
+    fetchPending();
   };
 
   useEffect(() => {
@@ -98,7 +123,8 @@ export default function ManagePage() {
     }
     fetchUsers();
     fetchClubs();
-  }, [status, session, router, fetchUsers, fetchClubs]);
+    fetchPending();
+  }, [status, session, router, fetchUsers, fetchClubs, fetchPending]);
 
   if (status === 'loading' || loading) {
     return <PageSkeleton />
@@ -108,11 +134,21 @@ export default function ManagePage() {
     return <div className="p-4">Failed to load.</div>
   }
 
+  const filteredUsers = users.filter(u =>
+    u.username.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="container mx-auto mt-8">
-      <h1 className="text-xl font-semibold mb-4">Role Management</h1>
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-sm border">
+    <div className="p-4 space-y-4">
+      <h1 className="text-xl font-semibold">Role Management</h1>
+      <Input
+        placeholder="Search users"
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        className="w-full max-w-xs"
+      />
+      <div className="overflow-x-auto max-h-64 overflow-y-auto">
+        <table className="min-w-full text-xs sm:text-sm border">
           <thead className="bg-gray-100">
             <tr>
               <th className="border p-2 text-left">Username</th>
@@ -120,7 +156,7 @@ export default function ManagePage() {
             </tr>
           </thead>
           <tbody>
-            {users.map(u => (
+            {filteredUsers.map(u => (
               <tr key={u.username} className="odd:bg-white even:bg-gray-50">
                 <td className="border p-2">{u.username}</td>
                 <td className="border p-2">
@@ -143,19 +179,43 @@ export default function ManagePage() {
           </tbody>
         </table>
       </div>
-      <div className="mt-8 space-y-4">
-        <div className="flex items-center space-x-2">
-          <Input placeholder="New Club Name" value={clubName} onChange={e => setClubName(e.target.value)} />
+      <div className="mt-8 mb-8 space-y-4">
+        <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
+          <Input
+            placeholder="New Club Name"
+            value={clubName}
+            onChange={e => setClubName(e.target.value)}
+            className="flex-1"
+          />
+          <Input
+            placeholder="Location"
+            value={clubLocation}
+            onChange={e => setClubLocation(e.target.value)}
+            className="flex-1"
+          />
+          <Select
+            value={clubVisibility}
+            onValueChange={value => setClubVisibility(value as 'private' | 'public')}
+          >
+            <SelectTrigger className="sm:w-[140px] w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="private">Private</SelectItem>
+              <SelectItem value="public">Public</SelectItem>
+            </SelectContent>
+          </Select>
           <Button onClick={handleCreateClub}>Create Club</Button>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
           <Input
             placeholder="New Event Name"
             value={eventName}
             onChange={e => setEventName(e.target.value)}
+            className="flex-1"
           />
           <Select value={selectedClub} onValueChange={setSelectedClub}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="sm:w-[180px] w-full">
               <SelectValue placeholder="Select Club" />
             </SelectTrigger>
             <SelectContent>
@@ -170,12 +230,40 @@ export default function ManagePage() {
           <h2 className="text-lg font-semibold mt-4">All Clubs</h2>
           <div className="space-y-2">
             {clubs.map(c => (
-              <Link key={c.id} href={`/clubs/${c.id}`}> 
+              <Link key={c.id} href={`/clubs/${c.id}`}>
                 <ClubCard club={c} />
               </Link>
             ))}
           </div>
         </div>
+        {pendingUsers.length > 0 &&(
+        <div>
+          <h2 className="text-lg font-semibold mt-4">Pending Signups</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-xs sm:text-sm border">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="border p-2 text-left">Email</th>
+                  <th className="border p-2 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingUsers.map(p => (
+                  <tr key={p.id} className="odd:bg-white even:bg-gray-50">
+                    <td className="border p-2">{p.email}</td>
+                      <td className="border p-2 space-x-2">
+                        <Button size="sm" onClick={() => handleResend(p.id)}>Resend</Button>
+                        <Button size="sm" variant="destructive" onClick={() => handleRemove(p.id)}>
+                          Remove
+                        </Button>
+                      </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        )}
       </div>
     </div>
   );

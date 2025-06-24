@@ -5,9 +5,12 @@ import connect from '../../../utils/mongoose';
 import Club from '../../../models/Club';
 import User from '../../../models/User';
 
-export async function GET() {
+export async function GET(request: Request) {
   await connect();
-  const clubs = await Club.find({}, {
+  const url = new URL(request.url);
+  const showAll = url.searchParams.get('all') === '1';
+  const query = showAll ? {} : { visibility: 'public' };
+  const clubs = await Club.find(query, {
     name: 1,
     description: 1,
     location: 1,
@@ -23,7 +26,7 @@ export async function POST(request: Request) {
   if (!session || session.user?.role !== 'super-admin') {
     return NextResponse.json({ success: false }, { status: 403 });
   }
-  const { name, description, location, logoUrl } = await request.json();
+  const { name, description, location, logoUrl, visibility } = await request.json();
   await connect();
   const user = await User.findById(session.user.id);
   const username = user?.username || user?.email || 'unknown';
@@ -32,6 +35,7 @@ export async function POST(request: Request) {
     description,
     location,
     logoUrl,
+    visibility: visibility === 'public' ? 'public' : 'private',
     createdBy: user?.email || '',
     createdAt: new Date(),
     members: [{ id: user._id, username }],

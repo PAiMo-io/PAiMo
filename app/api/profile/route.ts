@@ -54,5 +54,29 @@ export async function PUT(request: Request) {
     update.password = hashed;
   }
   await User.updateOne({ _id: session.user.id }, update);
+
   return NextResponse.json({ success: true });
+}
+
+export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ success: false }, { status: 401 });
+  }
+
+  await connect();
+  const user = await User.findOne({ _id: session.user.id }).populate({ path: 'clubs', strictPopulate: false });
+  const result = {
+    user: {
+      email: user.email,
+      username: user.username,
+      nickname: user.nickname,
+      role: user.role,
+      image: user.image,
+      clubs: Array.isArray(user.clubs)
+        ? (user.clubs as any[]).map(c => c.name)
+        : [],
+    }
+  };
+  return NextResponse.json(result);
 }

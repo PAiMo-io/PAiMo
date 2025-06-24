@@ -7,8 +7,7 @@ export default withAuth({
       const path = req.nextUrl.pathname
       if (
         path.startsWith('/manage') ||
-        path.startsWith('/api/users') ||
-        path === '/api/clubs'
+        path.startsWith('/api/users')
       ) {
         return token.role === 'super-admin'
       }
@@ -21,5 +20,5 @@ export default withAuth({
 })
 
 export const config = {
-  matcher: ['/user', '/profile', '/manage', '/event-edit', '/api/profile', '/api/myclubs', '/api/users/:path*', '/api/clubs/:path*', '/api/events/:path*']
+  matcher: ['/myclub', '/profile', '/manage', '/event-edit', '/api/profile', '/api/myclubs', '/api/users/:path*', '/api/clubs/:path*', '/api/events/:path*']
 }

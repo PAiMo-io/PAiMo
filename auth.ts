@@ -15,6 +15,7 @@ declare module "next-auth" {
       image?: string | null;
       role?: string | null;
       clubs?: string[];
+      profileComplete?: boolean;
     };
   }
 }
@@ -25,10 +26,12 @@ declare module "next-auth/jwt" {
     id?: string;
     role?: string | null;
     clubs?: string[];
+    profileComplete?: boolean;
   }
 }
 
 export const authOptions: NextAuthOptions = {
+  debug: true,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -52,30 +55,10 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.AUTH_SECRET,
+  pages: {
+    newUser: '/create-profile',
+  },
   callbacks: {
-    async jwt({ token, user }) {
-      await connect();
-      let dbUser = null;
-      if (user && user.email) {
-        dbUser = await User.findOne({ email: user.email });
-      } else if (token.id) {
-        dbUser = await User.findById(token.id);
-      }
-      if (dbUser) {
-        token.id = dbUser._id.toString();
-        token.role = dbUser.role || null;
-        token.clubs = dbUser.clubs ? dbUser.clubs.map((c: any) => c.toString()) : [];
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        if (token.id) session.user.id = token.id as string;
-        session.user.role = (token.role as string) || null;
-        session.user.clubs = (token.clubs as string[]) || [];
-      }
-      return session;
-    },
     async signIn({ user }) {
       await connect();
       const existingUser = await User.findOne({ email: user.email });
@@ -90,16 +73,34 @@ export const authOptions: NextAuthOptions = {
           clubs: [],
         });
       }
-      // Redirect new users to create-profile with email in query params
-      return `/create-profile?email=${encodeURIComponent(user.email || "")}`;
+      return true;
+    },
+    async jwt({ token, user }) {
+      await connect();
+      const dbUser = await User.findOne({ email: token.email });
+      if (!dbUser) {
+        return token;
+      }
+
+      token.id = dbUser._id.toString();
+      token.role = dbUser.role || null;
+      token.clubs = dbUser.clubs ? dbUser.clubs.map((c: any) => c.toString()) : [];
+      token.profileComplete = !!dbUser.username;
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as string | null;
+        session.user.clubs = token.clubs as string[] | [];
+
+        session.user.profileComplete = token.profileComplete as boolean;
+      }
+      return session;
     },
     async redirect({ url, baseUrl }) {
-      // If redirecting to create-profile, allow it
-      if (url.startsWith(`${baseUrl}/create-profile`)) {
-        return url;
-      }
-      // Otherwise, send to /user
-      return `${baseUrl}/user`;
+      return `${baseUrl}/`;
     },
   },
 }

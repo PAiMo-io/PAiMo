@@ -1,4 +1,18 @@
-import { Schema, model, models } from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
+
+export interface IUser {
+  username?: string;
+  email: string;
+  gender?: string;
+  nickname?: string;
+  wechatId?: string;
+  role?: 'super-admin' | 'admin' | 'member';
+  clubs?: string[];
+  image?: string;
+  password?: string;
+  level?: number;
+}
 
 const userSchema = new Schema({
   username: { type: String },
@@ -14,6 +28,7 @@ const userSchema = new Schema({
   clubs: [{ type: Schema.Types.ObjectId, ref: 'Club' }],
   image: { type: String },
   password: { type: String },
+  level: { type: Number },
 });
 
 export default models.User || model('User', userSchema);

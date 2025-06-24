@@ -7,8 +7,8 @@ import { cn } from '../lib/utils'
 export const EVENT_STEPS = [
   'preparing',
   'registration',
-  'arranging-matches',
-  'match-running',
+  'arranging',
+  'running',
   'ended',
 ] as const
 
@@ -26,7 +26,7 @@ interface StepProps {
 
 const Step = ({ title, isCompleted, isActive }: StepProps) => {
   return (
-    <div className="flex items-center shrink-0">
+    <div className="flex flex-col items-center shrink-0 min-w-[64px]">
       <div className="relative flex items-center justify-center">
         <div
           className={cn(
@@ -47,12 +47,13 @@ const Step = ({ title, isCompleted, isActive }: StepProps) => {
           )}
         </div>
       </div>
-      <div className="ml-4">
+      <div className="mt-1 text-center max-w-[72px] break-words whitespace-normal">
         <p
           className={cn(
-            'text-sm font-medium',
+            'text-xs font-medium',
             isActive || isCompleted ? 'text-foreground' : 'text-muted-foreground'
           )}
+          style={{ wordBreak: 'break-word' }}
         >
           {title}
         </p>
@@ -64,7 +65,7 @@ const Step = ({ title, isCompleted, isActive }: StepProps) => {
 export default function StepIndicator({ step }: StepIndicatorProps) {
   const currentIndex = EVENT_STEPS.indexOf(step)
   return (
-    <div className="flex flex-nowrap items-center gap-4 mb-4 overflow-x-auto">
+    <div className="flex flex-nowrap items-center gap-4 mb-4 overflow-x-auto h-16">
       {EVENT_STEPS.map((s, index) => (
         <React.Fragment key={s}>
           <Step

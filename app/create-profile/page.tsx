@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '../../components/ui/button';
@@ -21,7 +21,7 @@ import { Suspense } from 'react';
 
 function CreateProfileClient() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status, update } = useSession();
   const searchParams = useSearchParams();
   const { request, loading, error: apiError } = useApi();
 
@@ -30,7 +30,10 @@ function CreateProfileClient() {
   const [gender, setGender] = useState('');
   const [nickname, setNickname] = useState('');
   const [wechatId, setWechatId] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   // Populate email from NextAuth session or query param
   useEffect(() => {
@@ -47,19 +50,40 @@ function CreateProfileClient() {
       setError('Gender is required');
       return;
     }
+    if (!password) {
+      setError('Password is required');
+      return;
+    }
+    if (confirmPasswordError) {
+      setError(confirmPasswordError);
+      return;
+    }
     try {
       await request({
         url: '/api/signup',
         method: 'post',
-        data: { email, username, gender, nickname, wechatId },
+        data: { email, username, gender, nickname, wechatId, password },
       });
-      router.push('/login');
+      // login after signup using NextAuth credentials provider
+      const res = await signIn('credentials', {
+        redirect: false,
+        email,
+        password
+      });
+      console.log('Login error:', res);
+      if (res?.error) {
+        setError('Login failed. Please try again.');
+        console.error('Login error:', res.error);
+        return;
+      }
+      await update();
+      router.push('/');
     } catch (e: any) {
-      setError('Signup failed. Please try again.');
+      setError('Signup or login failed. Please try again.');
     }
   };
 
-  if (loading) {
+  if (status === 'loading' || loading) {
     return <PageSkeleton />;
   }
 
@@ -95,6 +119,26 @@ function CreateProfileClient() {
           value={wechatId}
           onChange={e => setWechatId(e.target.value)}
         />
+        <Input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+        <Input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={e => setConfirmPassword(e.target.value)}
+          onBlur={() => {
+            if (confirmPassword && password !== confirmPassword) {
+              setConfirmPasswordError('Passwords do not match');
+            } else {
+              setConfirmPasswordError('');
+            }
+          }}
+        />
+        {confirmPasswordError && <p className="text-red-500 text-sm">{confirmPasswordError}</p>}
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <Button className="w-full" onClick={handleSubmit}>
           Save Profile
