@@ -6,13 +6,14 @@ import PasswordReset from '@/models/PasswordReset';
 import { randomBytes } from 'crypto';
 import { Resend } from 'resend';
 
-export async function POST() {
+export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
-  if (!session || !session.user.email) {
-    return NextResponse.json({ success: false }, { status: 401 });
+  const body = await request.json().catch(() => ({}));
+  const email = body.email || session?.user?.email;
+  if (!email) {
+    return NextResponse.json({ success: false }, { status: 400 });
   }
   await connect();
-  const email = session.user.email;
 
   await PasswordReset.deleteMany({ email });
   const token = randomBytes(32).toString('hex');
