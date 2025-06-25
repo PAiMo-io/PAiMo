@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import ClubCard from '../../components/ClubCard'
 import PageSkeleton from '../../components/PageSkeleton'
 import { useApi } from '../../lib/useApi'
+import { useTranslation } from 'react-i18next'
 
 interface ClubItem {
   id: string
@@ -20,7 +21,8 @@ export default function ClubsDirectory() {
   const { data: session, status } = useSession()
   const { request, loading, error } = useApi()
   const [clubs, setClubs] = useState<ClubItem[]>([])
-
+  const { t } = useTranslation('common')
+  
   useEffect(() => {
     if (status !== 'authenticated') return
     const fetchClubs = async () => {
@@ -45,14 +47,14 @@ export default function ClubsDirectory() {
   }
 
   if (error) {
-    return <div className="p-4">Failed to load.</div>
+    return <div className="p-4">{t('loadFailed')}</div>
   }
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-2xl mb-2">Clubs Directory</h1>
+      <h1 className="text-2xl mb-2">{t('clubsDirectory')}</h1>
       {clubs.length === 0 ? (
-        <p>No clubs available.</p>
+        <p>{t('noClubsAvailable')}</p>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {clubs.map(c => (

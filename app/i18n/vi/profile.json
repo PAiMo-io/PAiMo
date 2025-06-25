@@ -1,0 +1,18 @@
+{
+  "failedToLoad": "Tải thất bại.",
+  "profile": "Hồ sơ",
+  "email": "Email",
+  "username": "Tên người dùng",
+  "role": "Vai trò",
+  "clubs": "Câu lạc bộ",
+  "updateUsername": "Cập nhật tên người dùng",
+  "newUsername": "Tên người dùng mới",
+  "saveUsername": "Lưu tên người dùng",
+  "changePassword": "Thay đổi mật khẩu",
+  "newPassword": "Mật khẩu mới",
+  "savePassword": "Lưu mật khẩu",
+  "Username updated": "Đã cập nhật tên người dùng",
+  "Failed to update username": "Không thể cập nhật tên người dùng",
+  "Password updated": "Đã cập nhật mật khẩu",
+  "Failed to update password": "Không thể cập nhật mật khẩu"
+}

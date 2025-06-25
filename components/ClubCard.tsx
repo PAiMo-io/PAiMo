@@ -1,5 +1,6 @@
 'use client'
 import dayjs from 'dayjs'
+import { useTranslation } from 'react-i18next'
 
 export interface ClubCardProps {
   club: {
@@ -14,6 +15,7 @@ export interface ClubCardProps {
 }
 
 export default function ClubCard({ club }: ClubCardProps) {
+  const { t } = useTranslation('common')
   return (
     <div className="border rounded-md p-4 flex space-x-4 items-start">
       {club.logoUrl && (
@@ -29,14 +31,14 @@ export default function ClubCard({ club }: ClubCardProps) {
           <p className="text-sm text-muted-foreground">{club.description}</p>
         )}
         {club.location && (
-          <p className="text-sm text-muted-foreground">Location: {club.location}</p>
+          <p className="text-sm text-muted-foreground">{t('location', { location: club.location })}</p>
         )}
         {club.createdBy && (
-          <p className="text-sm text-muted-foreground">Created by: {club.createdBy}</p>
+          <p className="text-sm text-muted-foreground">{t('createdBy', { createdBy: club.createdBy })}</p>
         )}
         {club.createdAt && (
           <p className="text-sm text-muted-foreground">
-            Created: {dayjs(club.createdAt).format('YYYY-MM-DD HH:mm')}
+            {t('created', { time: dayjs(club.createdAt).format('YYYY-MM-DD HH:mm') })}
           </p>
         )}
       </div>

@@ -11,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import ArrangingEventSection from '@/components/ArrangingEventSection';
 import MatchesScheduleSection from '@/components/MatchesScheduleSection';
 import EventRanking from '@/components/event/EventRanking';
+import { useTranslation } from 'react-i18next';
 
 export default function EventPage({ params }: { params: { id: string } }) {
   const {
@@ -23,6 +24,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
 
   const [showRevertModal, setShowRevertModal] = useState(false)
   const [countdown, setCountdown] = useState(5)
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!showRevertModal) return
@@ -39,9 +41,9 @@ export default function EventPage({ params }: { params: { id: string } }) {
     <div className="p-4 space-y-6">
       <Tabs value={tab} onValueChange={v => setTab(v as any)}>
         <TabsList className="mb-4">
-          <TabsTrigger value="event">Event</TabsTrigger>
-          <TabsTrigger value="match">Match</TabsTrigger>
-          <TabsTrigger value="ranking">Ranking</TabsTrigger>
+          <TabsTrigger value="event">{t('event')}</TabsTrigger>
+          <TabsTrigger value="match">{t('match')}</TabsTrigger>
+          <TabsTrigger value="ranking">{t('ranking')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="event">

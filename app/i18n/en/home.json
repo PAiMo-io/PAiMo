@@ -1,0 +1,9 @@
+{
+  "welcomeTitle": "Welcome to Game Planer",
+  "welcomeSubtitle": "Plan games for our lovely PIV Club members.",
+  "login": "Login",
+  "signup": "Sign Up",
+  "loadError": "Failed to load.",
+  "availableEvents": "Available Events",
+  "noEvents": "No events."
+}

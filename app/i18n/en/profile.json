@@ -1,0 +1,18 @@
+{
+  "failedToLoad": "Failed to load.",
+  "profile": "Profile",
+  "email": "Email",
+  "username": "Username",
+  "role": "Role",
+  "clubs": "Clubs",
+  "updateUsername": "Update Username",
+  "newUsername": "New username",
+  "saveUsername": "Save Username",
+  "changePassword": "Change Password",
+  "newPassword": "New password",
+  "savePassword": "Save Password",
+  "Username updated": "Username updated",
+  "Failed to update username": "Failed to update username",
+  "Password updated": "Password updated",
+  "Failed to update password": "Failed to update password"
+}

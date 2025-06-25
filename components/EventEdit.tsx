@@ -8,9 +8,11 @@ import { Textarea } from './ui/textarea'
 import { Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { useTranslation } from 'react-i18next'
 
 export default function EventEdit() {
   const router = useRouter()
+  const { t } = useTranslation('scheduler')
   const { data: session, status } = useSession()
 
   const [teamAPlayers, setTeamAPlayers] = useState<string>('')
@@ -134,58 +136,58 @@ export default function EventEdit() {
   return (
     <div className="max-w-screen-md mx-auto p-4">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">Badminton Match Scheduler</h1>
+        <h1 className="text-2xl font-bold">{t('title')}</h1>
       </div>
       <div className="grid md:grid-cols-12 gap-4">
         <div className="md:col-span-9 space-y-2">
           <Textarea
-            placeholder="Team A Member List"
+            placeholder={t('teamAListPlaceholder')}
             value={teamAPlayers}
             onChange={e => handlePlayerListChange('A', e.target.value)}
             className="min-h-32"
           />
-          <p className="text-sm text-muted-foreground">Number of players in Team A: {teamAPlayerCount}</p>
+          <p className="text-sm text-muted-foreground">{t('teamACount', { count: teamAPlayerCount })}</p>
           <Textarea
-            placeholder="Team B Member List"
+            placeholder={t('teamBListPlaceholder')}
             value={teamBPlayers}
             onChange={e => handlePlayerListChange('B', e.target.value)}
             className="min-h-32"
           />
-          <p className="text-sm text-muted-foreground">Number of players in Team B: {teamBPlayerCount}</p>
+          <p className="text-sm text-muted-foreground">{t('teamBCount', { count: teamBPlayerCount })}</p>
         </div>
         <div className="md:col-span-3 space-y-2">
           <Input
             type="number"
-            placeholder="Number of Courts"
+            placeholder={t('numCourtsPlaceholder')}
             value={numCourts}
             onChange={e => setNumCourts(parseInt(e.target.value, 10))}
           />
           <Input
             type="number"
-            placeholder="Maximum Number of Rounds"
+            placeholder={t('maxRoundsPlaceholder')}
             value={maxRounds}
             onChange={e => setMaxRounds(parseInt(e.target.value, 10))}
           />
         </div>
       </div>
       <div className="mt-4 flex items-center space-x-4">
-        <Button onClick={handleSubmit}>Generate Match</Button>
+        <Button onClick={handleSubmit}>{t('generateMatch')}</Button>
         <Button variant="destructive" onClick={handleOpenClearDialog} className="flex items-center">
-          <Trash2 className="mr-2 h-4 w-4" /> Clear Match
+          <Trash2 className="mr-2 h-4 w-4" /> {t('clearMatch')}
         </Button>
         <label className="flex items-center space-x-2">
           <input type="checkbox" checked={enableDupPair} onChange={e => setEnableDupPair(e.target.checked)} />
-          <span>Duplicate Pair Enable</span>
+          <span>{t('duplicatePairEnable')}</span>
         </label>
       </div>
       {clearDialogOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50">
           <div className="bg-white p-4 rounded-md space-y-4 w-80">
-            <h2 className="text-lg font-medium">Confirm Clear Match</h2>
-            <p>Are you sure you want to clear the current match schedule and scores? This action cannot be undone.</p>
+            <h2 className="text-lg font-medium">{t('confirmClearTitle')}</h2>
+            <p>{t('confirmClearMessage')}</p>
             <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={handleCloseClearDialog}>Cancel</Button>
-              <Button variant="destructive" onClick={handleClearSchedule}>Clear Match</Button>
+              <Button variant="outline" onClick={handleCloseClearDialog}>{t('cancel')}</Button>
+              <Button variant="destructive" onClick={handleClearSchedule}>{t('clearMatch')}</Button>
             </div>
           </div>
         </div>
@@ -194,19 +196,19 @@ export default function EventEdit() {
         <table className="min-w-full text-sm border">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-2 text-left">Score Type</th>
-              <th className="p-2">Team A</th>
-              <th className="p-2">Team B</th>
+              <th className="p-2 text-left">{t('scoreType')}</th>
+              <th className="p-2">{t('teamA')}</th>
+              <th className="p-2">{t('teamB')}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="border p-2">Total Score</td>
+              <td className="border p-2">{t('totalScore')}</td>
               <td className="border p-2 text-center">{totalTeamAScore}</td>
               <td className="border p-2 text-center">{totalTeamBScore}</td>
             </tr>
             <tr>
-              <td className="border p-2">Score Diff.</td>
+              <td className="border p-2">{t('scoreDiff')}</td>
               <td className="border p-2 text-center">{teamAscoreDifference}</td>
               <td className="border p-2 text-center">{teamBscoreDifference}</td>
             </tr>
@@ -217,12 +219,12 @@ export default function EventEdit() {
         <table className="min-w-full text-sm">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-2">R</th>
-              <th className="p-2">C</th>
-              <th className="p-2">Team A</th>
-              <th className="p-2">Team B</th>
-              <th className="p-2">Team A Score</th>
-              <th className="p-2">Team B Score</th>
+              <th className="p-2">{t('round')}</th>
+              <th className="p-2">{t('court')}</th>
+              <th className="p-2">{t('teamA')}</th>
+              <th className="p-2">{t('teamB')}</th>
+              <th className="p-2">{t('teamAScore')}</th>
+              <th className="p-2">{t('teamBScore')}</th>
             </tr>
           </thead>
           <tbody>
