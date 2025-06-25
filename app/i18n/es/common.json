@@ -114,6 +114,12 @@
     "confirm": "Confirmar",
     "cancel": "Cancelar",
     "searchUsers": "Buscar usuarios",
-    "signupTitle": "Registrarse"
+    "signupTitle": "Registrarse",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "sendResetEmail": "Enviar correo electrónico de restablecimiento de contraseña",
+    "passwordResetEmailSent": "Correo electrónico de restablecimiento de contraseña enviado",
+    "failedToSendResetEmail": "No se pudo enviar el correo electrónico de restablecimiento de contraseña",
+    "resetPassword": "Restablecer contraseña",
+    "signupSent": "Registro enviado"
   }
   

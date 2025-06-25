@@ -114,6 +114,12 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "searchUsers": "Search users",
-    "signupTitle": "Sign Up"
+    "signupTitle": "Sign Up",
+    "forgotPassword": "Forgot Password?",
+    "sendResetEmail": "Send Reset Email",
+    "passwordResetEmailSent": "Password reset email sent",
+    "failedToSendResetEmail": "Failed to send password reset email",
+    "resetPassword": "Reset Password",
+    "signupSent": "Signup sent"
   }
   
