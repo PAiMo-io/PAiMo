@@ -109,6 +109,12 @@
     "confirm": "Xác nhận",
     "cancel": "Hủy bỏ",
     "searchUsers": "Tìm kiếm người dùng",
-    "signupTitle": "Đăng ký"
+    "signupTitle": "Đăng ký",
+    "forgotPassword": "Quên mật khẩu?",
+    "sendResetEmail": "Gửi email đặt lại mật khẩu",
+    "passwordResetEmailSent": "Email đặt lại mật khẩu đã được gửi",
+    "failedToSendResetEmail": "Không thể gửi email đặt lại mật khẩu",
+    "resetPassword": "Đặt lại mật khẩu",
+    "signupSent": "Đăng ký đã gửi"
   }
   
