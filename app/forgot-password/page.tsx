@@ -11,7 +11,7 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [message, setMessage] = useState('');
-  const { t } = useTranslation('common'); // add translation hook
+  const { t, i18n } = useTranslation('common'); // add translation hook
 
   const handleSubmit = async () => {
     setMessage('');
@@ -19,7 +19,7 @@ export default function ForgotPasswordPage() {
       await request({
         url: '/api/request-password-reset',
         method: 'post',
-        data: { email },
+        data: { email, lang: i18n.language },
       });
       setSent(true);
     } catch {
