@@ -27,7 +27,7 @@ const nextConfig = {
           patterns: [
             {
               from: path.resolve("./utils/templates/email"),
-              to: path.resolve('public/email-templates'),
+              to: path.resolve('public/__server__/templates/'),
             },
             // {
             //   from: path.resolve("./app/i18n"),
@@ -39,12 +39,20 @@ const nextConfig = {
     }
     return config;
   },
-  async redirects() {
+  async headers() {
     return [
       {
-        source: '/email-templates/:path*',
-        destination: '/',
-        permanent: false, 
+        source: '/__server__/templates/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store',
+          },
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
       },
     ];
   },

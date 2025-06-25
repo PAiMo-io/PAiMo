@@ -13,7 +13,7 @@ export async function renderLocalizedEmailTemplate(
   subject: string;
   html: string;
 }> {
-  const handlebars = await import('handlebars')
+  const handlebars = (await import('handlebars')).default;
   const fs = await import('fs/promises')
   const path = await import('path')
 
@@ -25,7 +25,8 @@ export async function renderLocalizedEmailTemplate(
   // );
   const htmlPath = path.resolve(
     process.cwd(),
-    `public/email-templates/${templateName}.html`
+    `public/__server__/templates`, 
+    `${templateName}.html`
   );
   const rawHtml = await fs.readFile(htmlPath, 'utf-8');
   const compiledHtml = handlebars.compile(rawHtml);
@@ -37,14 +38,9 @@ export async function renderLocalizedEmailTemplate(
   );
   const i18nJson = JSON.parse(await fs.readFile(i18nPath, 'utf-8'));
   const i18nVars = i18nJson[templateName] || {};
-
   const html = compiledHtml({...i18nVars, ...variables});
 
-  const subjectPath = path.resolve(
-    process.cwd(),
-    `app/i18n/${safeLang}/email.json`
-  );
-  const subjectJson = JSON.parse(await fs.readFile(subjectPath, 'utf-8'));
+  const subjectJson = JSON.parse(await fs.readFile(i18nPath, 'utf-8'));
   const subjectTemplate = subjectJson[templateName].subject || '';
   const compiledSubject = handlebars.compile(subjectTemplate);
   const subject = compiledSubject(variables);
