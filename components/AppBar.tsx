@@ -31,7 +31,7 @@ export default function AppBar() {
 
   return (
     <nav className="sticky top-0 z-50 flex items-center justify-between bg-gray-100 border-b px-4 py-2">
-      <Link href="/" className="font-semibold">PAiMO</Link>
+      <Link href="/" className="font-semibold">PAiMO.io</Link>
       <div className="flex items-center space-x-2 relative">
         {eventId && (
           <>
