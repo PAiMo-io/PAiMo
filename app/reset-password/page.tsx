@@ -54,7 +54,7 @@ function ResetPasswordClient() {
 
   return (
     <div className="mx-auto max-w-xs py-8 space-y-4">
-      <h1 className="text-2xl font-semibold mb-4">{t('Set New Password')}</h1>
+      <h1 className="text-2xl font-semibold mb-4">{t('setNewPassword')}</h1>
       <Input
         type="password"
         placeholder={t('newPassword')}
