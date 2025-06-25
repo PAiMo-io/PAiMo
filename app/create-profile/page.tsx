@@ -24,6 +24,7 @@ function CreateProfileClient() {
   const router = useRouter();
   const { data: session, status, update } = useSession();
   const searchParams = useSearchParams();
+  const queryEmail = searchParams.get('email');
   const { request, loading, error: apiError } = useApi();
 
   const [email, setEmail] = useState('');
@@ -37,15 +38,24 @@ function CreateProfileClient() {
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const { t } = useTranslation('common');
 
+  const effectiveEmail = session?.user?.email || queryEmail;
+
   // Populate email from NextAuth session or query param
   useEffect(() => {
     if (session?.user?.email) {
       setEmail(session.user.email);
-    } else {
-      const param = searchParams.get('email');
-      if (param) setEmail(param);
+    } else if (queryEmail) {
+      setEmail(queryEmail);
     }
-  }, [session, searchParams]);
+  }, [session, queryEmail]);
+
+  if (status !== 'loading' && session?.user?.profileComplete) {
+    return <div className="p-4">{t('profileExists')}</div>;
+  }
+
+  if (status !== 'loading' && !effectiveEmail) {
+    return <div className="p-4">{t('missingEmail')}</div>;
+  }
 
   const handleSubmit = async () => {
     if (!gender) {
