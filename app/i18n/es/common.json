@@ -59,6 +59,7 @@
     "visibility.private": "privado",
     "visibility.publicView": "público (solo vista)",
     "visibility.publicJoin": "público (puede unirse)",
+    "registrationEndTime": "Fecha límite de registro",
     "gameStyle": "estilo de juego",
     "maxPoint": "puntos máximos",
     "totalCourt": "total de canchas",

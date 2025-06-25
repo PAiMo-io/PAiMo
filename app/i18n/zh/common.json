@@ -59,6 +59,7 @@
   "visibility.private": "私有",
   "visibility.publicView": "公开查看",
   "visibility.publicJoin": "公开加入",
+  "registrationEndTime": "报名截止时间",
   "gameStyle": "比赛风格",
   "maxPoint": "最高得分",
   "totalCourt": "总场地数",
