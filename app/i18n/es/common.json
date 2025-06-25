@@ -117,6 +117,8 @@
     "failedToSendResetEmail": "No se pudo enviar el correo electrónico de restablecimiento de contraseña",
     "resetPassword": "Restablecer contraseña",
     "signupSent": "Registro enviado",
-    "confirmPasswordPlaceholder": "Confirmar contraseña"
+    "confirmPasswordPlaceholder": "Confirmar contraseña",
+    "setNewPassword": "Establecer nueva contraseña",
+    "newPassword": "Nueva contraseña"
   }
   

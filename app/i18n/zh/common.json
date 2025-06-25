@@ -117,5 +117,7 @@
   "failedToSendResetEmail": "发送密码重置邮件失败",
   "resetPassword": "重置密码",
   "signupSent": "验证邮件已发送",
-  "confirmPasswordPlaceholder": "确认密码"
+  "confirmPasswordPlaceholder": "确认密码",
+  "setNewPassword": "设置新密码",
+  "newPassword": "新密码"
 }
