@@ -31,11 +31,11 @@ export default function ForgotPasswordPage() {
     <div className="mx-auto max-w-xs py-8">
       <h1 className="text-2xl font-semibold mb-4">{t('resetPassword')}</h1>
       {sent ? (
-        <p>{t('checkYourEmailForReset')}</p>
+        <p>{t('passwordResetEmailSent')}</p>
       ) : (
         <div className="space-y-4">
           <Input
-            placeholder={t('email')}
+            placeholder={t('emailPlaceholder')}
             value={email}
             onChange={e => setEmail(e.target.value)}
           />

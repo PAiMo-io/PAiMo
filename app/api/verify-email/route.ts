@@ -6,6 +6,7 @@ import PendingUser from '@/models/PendingUser';
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const token = searchParams.get('token');
+  const lang = searchParams.get('lang');
   if (!token) {
     return NextResponse.redirect(
       `${process.env.NEXT_PUBLIC_APP_URL}/verify-email/error`
@@ -25,6 +26,6 @@ export async function GET(req: Request) {
   }
   await PendingUser.deleteOne({ token });
   return NextResponse.redirect(
-    `${process.env.NEXT_PUBLIC_APP_URL}/create-profile?email=${encodeURIComponent(email)}`
+    `${process.env.NEXT_PUBLIC_APP_URL}/create-profile?email=${encodeURIComponent(email)}&lang=${lang}`
   );
 }

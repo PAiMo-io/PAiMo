@@ -122,6 +122,7 @@
     "passwordResetEmailSent": "Email đặt lại mật khẩu đã được gửi",
     "failedToSendResetEmail": "Không thể gửi email đặt lại mật khẩu",
     "resetPassword": "Đặt lại mật khẩu",
-    "signupSent": "Đăng ký đã gửi"
+    "signupSent": "Đăng ký đã gửi",
+    "confirmPasswordPlaceholder": "Xác nhận mật khẩu"
   }
   

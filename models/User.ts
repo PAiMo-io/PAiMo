@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 const { Schema, model, models } = mongoose;
-
+import { SUPPORTED_LANGUAGES, SupportedLanguage } from '@/app/constants/i18n';
 export interface IUser {
   username?: string;
   email: string;
@@ -13,6 +13,7 @@ export interface IUser {
   password?: string;
   level?: number;
   profileComplete?: boolean;
+  lang?: SupportedLanguage;
 }
 
 const userSchema = new Schema({
@@ -31,6 +32,7 @@ const userSchema = new Schema({
   password: { type: String },
   level: { type: Number },
   profileComplete: { type: Boolean, default: false }, 
+  lang: { type: String, enum: SUPPORTED_LANGUAGES, default: 'en' },
 });
 
 export default models.User || model('User', userSchema);
