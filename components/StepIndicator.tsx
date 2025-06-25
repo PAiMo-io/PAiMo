@@ -75,22 +75,30 @@ export default function StepIndicator({ step }: StepIndicatorProps) {
   const currentIndex = EVENT_STEPS.indexOf(step)
   const { t } = useTranslation('common')
   return (
-    <div className="flex flex-nowrap items-center gap-4 mb-4 overflow-x-auto h-16">
+    <div
+      className="flex flex-nowrap items-center gap-4 mb-4 overflow-x-auto h-20"
+      style={{ scrollbarWidth: 'none' }}
+    >
+      <style jsx>{`
+        div::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
       {EVENT_STEPS.map((s, index) => {
         const titleKey = stepI18nKeyMap[s];
         return (
-        <React.Fragment key={s}>
-          <Step
-            title={t(titleKey)}
-            isCompleted={index < currentIndex}
-            isActive={index === currentIndex}
-          />
-          {index < EVENT_STEPS.length - 1 && (
-            <ChevronRight className="text-muted-foreground shrink-0" />
-          )}
-        </React.Fragment>
+          <React.Fragment key={s}>
+            <Step
+              title={t(titleKey)}
+              isCompleted={index < currentIndex}
+              isActive={index === currentIndex}
+            />
+            {index < EVENT_STEPS.length - 1 && (
+              <ChevronRight className="text-muted-foreground shrink-0" />
+            )}
+          </React.Fragment>
         )
-})}
+      })}
     </div>
   )
 }
