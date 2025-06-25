@@ -59,6 +59,7 @@
     "visibility.private": "riêng tư",
     "visibility.publicView": "công khai (chỉ xem)",
     "visibility.publicJoin": "công khai (tham gia)",
+    "registrationEndTime": "Hạn chót đăng ký",
     "gameStyle": "phong cách trò chơi",
     "maxPoint": "điểm tối đa",
     "totalCourt": "số sân",

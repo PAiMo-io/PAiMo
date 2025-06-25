@@ -58,6 +58,7 @@
     "visibility.private": "private",
     "visibility.publicView": "public-view",
     "visibility.publicJoin": "public-join",
+    "registrationEndTime": "Registration Deadline",
     "gameStyle": "game style",
     "maxPoint": "max point",
     "totalCourt": "total court",
