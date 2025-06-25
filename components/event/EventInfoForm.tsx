@@ -1,14 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { Input } from '@/components/ui/input'
+import { FloatingLabelInput } from '@/components/ui/floating-label-input'
+import { FloatingLabelSelect } from '@/components/ui/floating-label-select'
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from '@/components/ui/select'
+import { SelectItem } from '@/components/ui/select'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
@@ -66,59 +61,61 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
   }
 
   return (
-    <div className="space-y-2 max-w-sm">
-      <Input
+    <div className="space-y-4 mt-5 max-w-sm">
+      <FloatingLabelInput
         value={name}
         onChange={e => setName(e.target.value)}
-        placeholder={t('name')}
+        label={t('name')}
         disabled={!isAdmin}
       />
-      <Select value={visibility} onValueChange={setVisibility} disabled={!isAdmin}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder={t('visibility')} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="private">{t('private')}</SelectItem>
-          <SelectItem value="public-view">{t('publicView')}</SelectItem>
-          <SelectItem value="public-join">{t('publicJoin')}</SelectItem>
-        </SelectContent>
-      </Select>
-      <Input
+      <FloatingLabelSelect
+        id="visibility-select"
+        value={visibility}
+        onValueChange={setVisibility}
+        disabled={!isAdmin}
+        label={t('visibility')}
+      >
+        <SelectItem value="private">{t('private')}</SelectItem>
+        <SelectItem value="public-view">{t('publicView')}</SelectItem>
+        <SelectItem value="public-join">{t('publicJoin')}</SelectItem>
+      </FloatingLabelSelect>
+      <FloatingLabelInput
         type="datetime-local"
         value={regEnd}
         onChange={e => setRegEnd(e.target.value)}
+        label={t('registrationEndTime')}
         disabled={!isAdmin}
       />
-      <Input
+      <FloatingLabelInput
         value={location}
         onChange={e => setLocation(e.target.value)}
-        placeholder={t('locationPlace')}
+        label={t('locationPlace')}
         disabled={!isAdmin}
       />
-      <Input
+      <FloatingLabelInput
         value={gameStyle}
         onChange={e => setGameStyle(e.target.value)}
-        placeholder={t('gameStyle')}
+        label={t('gameStyle')}
         disabled={!isAdmin}
       />
-      <Input
+      <FloatingLabelInput
         type="number"
         value={maxPoint}
         onChange={e => setMaxPoint(e.target.value)}
-        placeholder={t('maxPoint')}
+        label={t('maxPoint')}
         disabled={!isAdmin}
       />
-      <Input
+      <FloatingLabelInput
         type="number"
         value={courtCount}
         onChange={e => setCourtCount(e.target.value)}
-        placeholder={t('courtCount')}
+        label={t('courtCount')}
         disabled={!isAdmin}
       />
-      <Input
+      <FloatingLabelInput
         value={umpires}
         onChange={e => setUmpires(e.target.value)}
-        placeholder={t('umpireIds')}
+        label={t('umpireIds')}
         disabled={!isAdmin}
       />
       {isAdmin && (
