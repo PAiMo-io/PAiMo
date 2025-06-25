@@ -120,5 +120,6 @@
   "passwordResetEmailSent": "密码重置邮件已发送",
   "failedToSendResetEmail": "发送密码重置邮件失败",
   "resetPassword": "重置密码",
-  "signupSent": "验证邮件已发送"
+  "signupSent": "验证邮件已发送",
+  "confirmPasswordPlaceholder": "确认密码"
 }

@@ -120,6 +120,7 @@
     "passwordResetEmailSent": "Correo electrónico de restablecimiento de contraseña enviado",
     "failedToSendResetEmail": "No se pudo enviar el correo electrónico de restablecimiento de contraseña",
     "resetPassword": "Restablecer contraseña",
-    "signupSent": "Registro enviado"
+    "signupSent": "Registro enviado",
+    "confirmPasswordPlaceholder": "Confirmar contraseña"
   }
   
