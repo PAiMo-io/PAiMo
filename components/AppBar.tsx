@@ -50,7 +50,6 @@ export default function AppBar() {
           </>
         ) : (
           <div className="flex items-center">
-            <p className="mr-2">{session.user?.name || session.user?.email}</p>
             <LanguageSwitcher />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

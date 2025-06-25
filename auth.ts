@@ -14,6 +14,7 @@ declare module "next-auth" {
       email?: string | null;
       image?: string | null;
       role?: string | null;
+      nickname?: string | null;
       clubs?: string[];
       profileComplete?: boolean;
     };
@@ -25,6 +26,7 @@ declare module "next-auth/jwt" {
   interface JWT {
     id?: string;
     role?: string | null;
+    nickname?: string | null;
     clubs?: string[];
     profileComplete?: boolean;
   }
@@ -84,6 +86,7 @@ export const authOptions: NextAuthOptions = {
 
       token.id = dbUser._id.toString();
       token.role = dbUser.role || null;
+      token.nickname = dbUser.nickname || null;
       token.clubs = dbUser.clubs ? dbUser.clubs.map((c: any) => c.toString()) : [];
       token.profileComplete = !!dbUser.username;
 
@@ -93,6 +96,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string | null;
+        session.user.nickname = token.nickname as string | null;
         session.user.clubs = token.clubs as string[] | [];
 
         session.user.profileComplete = token.profileComplete as boolean;
