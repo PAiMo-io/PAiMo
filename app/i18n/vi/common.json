@@ -118,6 +118,8 @@
     "signupSent": "Đăng ký đã gửi",
     "confirmPasswordPlaceholder": "Xác nhận mật khẩu",
     "setNewPassword": "Đặt mật khẩu mới",
-    "newPassword": "Mật khẩu mới"
+    "newPassword": "Mật khẩu mới",
+    "pendingSignups": "Đăng ký chờ xác nhận",
+    "resend": "Gửi lại"
   }
   
