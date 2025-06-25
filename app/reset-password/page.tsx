@@ -1,5 +1,5 @@
 'use client';
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
@@ -39,6 +39,12 @@ function ResetPasswordClient() {
     }
   };
 
+  useEffect(() => {
+    if (!token) {
+      router.replace('/');
+    }
+  }, [token, router]);
+
   if (!token) {
     return <div className="p-4">{t('invalidOrExpiredToken')}</div>;
   }
@@ -48,7 +54,7 @@ function ResetPasswordClient() {
 
   return (
     <div className="mx-auto max-w-xs py-8 space-y-4">
-      <h1 className="text-2xl font-semibold mb-4">{t('setNewPassword')}</h1>
+      <h1 className="text-2xl font-semibold mb-4">{t('Set New Password')}</h1>
       <Input
         type="password"
         placeholder={t('newPassword')}
