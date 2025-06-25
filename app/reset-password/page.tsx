@@ -1,5 +1,5 @@
 'use client';
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
@@ -22,7 +22,14 @@ function ResetPasswordClient() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const token = searchParams.get('token');
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+
+  useEffect(() => {
+    const lang = searchParams.get('lang');
+    if (lang) {
+      i18n.changeLanguage(lang);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async () => {
     setMessage('');
