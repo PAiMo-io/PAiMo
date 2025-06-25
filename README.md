@@ -1,4 +1,5 @@
 # PAiMO for 🏸
+![icon-192x192](https://github.com/user-attachments/assets/31cfe9b0-ed7c-448e-a4fa-41dbedf3b870)
 
 Welcome to the PIV Club's not-so-serious game scheduler. It's a Next.js app with NextAuth sprinkled on top so you can manage who gets to do what.
 

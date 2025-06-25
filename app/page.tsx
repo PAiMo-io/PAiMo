@@ -10,6 +10,7 @@ import { useApi } from '../lib/useApi'
 import { useRouter } from 'next/navigation';
 import { IUser } from '@/models/User'
 
+import { useTranslation } from 'react-i18next'
 interface EventItem {
   id: string
   name: string
@@ -27,6 +28,7 @@ export default function Home() {
   const [user, setUser] = useState<IUser>({} as IUser)
   const router = useRouter();
 
+  const { t } = useTranslation('home')
   useEffect(() => {
     if (status !== 'authenticated') return
     if (session.user?.profileComplete === false) {
@@ -51,14 +53,14 @@ export default function Home() {
   if (!session) {
     return (
       <div className="flex flex-col items-center justify-center py-10 space-y-4">
-        <h1 className="text-3xl font-bold">Welcome to Game Planer</h1>
-        <p className="text-center">Plan games for our lovely PIV Club members.</p>
+        <h1 className="text-3xl font-bold pl-4 pr-4">{t('welcomeTitle')}</h1>
+        <p className="text-center pl-4 pr-4">{t('welcomeSubtitle')}</p>
         <div className="space-x-4">
           <Button asChild>
-            <Link href="/login">Login</Link>
+            <Link href="/login">{t('login')}</Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/signup">Sign Up</Link>
+            <Link href="/signup">{t('signup')}</Link>
           </Button>
         </div>
       </div>
@@ -66,21 +68,21 @@ export default function Home() {
   }
 
   if (error) {
-    return <div className="p-4">Failed to load.</div>
+    return <div className="p-4">{t('loadError')}</div>
   }
 
   return (
     <div className="p-4 space-y-4">
       <div className="flex space-x-2">
         <span className="text-lg font-semibold flex-1">
-          👋 Hi, {user?.nickname || 'there'}!
+        👋 {t('hi', { name: user?.nickname ?? t('defaultName') })}!
         </span>
       </div>
 
       <div className="space-y-4">
-        <h1 className="text-2xl mb-2">Upcoming Events</h1>
+        <h1 className="text-2xl mb-2">{t('availableEvents')}</h1>
         {events.length === 0 ? (
-          <p>No events.</p>
+          <p>{t('noEvents')}</p>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {events.map(e => (

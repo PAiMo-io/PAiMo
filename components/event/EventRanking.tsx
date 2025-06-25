@@ -2,8 +2,9 @@
 
 import UserCard from '@/components/UserCard'
 import { MatchUI } from '@/components/MatchesScheduleSection'
-
+import { useTranslation } from 'react-i18next'
 export default function EventRanking({ matches }: { matches: MatchUI[] }) {
+  const { t } = useTranslation('common')
   const rankingMap: Record<string, { user: any; margin: number }> = {}
 
   matches.forEach(match => {
@@ -25,10 +26,10 @@ export default function EventRanking({ matches }: { matches: MatchUI[] }) {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold">Ranking</h1>
+      <h1 className="text-xl font-semibold">{t('ranking')}</h1>
       <div className="space-y-2">
         {ranking.length === 0 ? (
-          <p>No results yet.</p>
+          <p>{t('noResultsYet')}</p>
         ) : (
           ranking.map(r => (
             <div key={r.user.id} className="flex justify-between items-center">

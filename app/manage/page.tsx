@@ -15,6 +15,7 @@ import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import ClubCard from '../../components/ClubCard';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 interface User {
   username: string;
@@ -32,6 +33,7 @@ interface ClubOption {
 }
 
 export default function ManagePage() {
+  const { t } = useTranslation('common')
   const router = useRouter();
   const { data: session, status } = useSession();
   const { request, loading, error } = useApi();
@@ -131,18 +133,18 @@ export default function ManagePage() {
   }
 
   if (error) {
-    return <div className="p-4">Failed to load.</div>
+    return <div className="p-4">{t('failedToLoad')}</div>
   }
 
   const filteredUsers = users.filter(u =>
-    u.username.toLowerCase().includes(search.toLowerCase())
+    u.username?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-xl font-semibold">Role Management</h1>
+      <h1 className="text-xl font-semibold">{t('roleManagement')}</h1>
       <Input
-        placeholder="Search users"
+        placeholder={t('searchUsers')}
         value={search}
         onChange={e => setSearch(e.target.value)}
         className="w-full max-w-xs"
@@ -151,8 +153,8 @@ export default function ManagePage() {
         <table className="min-w-full text-xs sm:text-sm border">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border p-2 text-left">Username</th>
-              <th className="border p-2 text-left">Role</th>
+              <th className="border p-2 text-left">{t('username')}</th>
+              <th className="border p-2 text-left">{t('role')}</th>
             </tr>
           </thead>
           <tbody>
@@ -168,9 +170,9 @@ export default function ManagePage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="super-admin">super-admin</SelectItem>
-                      <SelectItem value="admin">admin</SelectItem>
-                      <SelectItem value="member">member</SelectItem>
+                      <SelectItem value="super-admin">{t('superAdmin')}</SelectItem>
+                      <SelectItem value="admin">{t('admin')}</SelectItem>
+                      <SelectItem value="member">{t('member')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </td>
@@ -182,13 +184,13 @@ export default function ManagePage() {
       <div className="mt-8 mb-8 space-y-4">
         <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
           <Input
-            placeholder="New Club Name"
+            placeholder={t('newClubName')}
             value={clubName}
             onChange={e => setClubName(e.target.value)}
             className="flex-1"
           />
           <Input
-            placeholder="Location"
+            placeholder={t('locationPlace')}
             value={clubLocation}
             onChange={e => setClubLocation(e.target.value)}
             className="flex-1"
@@ -201,22 +203,22 @@ export default function ManagePage() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="private">Private</SelectItem>
-              <SelectItem value="public">Public</SelectItem>
+              <SelectItem value="private">{t('private')}</SelectItem>
+              <SelectItem value="public">{t('public')}</SelectItem>
             </SelectContent>
           </Select>
-          <Button onClick={handleCreateClub}>Create Club</Button>
+          <Button onClick={handleCreateClub}>{t('createClub')}</Button>
         </div>
         <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
           <Input
-            placeholder="New Event Name"
+            placeholder={t('newEventName')}
             value={eventName}
             onChange={e => setEventName(e.target.value)}
             className="flex-1"
           />
           <Select value={selectedClub} onValueChange={setSelectedClub}>
             <SelectTrigger className="sm:w-[180px] w-full">
-              <SelectValue placeholder="Select Club" />
+              <SelectValue placeholder={t('selectClub')} />
             </SelectTrigger>
             <SelectContent>
               {clubs.map((c, idx) => (
@@ -224,10 +226,10 @@ export default function ManagePage() {
               ))}
             </SelectContent>
           </Select>
-          <Button onClick={handleCreateEvent}>Create Event</Button>
+          <Button onClick={handleCreateEvent}>{t('createEvent')}</Button>
         </div>
         <div>
-          <h2 className="text-lg font-semibold mt-4">All Clubs</h2>
+          <h2 className="text-lg font-semibold mt-4">{t('allClubs')}</h2>
           <div className="space-y-2">
             {clubs.map(c => (
               <Link key={c.id} href={`/clubs/${c.id}`}>
@@ -238,13 +240,13 @@ export default function ManagePage() {
         </div>
         {pendingUsers.length > 0 &&(
         <div>
-          <h2 className="text-lg font-semibold mt-4">Pending Signups</h2>
+          <h2 className="text-lg font-semibold mt-4">{t('pendingSignups')}</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full text-xs sm:text-sm border">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="border p-2 text-left">Email</th>
-                  <th className="border p-2 text-left">Actions</th>
+                  <th className="border p-2 text-left">{t('email')}</th>
+                  <th className="border p-2 text-left">{t('actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -252,9 +254,9 @@ export default function ManagePage() {
                   <tr key={p.id} className="odd:bg-white even:bg-gray-50">
                     <td className="border p-2">{p.email}</td>
                       <td className="border p-2 space-x-2">
-                        <Button size="sm" onClick={() => handleResend(p.id)}>Resend</Button>
+                        <Button size="sm" onClick={() => handleResend(p.id)}>{t('resend')}</Button>
                         <Button size="sm" variant="destructive" onClick={() => handleRemove(p.id)}>
-                          Remove
+                          {t('remove')}
                         </Button>
                       </td>
                   </tr>

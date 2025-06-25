@@ -5,10 +5,12 @@ import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { Button } from './ui/button'
 import { Home, CalendarDays, Users, User } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export default function AppFooter() {
   const { data: session } = useSession()
   const pathname = usePathname()
+  const { t } = useTranslation()
   if (!session) return null
   const isHome = pathname === '/'
   const isEvents = pathname.startsWith('/events') || pathname === '/event-edit'
@@ -23,25 +25,25 @@ export default function AppFooter() {
       <Button variant="ghost" className={btnClass(isHome)} asChild>
         <Link href="/">
           <Home size={20} />
-          <span className="text-xs">Home</span>
+          <span className="text-xs">{t('home')}</span>
         </Link>
       </Button>
       <Button variant="ghost" className={btnClass(isEvents)} asChild>
         <Link href="/events">
           <CalendarDays className="h-5 w-5" />
-          <span className="text-xs">Event</span>
+          <span className="text-xs">{t('events')}</span>
         </Link>
       </Button>
       <Button variant="ghost" className={btnClass(isClubs)} asChild>
         <Link href="/myclub">
           <Users className="h-5 w-5" />
-          <span className="text-xs">Club</span>
+          <span className="text-xs">{t('clubs')}</span>
         </Link>
       </Button>
       <Button variant="ghost" className={btnClass(isProfile)} asChild>
         <Link href="/profile">
           <User className="h-5 w-5" />
-          <span className="text-xs">Profile</span>
+          <span className="text-xs">{t('profile')}</span>
         </Link>
       </Button>
     </footer>

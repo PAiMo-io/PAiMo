@@ -1,0 +1,11 @@
+{
+  "welcomeTitle": "Bienvenido a Game Planer",
+  "welcomeSubtitle": "Organiza juegos para los encantadores miembros del Club PIV.",
+  "login": "Iniciar sesión",
+  "signup": "Registrarse",
+  "loadError": "No se pudo cargar.",
+  "availableEvents": "Eventos disponibles",
+  "noEvents": "No hay eventos.",
+  "hi": "Hola, {{name}}",
+  "defaultName": "Amigos"
+}

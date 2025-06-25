@@ -12,8 +12,11 @@ import {
 } from './ui/dropdown-menu'
 import { Menu, Home, Trophy } from 'lucide-react'
 
+import LanguageSwitcher from './LanguageSwitcher'
+import { useTranslation } from 'react-i18next'
 
 export default function AppBar() {
+  const { t } = useTranslation()
   const router = useRouter()
   const pathname = usePathname()
   const { data: session } = useSession()
@@ -41,10 +44,14 @@ export default function AppBar() {
           </>
         )}
         {!session ? (
-          <Link href="/login" className="hover:underline">Login</Link>
+          <>
+           <Link href="/login" className="hover:underline">{t('nav.login')}</Link>
+           <LanguageSwitcher />
+          </>
         ) : (
-          <div className="flex items-center space-x-2">
-            <p>{session.user?.name || session.user?.email}</p>
+          <div className="flex items-center">
+            <p className="mr-2">{session.user?.name || session.user?.email}</p>
+            <LanguageSwitcher />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost">
@@ -53,23 +60,23 @@ export default function AppBar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onSelect={() => router.push('/profile')}>
-                  Profile
+                {t('nav.profile')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => router.push('/myclub')}>
-                  My Clubs
+                {t('nav.myClubs')}
                 </DropdownMenuItem>
                 {(session.user?.role === 'super-admin' || session.user?.role === 'admin') && (
                   <DropdownMenuItem onSelect={() => router.push('/event-edit')}>
-                    Event Edit
+                    {t('nav.eventEdit')}
                   </DropdownMenuItem>
                 )}
                 {session.user?.role === 'super-admin' && (
                   <DropdownMenuItem onSelect={() => router.push('/manage')}>
-                    Manage
+                     {t('nav.manage')}
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem onSelect={handleLogout}>
-                  Logout
+                {t('nav.logout')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

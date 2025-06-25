@@ -8,6 +8,7 @@ import ConfirmLeaveDialog from '../../components/club/ConfirmLeaveDialog'
 import { Button } from '../../components/ui/button'
 import PageSkeleton from '../../components/PageSkeleton'
 import { useApi } from '../../lib/useApi'
+import { useTranslation } from 'react-i18next'
 
 interface Club {
   id: string
@@ -20,6 +21,7 @@ interface Club {
 }
 
 export default function MyClubPage() {
+  const { t } = useTranslation();
   const router = useRouter()
   const { data: session, status } = useSession()
   const { request, loading, error } = useApi()
@@ -57,11 +59,11 @@ export default function MyClubPage() {
   return (
     <div className="p-4 space-y-2">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl">My Clubs</h1>
-        <Link href="/clubs" className="text-sm underline">Club Directory</Link>
+        <h1 className="text-2xl">{t('myClubs')}</h1>
+        <Link href="/clubs" className="text-sm underline">{t('clubDirectory')}</Link>
       </div>
       {clubs.length === 0 ? (
-        <p>You are not a member of any clubs.</p>
+        <p>{t('noClubs')}</p>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {clubs.map(c => (
@@ -77,7 +79,7 @@ export default function MyClubPage() {
                   setShowLeave(true)
                 }}
               >
-                Leave
+                {t('leave')}
               </Button>
             </div>
           ))}

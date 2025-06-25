@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import EventCard from '@/components/EventCard'
 import PageSkeleton from '@/components/PageSkeleton'
 import { useApi } from '@/lib/useApi'
+import { useTranslation } from 'react-i18next'
 
 interface EventItem {
     id: string
@@ -20,6 +21,7 @@ export default function EventsPage() {
     const { data: session, status } = useSession()
     const { request, loading, error } = useApi()
     const [events, setEvents] = useState<EventItem[]>([])
+    const { t } = useTranslation('home')
 
     useEffect(() => {
         if (status !== 'authenticated') return
@@ -35,15 +37,15 @@ export default function EventsPage() {
     }
 
     if (error) {
-        return <div className="p-4">Failed to load.</div>
+        return <div className="p-4">{t('loadError')}</div>
     }
 
     return (
         <div className="p-4 space-y-4">
             <div className="space-y-4">
-                <h1 className="text-2xl mb-2">Available Events</h1>
+                <h1 className="text-2xl mb-2">{t('availableEvents')}</h1>
                 {events.length === 0 ? (
-                    <p>No events.</p>
+                    <p>{t('noEvents')}</p>
                 ) : (
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {events.map(e => (

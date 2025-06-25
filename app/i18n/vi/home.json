@@ -1,0 +1,11 @@
+{
+  "welcomeTitle": "Chào mừng đến với Game Planer",
+  "welcomeSubtitle": "Lên kế hoạch trò chơi cho các thành viên đáng yêu của CLB PIV.",
+  "login": "Đăng nhập",
+  "signup": "Đăng ký",
+  "loadError": "Tải thất bại.",
+  "availableEvents": "Sự kiện có sẵn",
+  "noEvents": "Không có sự kiện nào.",
+  "hi": "Chào, {{name}}",
+  "defaultName": "Bạn bè"
+}

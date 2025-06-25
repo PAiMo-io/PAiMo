@@ -7,6 +7,7 @@ import PageSkeleton from "../../components/PageSkeleton";
 import { useApi } from "../../lib/useApi";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
+import { useTranslation } from "react-i18next"; 
 
 interface ProfileData {
   email: string;
@@ -24,6 +25,7 @@ export default function ProfilePage() {
   const [message, setMessage] = useState('');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
+  const { t } = useTranslation('profile');
   useEffect(() => {
     const fetchProfile = async () => {
       if (!session?.user?.email) return;
@@ -42,12 +44,12 @@ export default function ProfilePage() {
   }
 
   if (error) {
-    return <div className="p-4">Failed to load.</div>;
+    return <div className="p-4">{t('failedToLoad')}</div>;
   }
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-2xl mb-4">Profile</h1>
+      <h1 className="text-2xl mb-4">{t('profile')}</h1>
       {data.image ? (
         <Image
           src={data.image}
@@ -61,25 +63,25 @@ export default function ProfilePage() {
         <Avatar size={96} name={data.username || data.email} variant="beam" />
       )}
       <p>
-        <strong>Email:</strong> {data.email}
+        <strong>{t('email')}:</strong> {data.email}
       </p>
       {data.username && (
         <p>
-          <strong>Username:</strong> {data.username}
+          <strong>{t('username')}:</strong> {data.username}
         </p>
       )}
       {data.role && (
         <p>
-          <strong>Role:</strong> {data.role}
+          <strong>{t('role')}:</strong> {data.role}
         </p>
       )}
       {data.clubs && data.clubs.length > 0 && (
         <p>
-          <strong>Clubs:</strong> {data.clubs.join(', ')}
+          <strong>{t('clubs')}:</strong> {data.clubs.join(', ')}
         </p>
       )}
       <div className="space-y-2 pt-4">
-        <h2 className="text-xl">Update Avatar</h2>
+        <h2 className="text-xl">{t('updateAvatar')}</h2>
         <Input
           type="file"
           accept="image/*"
@@ -100,19 +102,19 @@ export default function ProfilePage() {
               });
               setData(prev => (prev ? { ...prev, image: res.url } : prev));
               setAvatarFile(null);
-              setMessage('Avatar updated');
+              setMessage(t('avatarUpdated'));
             } catch {
-              setMessage('Failed to update avatar');
+              setMessage(t('failedToUpdateAvatar'));
             }
           }}
         >
-          Save Avatar
+          {t('saveAvatar')}
         </Button>
       </div>
       <div className="space-y-2 pt-4">
-        <h2 className="text-xl">Update Username</h2>
+        <h2 className="text-xl">{t('updateUsername')}</h2>
         <Input
-          placeholder="New username"
+          placeholder={t('newUsername')}
           value={usernameEdit}
           onChange={e => setUsernameEdit(e.target.value)}
         />
@@ -129,17 +131,17 @@ export default function ProfilePage() {
                 prev ? { ...prev, username: usernameEdit } : prev
               );
               setUsernameEdit('');
-              setMessage('Username updated');
+              setMessage(t('usernameUpdated'));
             } catch {
-              setMessage('Failed to update username');
+              setMessage(t('failedToUpdateUsername'));
             }
           }}
         >
-          Save Username
+          {t('saveUsername')}
         </Button>
       </div>
       <div className="space-y-2 pt-4">
-        <h2 className="text-xl">Reset Password</h2>
+        <h2 className="text-xl">{t('resetPassword')}</h2>
         <Button
           onClick={async () => {
             setMessage('');
@@ -148,16 +150,16 @@ export default function ProfilePage() {
                 url: '/api/request-password-reset',
                 method: 'post',
               });
-              setMessage('Password reset email sent');
+              setMessage(t('passwordResetEmailSent'));
             } catch {
-              setMessage('Failed to send reset email');
+              setMessage(t('failedToSendResetEmail'));
             }
           }}
         >
-          Send Reset Email
+          {t('sendResetEmail')}
         </Button>
       </div>
-      {message && <p className="text-green-500">{message}</p>}
+      {message && <p className="text-green-500">{t(message)}</p>}
     </div>
   );
 }
