@@ -19,17 +19,20 @@ export async function renderLocalizedEmailTemplate(
 
   const safeLang = getSafeLang(lang);
 
+  // const htmlPath = path.resolve(
+  //   process.cwd(),
+  //   `utils/templates/email/${templateName}.html`
+  // );
   const htmlPath = path.resolve(
     process.cwd(),
-    '.next/server/utils/templates/email',
-    `${templateName}.html`
+    `public/email-templates/${templateName}.html`
   );
   const rawHtml = await fs.readFile(htmlPath, 'utf-8');
   const compiledHtml = handlebars.compile(rawHtml);
 
   const i18nPath = path.resolve(
     process.cwd(),
-    '.next/server/app/i18n',
+    'app/i18n',
     `${safeLang}/email.json`
   );
   const i18nJson = JSON.parse(await fs.readFile(i18nPath, 'utf-8'));

@@ -27,17 +27,26 @@ const nextConfig = {
           patterns: [
             {
               from: path.resolve("./utils/templates/email"),
-              to: path.resolve(".next/server/utils/templates/email"),
+              to: path.resolve('public/email-templates'),
             },
-            {
-              from: path.resolve("./app/i18n"),
-              to: path.resolve(".next/server/app/i18n"),
-            },
+            // {
+            //   from: path.resolve("./app/i18n"),
+            //   to: path.resolve('public/i18n'),
+            // },
           ],
         })
       );
     }
     return config;
+  },
+  async redirects() {
+    return [
+      {
+        source: '/email-templates/:path*',
+        destination: '/',
+        permanent: false, 
+      },
+    ];
   },
 };
 
