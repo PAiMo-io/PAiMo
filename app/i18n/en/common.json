@@ -116,5 +116,7 @@
   "failedToSendResetEmail": "Failed to send password reset email",
   "resetPassword": "Reset Password",
   "signupSent": "Signup sent",
-  "confirmPasswordPlaceholder": "Confirm Password"
+  "confirmPasswordPlaceholder": "Confirm Password",
+  "setNewPassword": "Set New Password",
+  "newPassword": "New Password"
 }

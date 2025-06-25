@@ -116,6 +116,8 @@
     "failedToSendResetEmail": "Không thể gửi email đặt lại mật khẩu",
     "resetPassword": "Đặt lại mật khẩu",
     "signupSent": "Đăng ký đã gửi",
-    "confirmPasswordPlaceholder": "Xác nhận mật khẩu"
+    "confirmPasswordPlaceholder": "Xác nhận mật khẩu",
+    "setNewPassword": "Đặt mật khẩu mới",
+    "newPassword": "Mật khẩu mới"
   }
   
