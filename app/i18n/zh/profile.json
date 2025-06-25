@@ -3,11 +3,15 @@
   "profile": "个人资料",
   "email": "邮箱",
   "username": "用户名",
+  "nickname": "昵称",
   "role": "权限",
   "clubs": "俱乐部",
   "updateUsername": "更新用户名",
   "newUsername": "新用户名",
   "saveUsername": "保存用户名",
+  "updateNickname": "更新昵称",
+  "saveNickname": "保存昵称",
+  "newNickname": "新昵称",
   "changePassword": "修改密码",
   "newPassword": "新密码",
   "savePassword": "保存密码",
@@ -22,5 +26,7 @@
   "resetPassword": "重置密码",
   "sendResetEmail": "发送重置密码邮件",
   "passwordResetEmailSent": "密码重置邮件已发送",
-  "failedToSendResetEmail": "发送密码重置邮件失败"
+  "failedToSendResetEmail": "发送密码重置邮件失败",
+  "nicknameUpdated": "昵称已更新",
+  "failedToUpdateNickname": "昵称更新失败"
 }

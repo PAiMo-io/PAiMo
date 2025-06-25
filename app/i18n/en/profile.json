@@ -3,11 +3,15 @@
   "profile": "Profile",
   "email": "Email",
   "username": "Username",
+  "nickname": "Nickname",
   "role": "Role",
   "clubs": "Clubs",
   "updateUsername": "Update Username",
   "newUsername": "New username",
   "saveUsername": "Save Username",
+  "updateNickname": "Update Nickname",
+  "newNickname": "New nickname",
+  "saveNickname": "Save Nickname",
   "changePassword": "Change Password",
   "newPassword": "New password",
   "savePassword": "Save Password",
@@ -22,5 +26,7 @@
   "resetPassword": "Reset Password",
   "sendResetEmail": "Send Reset Email",
   "passwordResetEmailSent": "Password reset email sent",
-  "failedToSendResetEmail": "Failed to send password reset email"
+  "failedToSendResetEmail": "Failed to send password reset email",
+  "nicknameUpdated": "Nickname updated",
+  "failedToUpdateNickname": "Failed to update nickname"
 }

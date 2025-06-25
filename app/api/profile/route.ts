@@ -27,6 +27,7 @@ export async function POST(request: Request) {
   return NextResponse.json({
     email: user.email,
     username: user.username,
+    nickname: user.nickname,
     role: user.role,
     image: user.image,
     clubs: Array.isArray(user.clubs)
@@ -40,15 +41,16 @@ export async function PUT(request: Request) {
   if (!session) {
     return NextResponse.json({ success: false }, { status: 401 });
   }
-  const { username, password } = await request.json();
+  const { username, password, nickname } = await request.json();
 
-  if (username === undefined && password === undefined) {
+  if (username === undefined && password === undefined && nickname === undefined) {
     return NextResponse.json({ success: false }, { status: 400 });
   }
 
   await connect();
   const update: any = {};
   if (username !== undefined) update.username = username;
+  if (nickname !== undefined) update.nickname = nickname;
   if (password !== undefined) {
     const hashed = await bcrypt.hash(password, 10);
     update.password = hashed;

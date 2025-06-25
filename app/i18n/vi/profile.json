@@ -3,11 +3,15 @@
   "profile": "Hồ sơ",
   "email": "Email",
   "username": "Tên người dùng",
+  "nickname": "Apodo",
   "role": "Vai trò",
   "clubs": "Câu lạc bộ",
   "updateUsername": "Cập nhật tên người dùng",
   "newUsername": "Tên người dùng mới",
   "saveUsername": "Lưu tên người dùng",
+  "updateNickname": "Cập nhật apodo",
+  "newNickname": "Apodo mới",
+  "saveNickname": "Lưu apodo",
   "changePassword": "Thay đổi mật khẩu",
   "newPassword": "Mật khẩu mới",
   "savePassword": "Lưu mật khẩu",
@@ -22,5 +26,7 @@
   "resetPassword": "Đặt lại mật khẩu",
   "sendResetEmail": "Gửi email đặt lại mật khẩu",
   "passwordResetEmailSent": "Email đặt lại mật khẩu đã được gửi",
-  "failedToSendResetEmail": "Không thể gửi email đặt lại mật khẩu"
+  "failedToSendResetEmail": "Không thể gửi email đặt lại mật khẩu",
+  "nicknameUpdated": "Apodo đã được cập nhật",
+  "failedToUpdateNickname": "Không thể cập nhật apodo"
 }

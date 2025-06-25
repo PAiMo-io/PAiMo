@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 interface ProfileData {
   email: string;
   username?: string;
+  nickname?: string;
   role?: string;
   image?: string | null;
   clubs?: string[];
@@ -22,6 +23,7 @@ export default function ProfilePage() {
   const { request, loading, error } = useApi();
   const [data, setData] = useState<ProfileData | null>(null);
   const [usernameEdit, setUsernameEdit] = useState('');
+  const [nicknameEdit, setNicknameEdit] = useState('');
   const [message, setMessage] = useState('');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
@@ -35,6 +37,8 @@ export default function ProfilePage() {
         data: { email: session.user.email },
       });
       setData(res);
+      setUsernameEdit(res.username || '');
+      setNicknameEdit(res.nickname || '');
     };
     fetchProfile();
   }, [session, request]);
@@ -70,6 +74,9 @@ export default function ProfilePage() {
           <strong>{t('username')}:</strong> {data.username}
         </p>
       )}
+      <p>
+        <strong>{t('nickname')}:</strong> {data.nickname ? data.nickname : <span className="text-gray-500">Not set</span>}
+      </p>
       {data.role && (
         <p>
           <strong>{t('role')}:</strong> {data.role}
@@ -138,6 +145,34 @@ export default function ProfilePage() {
           }}
         >
           {t('saveUsername')}
+        </Button>
+      </div>
+      <div className="space-y-2 pt-4">
+        <h2 className="text-xl">{t('updateNickname') || 'Update Nickname'}</h2>
+        <Input
+          placeholder={t('newNickname') || 'New Nickname'}
+          value={nicknameEdit}
+          onChange={e => setNicknameEdit(e.target.value)}
+        />
+        <Button
+          onClick={async () => {
+            setMessage('');
+            try {
+              await request({
+                url: '/api/profile',
+                method: 'put',
+                data: { nickname: nicknameEdit },
+              });
+              setData(prev =>
+                prev ? { ...prev, nickname: nicknameEdit } : prev
+              );
+              setMessage(t('nicknameUpdated'));
+            } catch {
+              setMessage(t('failedToUpdateNickname'));
+            }
+          }}
+        >
+          {t('saveNickname')}
         </Button>
       </div>
       <div className="space-y-2 pt-4">

@@ -3,11 +3,15 @@
   "profile": "Perfil",
   "email": "Correo electrónico",
   "username": "Nombre de usuario",
+  "nickname": "Apodo",
   "role": "Rol",
   "clubs": "Clubes",
   "updateUsername": "Actualizar nombre de usuario",
   "newUsername": "Nuevo nombre de usuario",
   "saveUsername": "Guardar nombre de usuario",
+  "updateNickname": "Actualizar apodo",
+  "newNickname": "Nuevo apodo",
+  "saveNickname": "Guardar apodo",
   "changePassword": "Cambiar contraseña",
   "newPassword": "Nueva contraseña",
   "savePassword": "Guardar contraseña",
@@ -22,5 +26,7 @@
   "resetPassword": "Restablecer contraseña",
   "sendResetEmail": "Enviar correo electrónico de restablecimiento de contraseña",
   "passwordResetEmailSent": "Correo electrónico de restablecimiento de contraseña enviado",
-  "failedToSendResetEmail": "No se pudo enviar el correo electrónico de restablecimiento de contraseña"
+  "failedToSendResetEmail": "No se pudo enviar el correo electrónico de restablecimiento de contraseña",
+  "nicknameUpdated": "Apodo actualizado",
+  "failedToUpdateNickname": "No se pudo actualizar el apodo"
 }
