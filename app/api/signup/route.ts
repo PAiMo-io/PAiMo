@@ -20,7 +20,6 @@ export async function POST(request: Request) {
     await connect()
 
     const update: any = { username, gender, nickname, wechatId, lang }
-    console.log('update payload', update)
 
     if (password) {
       const hashed = await bcrypt.hash(password, 10)
@@ -45,6 +44,7 @@ export async function POST(request: Request) {
       )
       const key = `avatars/${user._id}.svg`
       const url = await uploadAvatar(key, Buffer.from(svg), 'image/svg+xml')
+
       user.image = url
       await user.save()
     }
