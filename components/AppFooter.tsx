@@ -21,7 +21,7 @@ export default function AppFooter() {
     `flex flex-col items-center space-y-0.5 p-1 w-20 ${active ? 'text-primary' : 'text-muted-foreground'}`
 
   return (
-    <footer className="border-t p-2 flex items-center justify-around sticky bottom-0 bg-background">
+    <footer className="border-t p-2 pb-4 flex items-center justify-around sticky bottom-0 bg-background">
       <Button variant="ghost" className={btnClass(isHome)} asChild>
         <Link href="/">
           <Home size={20} />
