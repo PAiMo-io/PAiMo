@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { useApi } from '../../lib/useApi';
+import { useTranslation } from 'react-i18next';
 
 export default function ForgotPasswordPage() {
+  const { t } = useTranslation('common');
   const { request } = useApi();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
@@ -27,22 +29,22 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="mx-auto max-w-xs py-8">
-      <h1 className="text-2xl font-semibold mb-4">Reset Password</h1>
+      <h1 className="text-2xl font-semibold mb-4">{t('resetPassword')}</h1>
       {sent ? (
-        <p>Please check your email for a password reset link.</p>
+        <p>{t('passwordResetEmailSent')}</p>
       ) : (
         <div className="space-y-4">
           <Input
-            placeholder="Email"
+            placeholder={t('emailPlaceholder')}
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
           {message && <p className="text-red-500 text-sm">{message}</p>}
           <Button className="w-full" onClick={handleSubmit}>
-            Send Reset Email
+            {t('sendResetEmail')}
           </Button>
           <Button variant="outline" className="w-full" asChild>
-            <Link href="/login">Back to Login</Link>
+            <Link href="/login">{t('backToLogin')}</Link>
           </Button>
         </div>
       )}
