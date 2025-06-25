@@ -13,11 +13,20 @@ export async function POST(request: Request) {
   if (!email) {
     return NextResponse.json({ success: false }, { status: 400 });
   }
-  await connect();
+  
+  try {
+    await connect();
+  } catch (err) {
+    console.error('DB connection failed:', err);
+    return NextResponse.json({ success: false, error: 'DB connection failed' }, { status: 500 });
+  }
 
   await PasswordReset.deleteMany({ email });
   const token = randomBytes(32).toString('hex');
-  await PasswordReset.create({ email, token });
+  await PasswordReset.create({
+  email,
+  token,
+  });
 
   const resend = new Resend(process.env.RESEND_API_KEY || '');
   const appUrl = process.env.NEXT_PUBLIC_APP_URL;
@@ -90,7 +99,8 @@ export async function POST(request: Request) {
         html,
       });
     } catch (e) {
-      console.error('Failed to send reset email', e);
+        console.error('Failed to send reset email', e);
+        return NextResponse.json({ success: false, message: 'Email send failed' }, { status: 500 });
     }
   }
 
