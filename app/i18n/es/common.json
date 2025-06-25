@@ -119,6 +119,8 @@
     "signupSent": "Registro enviado",
     "confirmPasswordPlaceholder": "Confirmar contraseña",
     "setNewPassword": "Establecer nueva contraseña",
-    "newPassword": "Nueva contraseña"
+    "newPassword": "Nueva contraseña",
+    "pendingSignups": "Registros pendientes",
+    "resend": "Reenviar"
   }
   

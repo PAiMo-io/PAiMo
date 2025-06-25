@@ -5,13 +5,13 @@ import connect from '@/utils/mongoose';
 import PendingUser from '@/models/PendingUser';
 import { Resend } from 'resend';
 import { renderLocalizedEmailTemplate } from '@/utils/templates/renderEmailTemplates';
-import { useTranslation } from 'react-i18next';
+
 
 export async function POST(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const { i18n } = useTranslation();
+  const { lang } = await request.json()
   const session = await getServerSession(authOptions);
   if (!session || session.user?.role !== 'super-admin') {
     return NextResponse.json({ success: false }, { status: 403 });
@@ -24,7 +24,7 @@ export async function POST(
   const resend = new Resend(process.env.RESEND_API_KEY || '');
   const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   try {
-    const { html, subject } = await renderLocalizedEmailTemplate('confirm-email', i18n.language || 'en', {
+    const { html, subject } = await renderLocalizedEmailTemplate('confirm-email', lang || 'en', {
       verifyUrl: `${appUrl}/api/verify-email?token=${pending.token}`,
       appUrl,
       year: new Date().getFullYear(),

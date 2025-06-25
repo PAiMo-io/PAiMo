@@ -119,5 +119,7 @@
   "signupSent": "验证邮件已发送",
   "confirmPasswordPlaceholder": "确认密码",
   "setNewPassword": "设置新密码",
-  "newPassword": "新密码"
+  "newPassword": "新密码",
+  "pendingSignups": "待验证注册",
+  "resend": "重发"
 }
