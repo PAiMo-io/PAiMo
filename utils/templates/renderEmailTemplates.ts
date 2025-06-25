@@ -13,7 +13,7 @@ export async function renderLocalizedEmailTemplate(
   subject: string;
   html: string;
 }> {
-  const handlebars = await import('handlebars')
+  const handlebars = (await import('handlebars')).default;
   const fs = await import('fs/promises')
   const path = await import('path')
 
