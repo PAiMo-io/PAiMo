@@ -117,6 +117,12 @@
     "searchUsers": "Search users",
     "signupTitle": "Sign Up",
     "signupWithGoogle": "Sign Up With Google",
-    "alreadyHaveAccount": "Already have an account? Login"
+    "alreadyHaveAccount": "Already have an account? Login",
+    "forgotPassword": "Forgot Password?",
+    "sendResetEmail": "Send Reset Email",
+    "passwordResetEmailSent": "Password reset email sent",
+    "failedToSendResetEmail": "Failed to send password reset email",
+    "resetPassword": "Reset Password",
+    "signupSent": "Signup sent"
   }
   
