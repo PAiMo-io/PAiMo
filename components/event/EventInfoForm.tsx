@@ -61,7 +61,7 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
   }
 
   return (
-    <div className="space-y-4 max-w-sm">
+    <div className="space-y-4 mt-5 max-w-sm">
       <FloatingLabelInput
         value={name}
         onChange={e => setName(e.target.value)}
