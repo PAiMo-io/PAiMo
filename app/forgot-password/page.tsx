@@ -7,7 +7,7 @@ import { useApi } from '../../lib/useApi';
 import { useTranslation } from 'react-i18next';
 
 export default function ForgotPasswordPage() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const { request } = useApi();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
