@@ -10,7 +10,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false }, { status: 400 });
   }
   await connect();
+  
   const entry = await PasswordReset.findOne({ token });
+  
   if (!entry) {
     return NextResponse.json({ success: false }, { status: 400 });
   }
