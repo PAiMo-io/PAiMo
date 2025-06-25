@@ -53,7 +53,7 @@ export default function LoginPage() {
           <Link href="/signup">{t('signupLink')}</Link>
         </Button>
         <Button variant="link" className="w-full p-0" asChild>
-          <Link href="/forgot-password">Forgot Password?</Link>
+          <Link href="/forgot-password">{t('forgotPassword')}</Link>
         </Button>
       </div>
     </div>

@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 
 import { Suspense } from 'react';
+import { SUPPORTED_LANGUAGES, SupportedLanguage } from '../constants/i18n';
 
 function CreateProfileClient() {
   const router = useRouter();
@@ -35,7 +36,7 @@ function CreateProfileClient() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
 
   // Populate email from NextAuth session or query param
   useEffect(() => {
@@ -44,6 +45,8 @@ function CreateProfileClient() {
     } else {
       const param = searchParams.get('email');
       if (param) setEmail(param);
+      const lang = searchParams.get('lang');
+      if (lang && SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)) i18n.changeLanguage(lang);
     }
   }, [session, searchParams]);
 
@@ -64,7 +67,7 @@ function CreateProfileClient() {
       await request({
         url: '/api/signup',
         method: 'post',
-        data: { email, username, gender, nickname, wechatId, password },
+        data: { email, username, gender, nickname, wechatId, password, lang: i18n.language },
       });
       // login after signup using NextAuth credentials provider
       const res = await signIn('credentials', {
@@ -123,13 +126,13 @@ function CreateProfileClient() {
         />
         <Input
           type="password"
-          placeholder="Password"
+          placeholder={t("passwordPlaceholder")}
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
         <Input
           type="password"
-          placeholder="Confirm Password"
+          placeholder={t("confirmPasswordPlaceholder")}
           value={confirmPassword}
           onChange={e => setConfirmPassword(e.target.value)}
           onBlur={() => {
