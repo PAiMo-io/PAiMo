@@ -1,7 +1,3 @@
-// import fs from 'fs/promises';
-// import path from 'path';
-// import handlebars from 'handlebars';
-
 const supportedLangs = ['en', 'zh', 'es', 'vi'] as const;
 type Lang = (typeof supportedLangs)[number];
 
