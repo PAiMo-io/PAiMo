@@ -137,7 +137,7 @@ export default function ManagePage() {
   }
 
   const filteredUsers = users.filter(u =>
-    u.username.toLowerCase().includes(search.toLowerCase())
+    u.username?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (

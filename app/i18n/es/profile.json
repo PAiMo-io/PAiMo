@@ -14,5 +14,13 @@
   "Username updated": "Nombre de usuario actualizado",
   "Failed to update username": "No se pudo actualizar el nombre de usuario",
   "Password updated": "Contraseña actualizada",
-  "Failed to update password": "No se pudo actualizar la contraseña"
+  "Failed to update password": "No se pudo actualizar la contraseña",
+  "updateAvatar": "Actualizar avatar",
+  "saveAvatar": "Guardar avatar",
+  "avatarUpdated": "Avatar actualizado",
+  "failedToUpdateAvatar": "No se pudo actualizar el avatar",
+  "resetPassword": "Restablecer contraseña",
+  "sendResetEmail": "Enviar correo electrónico de restablecimiento de contraseña",
+  "passwordResetEmailSent": "Correo electrónico de restablecimiento de contraseña enviado",
+  "failedToSendResetEmail": "No se pudo enviar el correo electrónico de restablecimiento de contraseña"
 }

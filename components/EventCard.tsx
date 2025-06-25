@@ -40,7 +40,7 @@ export default function EventCard({ event }: EventCardProps) {
       </p>
       {event.club && (
         <p className="text-sm text-muted-foreground">
-          Club: {event.club.name}
+          {t('club', { club: event.name })}
         </p>
       )}
     </div>

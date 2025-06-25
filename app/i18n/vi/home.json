@@ -5,5 +5,7 @@
   "signup": "Đăng ký",
   "loadError": "Tải thất bại.",
   "availableEvents": "Sự kiện có sẵn",
-  "noEvents": "Không có sự kiện nào."
+  "noEvents": "Không có sự kiện nào.",
+  "hi": "Chào, {{name}}",
+  "defaultName": "Bạn bè"
 }

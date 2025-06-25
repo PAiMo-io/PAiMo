@@ -14,5 +14,13 @@
   "Username updated": "Username updated",
   "Failed to update username": "Failed to update username",
   "Password updated": "Password updated",
-  "Failed to update password": "Failed to update password"
+  "Failed to update password": "Failed to update password",
+  "updateAvatar": "Update Avatar",
+  "saveAvatar": "Save Avatar",
+  "avatarUpdated": "Avatar updated",
+  "failedToUpdateAvatar": "Failed to update avatar",
+  "resetPassword": "Reset Password",
+  "sendResetEmail": "Send Reset Email",
+  "passwordResetEmailSent": "Password reset email sent",
+  "failedToSendResetEmail": "Failed to send password reset email"
 }

@@ -4,6 +4,8 @@
   "login": "登录",
   "signup": "注册",
   "loadError": "加载失败。",
-  "availableEvents": "可用活动",
-  "noEvents": "暂无活动。"
+  "availableEvents": "当前活动",
+  "noEvents": "暂无活动。",
+  "hi": "你好, {{name}}",
+  "defaultName": "朋友"
 }

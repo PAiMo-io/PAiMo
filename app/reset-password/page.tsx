@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { useApi } from '../../lib/useApi';
 import PageSkeleton from '../../components/PageSkeleton';
+import { useTranslation } from 'react-i18next';
 
 export default function ResetPasswordPage() {
   return (
@@ -21,6 +22,7 @@ function ResetPasswordClient() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const token = searchParams.get('token');
+  const { t } = useTranslation('common');
 
   const handleSubmit = async () => {
     setMessage('');
@@ -38,7 +40,7 @@ function ResetPasswordClient() {
   };
 
   if (!token) {
-    return <div className="p-4">Invalid or expired token.</div>;
+    return <div className="p-4">{t('invalidOrExpiredToken')}</div>;
   }
 
   if (loading) return <PageSkeleton />;
@@ -46,16 +48,16 @@ function ResetPasswordClient() {
 
   return (
     <div className="mx-auto max-w-xs py-8 space-y-4">
-      <h1 className="text-2xl font-semibold mb-4">Set New Password</h1>
+      <h1 className="text-2xl font-semibold mb-4">{t('setNewPassword')}</h1>
       <Input
         type="password"
-        placeholder="New password"
+        placeholder={t('newPassword')}
         value={password}
         onChange={e => setPassword(e.target.value)}
       />
       {message && <p className="text-green-500 text-sm">{message}</p>}
       <Button className="w-full" onClick={handleSubmit}>
-        Reset Password
+        {t('resetPassword')}
       </Button>
     </div>
   );

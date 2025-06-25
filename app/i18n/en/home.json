@@ -5,5 +5,7 @@
   "signup": "Sign Up",
   "loadError": "Failed to load.",
   "availableEvents": "Available Events",
-  "noEvents": "No events."
+  "noEvents": "No events.",
+  "hi": "Hi, {{name}}",
+  "defaultName": "there"
 }

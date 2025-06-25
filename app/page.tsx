@@ -75,7 +75,7 @@ export default function Home() {
     <div className="p-4 space-y-4">
       <div className="flex space-x-2">
         <span className="text-lg font-semibold flex-1">
-          👋 Hi, {user?.nickname || 'there'}!
+        👋 {t('hi', { name: user?.nickname ?? t('defaultName') })}!
         </span>
       </div>
 

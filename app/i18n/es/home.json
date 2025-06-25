@@ -5,5 +5,7 @@
   "signup": "Registrarse",
   "loadError": "No se pudo cargar.",
   "availableEvents": "Eventos disponibles",
-  "noEvents": "No hay eventos."
+  "noEvents": "No hay eventos.",
+  "hi": "Hola, {{name}}",
+  "defaultName": "Amigos"
 }

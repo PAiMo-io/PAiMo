@@ -14,5 +14,13 @@
   "Username updated": "用户名已更新",
   "Failed to update username": "用户名更新失败",
   "Password updated": "密码已更新",
-  "Failed to update password": "密码更新失败"
+  "Failed to update password": "密码更新失败",
+  "updateAvatar": "更新头像",
+  "saveAvatar": "保存头像",
+  "avatarUpdated": "头像已更新",
+  "failedToUpdateAvatar": "头像更新失败",
+  "resetPassword": "重置密码",
+  "sendResetEmail": "发送重置密码邮件",
+  "passwordResetEmailSent": "密码重置邮件已发送",
+  "failedToSendResetEmail": "发送密码重置邮件失败"
 }
