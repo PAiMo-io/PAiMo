@@ -53,7 +53,7 @@ export default function Home() {
   if (!session) {
     return (
       <div className="flex flex-col items-center justify-center py-10 space-y-4">
-        <h1 className="text-3xl font-bold pl-4 pr-4">{t('welcomeTitle')}</h1>
+        <h1 className="text-3xl font-bold pl-4 pr-4 text-center">{t('welcomeTitle')}</h1>
         <p className="text-center pl-4 pr-4">{t('welcomeSubtitle')}</p>
         <div className="space-x-4">
           <Button asChild>
