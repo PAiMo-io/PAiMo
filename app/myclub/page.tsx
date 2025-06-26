@@ -71,25 +71,10 @@ export default function MyClubPage() {
               <Link href={`/clubs/${c.id}`} className="block">
                 <ClubCard club={c} />
               </Link>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setLeaveId(c.id)
-                  setShowLeave(true)
-                }}
-              >
-                {t('leave')}
-              </Button>
             </div>
           ))}
         </div>
       )}
-      <ConfirmLeaveDialog
-        open={showLeave}
-        onClose={() => setShowLeave(false)}
-        onConfirm={async () => leaveClub(leaveId)}
-      />
     </div>
   )
 }

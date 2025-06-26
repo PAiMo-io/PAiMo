@@ -198,12 +198,12 @@ export default function ClubHome({ params }: { params: { id: string } }) {
             </div>
           )}
           {isAdmin && (
-            <div className="mt-2 space-x-2 flex items-center">
+            <div className="w-full mt-2 space-x-2 flex items-center">
               <Input
                 value={newEventName}
                 onChange={e => setNewEventName(e.target.value)}
                 placeholder={t('eventTitle')}
-                className="w-48"
+                className="w-full flex-1"
               />
               <Button onClick={createEvent}>{t('createEvent')}</Button>
             </div>
