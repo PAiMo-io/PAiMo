@@ -1,9 +1,10 @@
 'use client'
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { FloatingLabelInput } from '@/components/ui/floating-label-input'
 import { FloatingLabelSelect } from '@/components/ui/floating-label-select'
 import { SelectItem } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
 import { useTranslation } from 'react-i18next'
 import { GameStyle } from '@/types/gameStyle'
 
@@ -26,10 +27,9 @@ interface Props {
 
 export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
   const { t } = useTranslation('common')
-  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const initializedRef = useRef(false)
+  const [isSaving, setIsSaving] = useState(false)
   
-  const { control, reset, getValues } = useForm<FormData>({
+  const { control, reset, getValues, formState: { isDirty } } = useForm<FormData>({
     defaultValues: {
       name: '',
       visibility: 'private',
@@ -58,44 +58,30 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
     }
     
     reset(formData)
-    initializedRef.current = true
   }, [event, reset])
 
-  // Debounced auto-save function
-  const debouncedSave = useCallback((data: FormData) => {
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current)
-    }
+  // Handle save button click
+  const handleSave = async () => {
+    if (!isAdmin) return
     
-    saveTimeoutRef.current = setTimeout(() => {
-      onSave({
-        ...data,
-        registrationEndTime: data.registrationEndTime || undefined,
-        playDate: data.playDate || undefined,
+    setIsSaving(true)
+    try {
+      const currentData = getValues()
+      await onSave({
+        ...currentData,
+        registrationEndTime: currentData.registrationEndTime || undefined,
+        playDate: currentData.playDate || undefined,
       })
-      saveTimeoutRef.current = null
-    }, 500)
-  }, [onSave])
-
-  // Handle field changes
-  const handleFieldChange = useCallback(() => {
-    if (!initializedRef.current || !isAdmin) return
-    
-    const currentData = getValues()
-    debouncedSave(currentData)
-  }, [isAdmin, getValues, debouncedSave])
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current)
-      }
+    } catch (error) {
+      console.error('Failed to save form data:', error)
+    } finally {
+      setIsSaving(false)
     }
-  }, [])
+  }
 
   return (
-    <form className="space-y-4 mt-5 max-w-sm">
+    <div className="space-y-4 mt-5 max-w-sm">
+      <form className="space-y-4">
       <Controller
         name="name"
         control={control}
@@ -104,7 +90,6 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
             {...field}
             label={t('name')}
             disabled={!isAdmin}
-            onBlur={handleFieldChange}
           />
         )}
       />
@@ -116,10 +101,7 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
           <FloatingLabelSelect
             id="visibility-select"
             value={field.value}
-            onValueChange={(value) => {
-              field.onChange(value)
-              handleFieldChange()
-            }}
+            onValueChange={field.onChange}
             disabled={!isAdmin}
             label={t('visibility')}
           >
@@ -139,7 +121,6 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
             type="datetime-local"
             label={t('registrationEndTime')}
             disabled={!isAdmin}
-            onBlur={handleFieldChange}
           />
         )}
       />
@@ -153,7 +134,6 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
             type="datetime-local"
             label={t('eventPlayDate')}
             disabled={!isAdmin}
-            onBlur={handleFieldChange}
           />
         )}
       />
@@ -166,7 +146,6 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
             {...field}
             label={t('gymInfo')}
             disabled={!isAdmin}
-            onBlur={handleFieldChange}
           />
         )}
       />
@@ -178,10 +157,7 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
           <FloatingLabelSelect
             id="game-style-select"
             value={field.value}
-            onValueChange={(value) => {
-              field.onChange(value)
-              handleFieldChange()
-            }}
+            onValueChange={field.onChange}
             disabled={!isAdmin}
             label={t('gameStyle')}
           >
@@ -201,7 +177,6 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
             label={t('maxPoint')}
             disabled={!isAdmin}
             onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
-            onBlur={handleFieldChange}
             value={field.value?.toString() || ''}
           />
         )}
@@ -217,11 +192,21 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
             label={t('courtCount')}
             disabled={!isAdmin}
             onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
-            onBlur={handleFieldChange}
             value={field.value?.toString() || ''}
           />
         )}
       />
-    </form>
+      
+      {isAdmin && (
+        <Button 
+          onClick={handleSave}
+          disabled={!isDirty || isSaving}
+          className="w-full"
+        >
+          {isSaving ? t('saving') : t('save')}
+        </Button>
+      )}
+      </form>
+    </div>
   )
 }

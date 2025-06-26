@@ -11,6 +11,7 @@ export interface IMatch extends Document {
   court: number;
   group: number;                       // numeric court
   teams: [ITeam, ITeam];               // exactly two teams
+  isQuickMatch?: boolean;              // flag to identify quick matches
 }
 
 const teamSchema = new Schema<ITeam>({
@@ -49,6 +50,10 @@ const matchSchema = new Schema<IMatch>(
         validator: (arr: any[]) => arr.length === 2,
         message: 'A match must have exactly 2 teams.'
       }
+    },
+    isQuickMatch: {
+      type: Boolean,
+      default: false
     }
   },
   {

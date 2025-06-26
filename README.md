@@ -21,8 +21,9 @@ That's it. Short, sweet, and probably unstable—handle with care!
 Need some dummy accounts fast? Use the `createTestData` script to seed the
 database. Make sure your `.env.local` has `DB_URL` configured, then run:
 
+### Create everything from scratch:
 ```bash
-node scripts/createTestData.js <user-count> [club-name] [event-name]
+npm run create-test-data <user-count> [club-name] [event-name]
 ```
 
 - `user-count` – how many users to create
@@ -31,6 +32,25 @@ node scripts/createTestData.js <user-count> [club-name] [event-name]
 
 The script creates the users, a club, an event and registers everyone to that
 event automatically.
+
+### Register users to existing event:
+```bash
+npm run create-test-data register <event-id> <user-count>
+```
+
+- `event-id` – ID of the existing event (get this from the event URL: `/events/[event-id]`)
+- `user-count` – how many test users to create and register
+
+This is perfect for testing events with multiple participants. The script will:
+- Create test users with random skill levels (3.0-6.0)
+- Add them to the event's club (if applicable)
+- Register them as participants in the event
+- Show total participant count after completion
+
+Example:
+```bash
+npm run create-test-data register 507f1f77bcf86cd799439011 8
+```
 
 ## Backfilling Missing Avatars
 If existing users signed up before avatars were stored, run the `fill-avatars`
