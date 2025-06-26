@@ -24,7 +24,6 @@ export default function EventHeader({ event, isAdmin, onPrev, onNext }: Props) {
             )}
             {event.clubName && <p>{t('host', { club: event.clubName })}</p>}
             {event.location && <p>{t('location', { location: event.location })}</p>}
-            <p>{t('status', { status: event.status })}</p>
             {event.registrationEndTime && (
                 <p>{t('registerBy', { time: dayjs(event.registrationEndTime).format('YYYY-MM-DD HH:mm') })}</p>
             )}

@@ -36,7 +36,7 @@ interface EventItem {
 export default function ClubHome({ params }: { params: { id: string } }) {
   const { t } = useTranslation('common')
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const { request, loading, error } = useApi();
   const [members, setMembers] = useState<Member[]>([]);
   const [events, setEvents] = useState<EventItem[]>([]);
@@ -85,6 +85,7 @@ export default function ClubHome({ params }: { params: { id: string } }) {
       url: `/api/clubs/${params.id}`,
       method: 'get',
     });
+    update();
     setMembers(res.members);
     setEvents(res.events.map(e => ({ ...e, clubName: res.club.name })));
     setClubName(res.club.name);
@@ -191,7 +192,7 @@ export default function ClubHome({ params }: { params: { id: string } }) {
               {events
                 .filter(e => isMember || e.visibility !== 'private')
                 .map(e => (
-                  <Link key={e.id} href={`/events/${e.id}`}> 
+                  <Link key={e.id} href={`/events/${e.id}`}>
                     <EventCard event={e} />
                   </Link>
                 ))}
