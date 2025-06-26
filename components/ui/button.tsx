@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { Slot } from '@radix-ui/react-slot'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { cn } from '../../lib/utils'
 import LoadingDots from './loading-dots'
 
