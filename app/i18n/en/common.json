@@ -33,6 +33,7 @@
     "invalidCredentials": "Invalid credentials",
     "loginButton": "Login",
     "loginWithGoogle": "Login With Google",
+    "googleLoginSuggestion": "We recommend using Google login. You can change your password later in your profile.",
     "signupLink": "Sign Up",
     "userTitle": "My Clubs",
     "host": "Host: {{club}}",
@@ -114,6 +115,8 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "searchUsers": "Search users",
-    "signupTitle": "Sign Up"
+    "signupTitle": "Sign Up",
+    "signupWithGoogle": "Sign Up With Google",
+    "alreadyHaveAccount": "Already have an account? Login"
   }
   
