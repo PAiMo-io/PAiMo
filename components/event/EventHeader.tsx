@@ -28,7 +28,6 @@ export default function EventHeader({ event, isAdmin, onPrev, onNext }: Props) {
             {event.registrationEndTime && (
                 <p>{t('registerBy', { time: dayjs(event.registrationEndTime).format('YYYY-MM-DD HH:mm') })}</p>
             )}
-            <p>{t('created', { time: dayjs(event.createdAt).format('YYYY-MM-DD HH:mm') })}</p>
         </div>
     );
 }

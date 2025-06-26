@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
-import { Menu, Home, Trophy } from 'lucide-react'
+import { Menu } from 'lucide-react'
 
 import LanguageSwitcher from './LanguageSwitcher'
 import { useTranslation } from 'react-i18next'
@@ -33,20 +33,10 @@ export default function AppBar() {
     <nav className="sticky top-0 z-50 flex items-center justify-between bg-gray-100 border-b px-4 py-2">
       <Link href="/" className="font-semibold">PAiMO.io</Link>
       <div className="flex items-center space-x-2 relative">
-        {eventId && (
-          <>
-            <Button variant="ghost" size="icon" asChild>
-              <Link href={`/events/${eventId}`}><Home className="h-5 w-5" /></Link>
-            </Button>
-            <Button variant="ghost" size="icon" asChild>
-              <Link href={`/events/${eventId}/ranking`}><Trophy className="h-5 w-5" /></Link>
-            </Button>
-          </>
-        )}
         {!session ? (
           <>
-           <Link href="/login" className="hover:underline">{t('nav.login')}</Link>
-           <LanguageSwitcher />
+            <Link href="/login" className="hover:underline">{t('nav.login')}</Link>
+            <LanguageSwitcher />
           </>
         ) : (
           <div className="flex items-center">
@@ -59,10 +49,10 @@ export default function AppBar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onSelect={() => router.push('/profile')}>
-                {t('nav.profile')}
+                  {t('nav.profile')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => router.push('/myclub')}>
-                {t('nav.myClubs')}
+                  {t('nav.myClubs')}
                 </DropdownMenuItem>
                 {(session.user?.role === 'super-admin' || session.user?.role === 'admin') && (
                   <DropdownMenuItem onSelect={() => router.push('/event-edit')}>
@@ -71,11 +61,11 @@ export default function AppBar() {
                 )}
                 {session.user?.role === 'super-admin' && (
                   <DropdownMenuItem onSelect={() => router.push('/manage')}>
-                     {t('nav.manage')}
+                    {t('nav.manage')}
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem onSelect={handleLogout}>
-                {t('nav.logout')}
+                  {t('nav.logout')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
