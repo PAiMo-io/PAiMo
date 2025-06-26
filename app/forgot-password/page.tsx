@@ -43,8 +43,8 @@ export default function ForgotPasswordPage() {
           <Button className="w-full" onClick={handleSubmit}>
             {t('sendResetEmail')}
           </Button>
-          <Button variant="outline" className="w-full" asChild>
-            <Link href="/login">{t('backToLogin')}</Link>
+          <Button variant="outline" className="w-full">
+            <Link href="/login" className="block w-full h-full">{t('backToLogin')}</Link>
           </Button>
         </div>
       )}
