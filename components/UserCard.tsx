@@ -7,12 +7,16 @@ export interface UserCardProps {
     id: string
     username: string
     image?: string | null
-  }
+  },
+  width?: string
 }
 
-export default function UserCard({ user }: UserCardProps) {
+export default function UserCard({ user, width = '100%' }: UserCardProps) {
   return (
-    <div className="flex items-center space-x-2 p-2 border rounded-md">
+    <div 
+      className="flex items-center space-x-2 p-2 border rounded-md"
+      style={{ maxWidth: width }}
+    >
       {user.image ? (
         <Image
           src={user.image}
@@ -24,7 +28,7 @@ export default function UserCard({ user }: UserCardProps) {
       ) : (
         <Avatar size={32} name={user.username} variant="beam" />
       )}
-      <span>{user.username}</span>
+      <span className="truncate">{user.username}</span>
     </div>
   )
 }

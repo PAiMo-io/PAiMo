@@ -5,7 +5,7 @@ import PageSkeleton from '@/components/PageSkeleton'
 import EventRanking from '@/components/event/EventRanking'
 
 export default function EventRankingPage({ params }: { params: { id: string } }) {
-  const { event, matches } = useEventPage(params.id)
+  const { event } = useEventPage(params.id)
 
   if (!event) {
     return <PageSkeleton />
@@ -13,7 +13,7 @@ export default function EventRankingPage({ params }: { params: { id: string } })
 
   return (
     <div className="p-4">
-      <EventRanking matches={matches} />
+      <EventRanking eventId={params.id} />
     </div>
   )
 }

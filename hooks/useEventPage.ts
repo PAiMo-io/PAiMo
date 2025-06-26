@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { IUser } from '@/models/User';
 import { MatchUI } from '@/components/MatchesScheduleSection';
 import { EVENT_STEPS, EventStep } from '@/components/StepIndicator';
+import { GameStyle } from '@/types/gameStyle';
 
 const steps: EventStep[] = [...EVENT_STEPS];
 
@@ -19,6 +20,7 @@ export function useEventPage(eventId: string) {
     const [event, setEvent] = useState<any>(null);
     const [groups, setGroups] = useState<IUser[][]>([]);
     const [matches, setMatches] = useState<MatchUI[]>([]);
+    const [quickMatches, setQuickMatches] = useState<MatchUI[]>([]);
 
     const [numCourts, setNumCourts] = useState<number>(
         event?.courtCount ?? 1
@@ -60,6 +62,29 @@ export function useEventPage(eventId: string) {
         setMatches(m);
     }, [eventId, request]);
 
+    const fetchQuickMatches = useCallback(async () => {
+        if (!event || event.gameStyle !== GameStyle.FREE_STYLE) return
+
+        try {
+            const quickMatches = await request<MatchUI[]>({
+                url: `/api/createEventQuickMatch?eventId=${eventId}`,
+                method: 'get'
+            })
+
+            setQuickMatches(quickMatches || [])
+
+        } catch (error) {
+            console.error('Failed to fetch quick matches:', error)
+        }
+    }, [event, eventId, request]);
+
+    // Fetch quick matches when event loads or gameStyle changes
+    useEffect(() => {
+        if (event && event.gameStyle === GameStyle.FREE_STYLE) {
+            fetchQuickMatches()
+        }
+    }, [event, fetchQuickMatches]);
+
     // initial load / auth guard
     useEffect(() => {
         if (status === 'loading') return;
@@ -100,8 +125,8 @@ export function useEventPage(eventId: string) {
             method: 'put',
             data: info,
         });
-        // Don't refetch - the form already has the updated data
-        // This prevents the infinite loop
+        // Refetch to ensure we have the latest data and trigger form reset
+        await fetchEvent();
     };
     const nextStep = async () => {
         const idx = steps.indexOf(event.status);
@@ -177,7 +202,7 @@ export function useEventPage(eventId: string) {
 
     return {
         session, event,
-        groups, matches,
+        groups, matches, quickMatches,
         isAdmin, isParticipant,
         canRegister, canUnregister,
         actions: {
@@ -187,6 +212,7 @@ export function useEventPage(eventId: string) {
             generateGroups, saveGroups,
             generateMatches, deleteAllMatches,
             updateCourtCount, updateMatchScore,
+            fetchQuickMatches,
         }
     };
 }
