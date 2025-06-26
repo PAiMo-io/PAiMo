@@ -203,7 +203,7 @@ export default function ClubHome({ params }: { params: { id: string } }) {
                 value={newEventName}
                 onChange={e => setNewEventName(e.target.value)}
                 placeholder={t('eventTitle')}
-                className="w-48"
+                className="w-64 flex-1"
               />
               <Button onClick={createEvent}>{t('createEvent')}</Button>
             </div>

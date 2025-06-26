@@ -47,9 +47,9 @@ export default function ClubMap({ location }: ClubMapProps) {
           loading="lazy"
         />
       </div>
-      <div className="flex items-center space-x-2 mt-2">
+      <div className="w-full flex items-center space-x-2 mt-2">
         <Select value={provider} onValueChange={setProvider}>
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-full flex-1">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
