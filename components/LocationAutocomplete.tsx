@@ -24,9 +24,7 @@ export default function LocationAutocomplete({ value, onChange, placeholder }: P
         return
       }
       try {
-        const res = await fetch(
-          `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(query)}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
-        )
+        const res = await fetch(`/api/places/autocomplete?input=${encodeURIComponent(query)}`)
         const data = await res.json()
         if (data.predictions) {
           setSuggestions(data.predictions.map((p: any) => p.description))
