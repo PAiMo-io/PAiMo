@@ -12,6 +12,7 @@ export interface IUser {
   image?: string;
   password?: string;
   level?: number;
+  profileComplete?: boolean;
 }
 
 const userSchema = new Schema({
@@ -29,6 +30,7 @@ const userSchema = new Schema({
   image: { type: String },
   password: { type: String },
   level: { type: Number },
+  profileComplete: { type: Boolean, default: false }, 
 });
 
 export default models.User || model('User', userSchema);
