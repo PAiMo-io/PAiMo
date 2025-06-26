@@ -57,6 +57,7 @@
     "createEvent": "Crear evento",
     "joinClub": "Únete a nosotros!",
     "membersJoined": "Miembros",
+    "getDirections": "Obtener direcciones",
     "name": "nombre",
     "visibility": "visibilidad",
     "visibility.private": "privado",
