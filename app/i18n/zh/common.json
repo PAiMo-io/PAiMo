@@ -115,5 +115,6 @@
   "confirm": "确认",
   "cancel": "取消",
   "searchUsers": "搜索用户",
-  "signupTitle": "注册"
+  "signupTitle": "注册",
+  "signupWithGoogle": "使用 Google 注册"
 }

@@ -6,6 +6,8 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { useApi } from '../../lib/useApi';
 import { useTranslation } from 'react-i18next';
+import Image from 'next/image';
+import { signIn } from 'next-auth/react';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -50,6 +52,10 @@ export default function SignupPage() {
       setError(t('signupFailed'));
     }
   };
+  
+  const handleGoogle = async () => {
+    await signIn('google');
+  };
 
   return (
     <div className="mx-auto max-w-xs py-8">
@@ -65,7 +71,11 @@ export default function SignupPage() {
             onBlur={handleEmailBlur}
           />
           {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
-          <Button className="w-full" onClick={handleSubmit}>{t('signupButton')}</Button>
+          <Button className="bg-white text-black w-full" onClick={handleSubmit}>{t('signupButton')}</Button>
+          <Button className="black w-full flex items-center justify-center gap-2" onClick={handleGoogle}>
+            <Image src="/google-logo.svg" alt="Google" width={20} height={20} />
+            {t('signupWithGoogle')}
+          </Button>
           <Button variant="outline" className="w-full" asChild>
             <Link href="/login">{t('backToLogin')}</Link>
           </Button>
