@@ -128,6 +128,8 @@
     "newPassword": "Mật khẩu mới",
     "pendingSignups": "Đăng ký chờ xác nhận",
     "resend": "Gửi lại",
-    "resetEmailFailed": "Không thể gửi email đặt lại mật khẩu"
+    "resetEmailFailed": "Không thể gửi email đặt lại mật khẩu",
+    "chooseMapApp": "Chọn ứng dụng bản đồ",
+    "leaveClub": "Rời khỏi câu lạc bộ"
   }
   

@@ -118,6 +118,8 @@
   "signupTitle": "Sign Up",
   "signupWithGoogle": "Sign Up With Google",
   "alreadyHaveAccount": "Already have an account? Login",
+  "chooseMapApp": "Choose Map App",
+  "leaveClub": "Leave Club",
   "forgotPassword": "Forgot Password?",
   "sendResetEmail": "Send Reset Email",
   "passwordResetEmailSent": "Password reset email sent",
@@ -131,3 +133,4 @@
   "resend": "Resend",
   "resetEmailFailed": "Failed to send reset email"
 }
+  

@@ -1,65 +1,72 @@
-"use client"
+'use client'
 
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import { useTranslation } from 'react-i18next'
 import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from '../ui/select'
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+} from '../ui/dialog'
 
 interface ClubMapProps {
-  location: string
+  locations: string[] // multiple addresses
 }
 
-export default function ClubMap({ location }: ClubMapProps) {
+export default function ClubMap({ locations }: ClubMapProps) {
   const { t } = useTranslation('common')
-  const [provider, setProvider] = useState('google')
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
 
-  const src = `https://maps.google.com/maps?q=${encodeURIComponent(location)}&z=13&output=embed`
+  const openMap = (provider: string) => {
+    if (!selectedLocation) return
+    const encoded = encodeURIComponent(selectedLocation)
 
-  const getDirectionUrl = () => {
+    let url = ''
     switch (provider) {
       case 'apple':
-        return `https://maps.apple.com/?daddr=${encodeURIComponent(location)}`
+        url = `https://maps.apple.com/?daddr=${encoded}`
+        break
       case 'bing':
-        return `https://www.bing.com/maps?rtp=~adr.${encodeURIComponent(location)}`
+        url = `https://www.bing.com/maps?rtp=~adr.${encoded}`
+        break
+      case 'google':
       default:
-        return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location)}`
+        url = `https://www.google.com/maps/dir/?api=1&destination=${encoded}`
     }
-  }
 
-  const openDirections = () => {
-    window.open(getDirectionUrl(), '_blank')
+    window.open(url, '_blank')
+    setDialogOpen(false)
   }
 
   return (
-    <div>
-      <div className="w-full h-64 border rounded-md overflow-hidden">
-        <iframe
-          title="Club location map"
-          src={src}
-          width="100%"
-          height="100%"
-          loading="lazy"
-        />
-      </div>
-      <div className="w-full flex items-center space-x-2 mt-2">
-        <Select value={provider} onValueChange={setProvider}>
-          <SelectTrigger className="w-full flex-1">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="google">Google Maps</SelectItem>
-            <SelectItem value="apple">Apple Maps</SelectItem>
-            <SelectItem value="bing">Bing Maps</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button onClick={openDirections}>{t('getDirections')}</Button>
-      </div>
+    <div className="space-y-3 px-2 max-w-md mx-auto">
+      {locations.map((location, idx) => (
+        <Dialog
+          key={idx}
+          open={dialogOpen && selectedLocation === location}
+          onOpenChange={setDialogOpen}
+        >
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full text-left py-4 text-base sm:text-lg"
+              onClick={() => {
+                setSelectedLocation(location)
+                setDialogOpen(true)
+              }}
+            >
+              📍 {location.split(',')[0]}
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="space-y-2 w-[95vw] max-w-sm p-4 rounded-lg">
+            <p className="font-medium text-base sm:text-lg">{t('chooseMapApp') || 'Choose Map App'}</p>
+            <Button className="w-full py-3 text-base" onClick={() => openMap('google')}>Google Maps</Button>
+            <Button className="w-full py-3 text-base" onClick={() => openMap('apple')}>Apple Maps</Button>
+            <Button className="w-full py-3 text-base" onClick={() => openMap('bing')}>Bing Maps</Button>
+          </DialogContent>
+        </Dialog>
+      ))}
     </div>
   )
 }

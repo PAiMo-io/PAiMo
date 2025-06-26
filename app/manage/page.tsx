@@ -159,8 +159,8 @@ export default function ManagePage() {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map(u => (
-              <tr key={u.username} className="odd:bg-white even:bg-gray-50">
+            {filteredUsers.map((u, idx) => (
+              <tr key={idx} className="odd:bg-white even:bg-gray-50">
                 <td className="border p-2">{u.username}</td>
                 <td className="border p-2">
                   <Select
@@ -238,33 +238,33 @@ export default function ManagePage() {
             ))}
           </div>
         </div>
-        {pendingUsers.length > 0 &&(
-        <div>
-          <h2 className="text-lg font-semibold mt-4">{t('pendingSignups')}</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-xs sm:text-sm border">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="border p-2 text-left">{t('email')}</th>
-                  <th className="border p-2 text-left">{t('actions')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pendingUsers.map(p => (
-                  <tr key={p.id} className="odd:bg-white even:bg-gray-50">
-                    <td className="border p-2">{p.email}</td>
+        {pendingUsers.length > 0 && (
+          <div>
+            <h2 className="text-lg font-semibold mt-4">{t('pendingSignups')}</h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-xs sm:text-sm border">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border p-2 text-left">{t('email')}</th>
+                    <th className="border p-2 text-left">{t('actions')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pendingUsers.map(p => (
+                    <tr key={p.id} className="odd:bg-white even:bg-gray-50">
+                      <td className="border p-2">{p.email}</td>
                       <td className="border p-2 space-x-2">
                         <Button size="sm" onClick={() => handleResend(p.id)}>{t('resend')}</Button>
                         <Button size="sm" variant="destructive" onClick={() => handleRemove(p.id)}>
                           {t('remove')}
                         </Button>
                       </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
         )}
       </div>
     </div>
