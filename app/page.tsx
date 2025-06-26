@@ -55,11 +55,11 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center py-10 space-y-4">
         <h1 className="text-3xl font-bold pl-4 pr-4 text-center">{t('welcomeTitle')}</h1>
         <p className="text-center pl-4 pr-4">{t('welcomeSubtitle')}</p>
-        <div className="space-x-4">
-          <Button asChild>
+        <div className="space-x-4 flex">
+          <Button>
             <Link href="/login">{t('login')}</Link>
           </Button>
-          <Button variant="outline" asChild>
+          <Button variant="outline">
             <Link href="/signup">{t('signup')}</Link>
           </Button>
         </div>

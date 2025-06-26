@@ -188,7 +188,7 @@ export default function ManagePage() {
             placeholder={t('newClubName')}
             value={clubName}
             onChange={e => setClubName(e.target.value)}
-            className="flex-1"
+            className="flex-1 sm:min-w-[300px]"
           />
           <LocationAutocomplete
             placeholder={t('locationPlace')}
@@ -207,7 +207,7 @@ export default function ManagePage() {
               <SelectItem value="public">{t('public')}</SelectItem>
             </SelectContent>
           </Select>
-          <Button onClick={handleCreateClub}>{t('createClub')}</Button>
+          <Button onClick={handleCreateClub} className="flex-shrink-0">{t('createClub')}</Button>
         </div>
         <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
           <Input

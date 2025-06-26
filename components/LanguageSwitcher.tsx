@@ -22,7 +22,7 @@ export default function LanguageSwitcher() {
   return (
     <Select.Root value={i18n.language} onValueChange={handleLanguageChange}>
       <Select.Trigger
-        className="flex h-10 items-center gap-2 rounded-full border border-input bg-background px-3 hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex h-10 w-20 items-center gap-2 rounded-full border border-input bg-background px-3 hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         aria-label={t('selectLanguage')}
       >
         <Globe className="h-5 w-5" />

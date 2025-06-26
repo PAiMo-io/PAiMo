@@ -43,7 +43,7 @@ export default function AppBar() {
             <LanguageSwitcher />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost">
+                <Button variant="ghost" hapticEffect={false}>
                   <Menu />
                 </Button>
               </DropdownMenuTrigger>
