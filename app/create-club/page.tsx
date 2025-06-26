@@ -14,6 +14,7 @@ import {
 import { useApi } from '../../lib/useApi';
 import { useTranslation } from 'react-i18next';
 import PageSkeleton from '../../components/PageSkeleton';
+import LocationAutocomplete from '@/components/LocationAutocomplete';
 
 export default function CreateClubPage() {
   const { t } = useTranslation('common');
@@ -93,12 +94,12 @@ export default function CreateClubPage() {
 
         <div>
           <label className="block text-sm font-medium mb-2">{t('clubLocation')}</label>
-          <Input
+          <LocationAutocomplete
             value={clubLocation}
-            onChange={e => setClubLocation(e.target.value)}
-            className="w-full"
+            onChange={setClubLocation}
           />
         </div>
+
 
         <div>
           <label className="block text-sm font-medium mb-2">{t('clubVisibility')}</label>
@@ -141,4 +142,4 @@ export default function CreateClubPage() {
       </div>
     </div>
   );
-} 
+}
