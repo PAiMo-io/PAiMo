@@ -50,7 +50,7 @@ export default function LoginPage() {
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <Button className="w-full" onClick={handleEmailLogin}>{t('loginButton')}</Button>
         <Button className="w-full flex items-center justify-center gap-2" onClick={handleGoogle}>
-          <Image src="/google.svg" alt="Google" width={20} height={20} />
+          <Image src="/google-logo.svg" alt="Google" width={20} height={20} />
           {t('loginWithGoogle')}
         </Button>
         <p className="text-center text-sm text-muted-foreground">
