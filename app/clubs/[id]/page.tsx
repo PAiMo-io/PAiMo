@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Input } from '../../../components/ui/input';
+import LocationAutocomplete from '../../../components/LocationAutocomplete';
 import { Button } from '../../../components/ui/button';
 import ConfirmLeaveDialog from '../../../components/club/ConfirmLeaveDialog';
 import ClubMap from '../../../components/club/ClubMap';
@@ -172,11 +173,10 @@ export default function ClubHome({ params }: { params: { id: string } }) {
       )}
       {isAdmin && (
         <div className="space-x-2 mt-2 flex items-center">
-          <Input
+          <LocationAutocomplete
             placeholder="Club location"
             value={clubLocation}
-            onChange={e => setClubLocation(e.target.value)}
-            className="flex-1"
+            onChange={setClubLocation}
           />
           <Button onClick={updateLocation} disabled={savingLocation}>Save</Button>
         </div>
@@ -203,7 +203,8 @@ export default function ClubHome({ params }: { params: { id: string } }) {
                 value={newEventName}
                 onChange={e => setNewEventName(e.target.value)}
                 placeholder={t('eventTitle')}
-                className="w-full flex-1"
+
+                className="w-64 flex-1"
               />
               <Button onClick={createEvent}>{t('createEvent')}</Button>
             </div>
