@@ -19,17 +19,9 @@ export async function renderLocalizedEmailTemplate(
 
   const safeLang = getSafeLang(lang);
 
-  // const htmlPath = path.resolve(
-  //   process.cwd(),
-  //   `utils/templates/email/${templateName}.html`
-  // );
-  const htmlPath = path.resolve(
-    process.cwd(),
-    `public/__server__/templates`, 
-    `${templateName}.html`
-  );
-  const rawHtml = await fs.readFile(htmlPath, 'utf-8');
-  const compiledHtml = handlebars.compile(rawHtml);
+  const templateModule = await import(`./email/${templateName}.ts`);
+  const template = templateModule.template;
+  const compiledHtml = handlebars.compile(template);
 
   const i18nPath = path.resolve(
     process.cwd(),

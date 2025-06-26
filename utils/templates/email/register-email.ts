@@ -1,3 +1,4 @@
+export const template = `
 <!doctype html>
 <html lang="en">
   <head>
@@ -51,15 +52,16 @@
             <tr>
               <td align="center" style="padding: 0 20px">
                 <h2 style="color: #222; font-size: 24px">
-                  {{title}}
+                  {{subTitle}}
                 </h2>
                 <p style="font-size: 16px; line-height: 1.6; color: #333">
-                  {{intro}}
+                  {{{intro}}}
                 </p>
               </td>
             </tr>
             <tr>
               <td align="center" style="padding: 20px">
+                <!-- BUTTON USING TABLE -->
                 <table role="presentation" cellspacing="0" cellpadding="0">
                   <tr>
                     <td
@@ -67,7 +69,7 @@
                       style="border-radius: 6px; text-align: center"
                     >
                       <a
-                        href="{{appUrl}}/reset-password?token={{token}}&lang={{lang}}"
+                        href="{{verifyUrl}}"
                         target="_blank"
                         style="
                           display: inline-block;
@@ -78,7 +80,7 @@
                           border-radius: 6px;
                         "
                       >
-                        {{resetButton}}
+                        {{confirmButton}}
                       </a>
                     </td>
                   </tr>
@@ -94,10 +96,10 @@
                   style="word-break: break-all; font-size: 14px; color: #007bff"
                 >
                   <a
-                    href="{{appUrl}}/reset-password?token={{token}}&lang={{lang}}"
+                    href="{{verifyUrl}}"
                     style="color: #007bff; text-decoration: none"
                   >
-                    {{appUrl}}/reset-password?token={{token}}&lang={{lang}}
+                    {{verifyUrl}}
                   </a>
                 </p>
               </td>
@@ -107,8 +109,7 @@
                 align="center"
                 style="padding-top: 30px; font-size: 12px; color: #888"
               >
-                You’re receiving this because you requested a password reset for
-                PAiMO.<br />
+                You’re receiving this because you signed up for PAiMO.<br />
                 &copy; {{year}} PAiMO. All rights reserved.
               </td>
             </tr>
@@ -118,3 +119,4 @@
     </table>
   </body>
 </html>
+`;
