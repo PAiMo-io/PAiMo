@@ -168,7 +168,7 @@ export default function ClubHome({ params }: { params: { id: string } }) {
       {clubLocation && (
         <div>
           <h2 className="text-xl mb-2">Location Map</h2>
-          <ClubMap location={clubLocation} />
+          <ClubMap locations={[clubLocation]} />
         </div>
       )}
       {isAdmin && (

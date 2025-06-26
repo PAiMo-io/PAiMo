@@ -116,5 +116,7 @@
   "cancel": "取消",
   "searchUsers": "搜索用户",
   "signupTitle": "注册",
-  "signupWithGoogle": "使用 Google 注册"
+  "signupWithGoogle": "使用 Google 注册",
+  "chooseMapApp": "选择地图应用",
+  "leaveClub": "退出俱乐部"
 }
