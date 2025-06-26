@@ -33,6 +33,7 @@
   "invalidCredentials": "账号或密码错误",
   "loginButton": "登录",
   "loginWithGoogle": "使用 Google 登录",
+  "googleLoginSuggestion": "建议使用Google登录，之后可以在个人资料中修改密码。",
   "signupLink": "注册",
   "userTitle": "我的俱乐部",
   "noClubs": "你尚未加入任何俱乐部。",

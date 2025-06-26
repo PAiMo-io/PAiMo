@@ -33,6 +33,7 @@
     "invalidCredentials": "Sai thông tin đăng nhập",
     "loginButton": "Đăng nhập",
     "loginWithGoogle": "Đăng nhập bằng Google",
+    "googleLoginSuggestion": "Nên đăng nhập bằng Google. Sau khi đăng nhập có thể đổi mật khẩu trong trang cá nhân.",
     "signupLink": "Đăng ký",
     "userTitle": "Câu lạc bộ của tôi",
     "noClubs": "Bạn chưa tham gia câu lạc bộ nào.",

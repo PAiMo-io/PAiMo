@@ -33,6 +33,7 @@
     "invalidCredentials": "Credenciales inválidas",
     "loginButton": "Iniciar sesión",
     "loginWithGoogle": "Iniciar sesión con Google",
+    "googleLoginSuggestion": "Se recomienda iniciar sesión con Google. Luego puedes cambiar tu contraseña en tu perfil.",
     "signupLink": "Registrarse",
     "userTitle": "Mis Clubes",
     "noClubs": "No eres miembro de ningún club.",

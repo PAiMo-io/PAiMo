@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { useTranslation } from 'react-i18next';
@@ -48,7 +49,13 @@ export default function LoginPage() {
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <Button className="w-full" onClick={handleEmailLogin}>{t('loginButton')}</Button>
-        <Button className="w-full" onClick={handleGoogle}>{t('loginWithGoogle')}</Button>
+        <Button className="w-full flex items-center justify-center gap-2" onClick={handleGoogle}>
+          <Image src="/google.svg" alt="Google" width={20} height={20} />
+          {t('loginWithGoogle')}
+        </Button>
+        <p className="text-center text-sm text-muted-foreground">
+          {t('googleLoginSuggestion')}
+        </p>
         <Button variant="outline" className="w-full" asChild>
           <Link href="/signup">{t('signupLink')}</Link>
         </Button>
