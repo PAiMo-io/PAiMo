@@ -59,21 +59,30 @@ export default function LocationAutocomplete({ value, onChange, placeholder }: P
         }}
         onFocus={() => query && suggestions.length > 0 && setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 100)}
-        className="w-full flex-1"
+        className="w-full"
       />
       {open && suggestions.length > 0 && (
-        <div className="absolute z-10 w-full bg-white border rounded shadow max-h-60 overflow-y-auto">
+        <div className="absolute z-20 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto animate-fade-in">
           {suggestions.map((s, idx) => (
             <div
               key={idx}
               onMouseDown={() => handleSelect(s)}
-              className="px-2 py-1 cursor-pointer hover:bg-gray-100"
+              className="px-4 py-2 cursor-pointer transition-colors duration-150 hover:bg-blue-50 hover:text-blue-700 text-gray-800 text-sm first:rounded-t-lg last:rounded-b-lg"
             >
-              {s}
+              <span className="truncate block">{s}</span>
             </div>
           ))}
         </div>
       )}
+      <style jsx global>{`
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(-4px);}
+          to { opacity: 1; transform: translateY(0);}
+        }
+        .animate-fade-in {
+          animation: fade-in 0.15s ease;
+        }
+      `}</style>
     </div>
   )
 }
