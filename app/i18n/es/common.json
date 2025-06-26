@@ -127,6 +127,7 @@
     "setNewPassword": "Establecer nueva contraseña",
     "newPassword": "Nueva contraseña",
     "pendingSignups": "Registros pendientes",
-    "resend": "Reenviar"
+    "resend": "Reenviar",
+    "resetEmailFailed": "No se pudo enviar el correo electrónico de restablecimiento de contraseña"
   }
   
