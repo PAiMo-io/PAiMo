@@ -125,5 +125,6 @@
   "setNewPassword": "Set New Password",
   "newPassword": "New Password",
   "pendingSignups": "Pending Signups",
-  "resend": "Resend"
+  "resend": "Resend",
+  "resetEmailFailed": "Failed to send reset email"
 }

@@ -125,6 +125,7 @@
     "setNewPassword": "Đặt mật khẩu mới",
     "newPassword": "Mật khẩu mới",
     "pendingSignups": "Đăng ký chờ xác nhận",
-    "resend": "Gửi lại"
+    "resend": "Gửi lại",
+    "resetEmailFailed": "Không thể gửi email đặt lại mật khẩu"
   }
   
