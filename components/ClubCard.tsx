@@ -44,12 +44,12 @@ export default function ClubCard({ club, children }: ClubCardProps) {
               {t('created', { time: dayjs(club.createdAt).format('YYYY-MM-DD HH:mm') })}
             </p>
           )}
+          {club.eventsCount !== undefined && (
+            <p className="text-sm text-muted-foreground">
+              {t('eventsCount', { count: club.eventsCount })}
+            </p>
+          )}
         </div>
-        {club.eventsCount !== undefined && (
-          <p className="text-sm text-muted-foreground">
-            {t('eventsCount', { count: club.eventsCount })}
-          </p>
-        )}
       </div>
       {children}
     </div>
