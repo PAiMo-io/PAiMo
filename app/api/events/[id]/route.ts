@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../../auth';
 import connect from '../../../../utils/mongoose';
 import Event from '../../../../models/Event';
+import { GAME_STYLE_VALUES } from '../../../../types/gameStyle';
 
 export async function GET(
   request: Request,
@@ -28,11 +29,11 @@ export async function GET(
       status: event.status,
       visibility: event.visibility,
       registrationEndTime: event.registrationEndTime,
-      location: event.location,
+      playDate: event.playDate,
+      gymInfo: event.gymInfo,
       gameStyle: event.gameStyle,
       maxPoint: event.maxPoint,
       courtCount: event.courtCount,
-      umpires: event.umpires,
       club: event.club?._id ? event.club._id.toString() : null,
       clubName: event.club?.name || null,
       createdAt: event.createdAt,
@@ -89,11 +90,11 @@ export async function PUT(
     status,
     visibility,
     registrationEndTime,
-    location,
+    playDate,
+    gymInfo,
     gameStyle,
     maxPoint,
     courtCount,
-    umpires,
   } = await request.json();
   await connect();
   const update: any = {};
@@ -101,11 +102,21 @@ export async function PUT(
   if (status !== undefined) update.status = status;
   if (visibility !== undefined) update.visibility = visibility;
   if (registrationEndTime !== undefined) update.registrationEndTime = registrationEndTime;
-  if (location !== undefined) update.location = location;
-  if (gameStyle !== undefined) update.gameStyle = gameStyle;
+  if (playDate !== undefined) update.playDate = playDate;
+  if (gymInfo !== undefined) update.gymInfo = gymInfo;
+  if (gameStyle !== undefined) {
+    // Validate gameStyle enum values
+    if (gameStyle === '' || GAME_STYLE_VALUES.includes(gameStyle)) {
+      update.gameStyle = gameStyle;
+    } else {
+      return NextResponse.json(
+        { success: false, error: `Invalid gameStyle value. Must be one of: ${GAME_STYLE_VALUES.join(', ')}` },
+        { status: 400 }
+      );
+    }
+  }
   if (maxPoint !== undefined) update.maxPoint = maxPoint;
   if (courtCount !== undefined) update.courtCount = courtCount;
-  if (umpires !== undefined) update.umpires = umpires;
   await Event.updateOne({ _id: params.id }, update);
   return NextResponse.json({ success: true });
 }

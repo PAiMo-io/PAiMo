@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { GAME_STYLE_VALUES } from '../types/gameStyle';
 const { Schema, model, models } = mongoose;
 
 const eventSchema = new Schema(
@@ -17,11 +18,14 @@ const eventSchema = new Schema(
       default: 'private',
     },
     registrationEndTime: { type: Date, required: false },
-    location: { type: String },
-    gameStyle: { type: String },
+    playDate: { type: Date, required: false },
+    gymInfo: { type: String },
+    gameStyle: {
+      type: String,
+      enum: GAME_STYLE_VALUES,
+    },
     maxPoint: { type: Number },
     courtCount: { type: Number },
-    umpires: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   },
   { timestamps: true },
 );

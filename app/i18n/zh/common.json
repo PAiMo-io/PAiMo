@@ -130,5 +130,9 @@
   "resend": "重发",
   "resetEmailFailed": "发送重置密码邮件失败",
   "chooseMapApp": "选择地图应用",
-  "leaveClub": "退出俱乐部"
+  "leaveClub": "退出俱乐部",
+  "freeStyle": "自由打",
+  "randomMatching": "多人转",
+  "eventPlayDate": "活动日期",
+  "gymInfo": "球馆信息"
 }

@@ -130,6 +130,10 @@
     "resend": "Reenviar",
     "resetEmailFailed": "No se pudo enviar el correo electrónico de restablecimiento de contraseña",
     "chooseMapApp": "Elige la aplicación de mapas",
-    "leaveClub": "¿Salir del club?"
+    "leaveClub": "¿Salir del club?",
+    "freeStyle": "Estilo libre",
+    "randomMatching": "Emparejamiento aleatorio",
+    "eventPlayDate": "Fecha de juego del evento",
+    "gymInfo": "Información del gimnasio"
   }
   

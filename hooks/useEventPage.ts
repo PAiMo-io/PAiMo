@@ -66,7 +66,7 @@ export function useEventPage(eventId: string) {
         if (!session) { router.push('/login'); return; }
         fetchEvent();
         fetchMatches();
-    }, [status, session, fetchEvent, router, fetchMatches]);
+    }, [status, session, router]); // Remove fetchEvent and fetchMatches dependencies to prevent loop
 
     // All your action functions:
     const joinEvent = async () => { await request({ url: `/api/events/${eventId}`, method: 'post' }); fetchEvent() };
@@ -100,7 +100,8 @@ export function useEventPage(eventId: string) {
             method: 'put',
             data: info,
         });
-        fetchEvent();
+        // Don't refetch - the form already has the updated data
+        // This prevents the infinite loop
     };
     const nextStep = async () => {
         const idx = steps.indexOf(event.status);

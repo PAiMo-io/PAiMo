@@ -131,6 +131,10 @@
   "newPassword": "New Password",
   "pendingSignups": "Pending Signups",
   "resend": "Resend",
-  "resetEmailFailed": "Failed to send reset email"
+  "resetEmailFailed": "Failed to send reset email",
+  "freeStyle": "Free Style",
+  "randomMatching": "Random Matching",
+  "eventPlayDate": "Event Play Date",
+  "gymInfo": "Gym Information"
 }
   

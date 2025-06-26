@@ -54,11 +54,6 @@ export default function AppBar() {
                 <DropdownMenuItem onSelect={() => router.push('/myclub')}>
                   {t('nav.myClubs')}
                 </DropdownMenuItem>
-                {(session.user?.role === 'super-admin' || session.user?.role === 'admin') && (
-                  <DropdownMenuItem onSelect={() => router.push('/event-edit')}>
-                    {t('nav.eventEdit')}
-                  </DropdownMenuItem>
-                )}
                 {session.user?.role === 'super-admin' && (
                   <DropdownMenuItem onSelect={() => router.push('/manage')}>
                     {t('nav.manage')}
