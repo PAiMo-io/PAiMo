@@ -1,3 +1,4 @@
+export const template = `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -60,3 +61,4 @@
     </table>
   </body>
 </html>
+`;
