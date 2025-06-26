@@ -117,6 +117,18 @@
   "searchUsers": "搜索用户",
   "signupTitle": "注册",
   "signupWithGoogle": "使用 Google 注册",
+  "forgotPassword": "忘记密码？",
+  "sendResetEmail": "发送重置密码邮件",
+  "passwordResetEmailSent": "密码重置邮件已发送",
+  "failedToSendResetEmail": "发送密码重置邮件失败",
+  "resetPassword": "重置密码",
+  "signupSent": "验证邮件已发送",
+  "confirmPasswordPlaceholder": "确认密码",
+  "setNewPassword": "设置新密码",
+  "newPassword": "新密码",
+  "pendingSignups": "待验证注册",
+  "resend": "重发",
+  "resetEmailFailed": "发送重置密码邮件失败",
   "chooseMapApp": "选择地图应用",
   "leaveClub": "退出俱乐部"
 }

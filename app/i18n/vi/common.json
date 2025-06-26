@@ -117,6 +117,18 @@
     "searchUsers": "Tìm kiếm người dùng",
     "signupTitle": "Đăng ký",
     "signupWithGoogle": "Đăng ký bằng Google",
+    "forgotPassword": "Quên mật khẩu?",
+    "sendResetEmail": "Gửi email đặt lại mật khẩu",
+    "passwordResetEmailSent": "Email đặt lại mật khẩu đã được gửi",
+    "failedToSendResetEmail": "Không thể gửi email đặt lại mật khẩu",
+    "resetPassword": "Đặt lại mật khẩu",
+    "signupSent": "Đăng ký đã gửi",
+    "confirmPasswordPlaceholder": "Xác nhận mật khẩu",
+    "setNewPassword": "Đặt mật khẩu mới",
+    "newPassword": "Mật khẩu mới",
+    "pendingSignups": "Đăng ký chờ xác nhận",
+    "resend": "Gửi lại",
+    "resetEmailFailed": "Không thể gửi email đặt lại mật khẩu",
     "chooseMapApp": "Chọn ứng dụng bản đồ",
     "leaveClub": "Rời khỏi câu lạc bộ"
   }

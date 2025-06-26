@@ -34,7 +34,7 @@ interface ClubOption {
 }
 
 export default function ManagePage() {
-  const { t } = useTranslation('common')
+  const { t, i18n } = useTranslation('common')
   const router = useRouter();
   const { data: session, status } = useSession();
   const { request, loading, error } = useApi();
@@ -105,7 +105,7 @@ export default function ManagePage() {
   };
 
   const handleResend = async (id: string) => {
-    await request({ url: `/api/pending-users/${id}/resend`, method: 'post' });
+    await request({ url: `/api/pending-users/${id}/resend`, method: 'post', data: { lang: i18n.language } });
   };
 
 

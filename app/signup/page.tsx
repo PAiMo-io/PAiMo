@@ -16,7 +16,7 @@ export default function SignupPage() {
   const [emailError, setEmailError] = useState('');
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
 
   const handleEmailBlur = async () => {
     const valid = /\S+@\S+\.\S+/.test(email);
@@ -45,7 +45,7 @@ export default function SignupPage() {
       await request({
         url: '/api/register',
         method: 'post',
-        data: { email },
+        data: { email, lang: i18n.language },
       });
       setSent(true);
     } catch {

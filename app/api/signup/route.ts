@@ -8,8 +8,8 @@ import { uploadAvatar } from '../../../lib/r2';
 
 export async function POST(request: Request) {
   try {
-    const { email, username, gender, nickname, wechatId, password } = await request.json()
-
+    const { email, username, gender, nickname, wechatId, password, lang } = await request.json()
+  
     if (!email) {
       return NextResponse.json(
         { success: false, message: 'Email is required' },
@@ -19,7 +19,8 @@ export async function POST(request: Request) {
 
     await connect()
 
-    const update: any = { username, gender, nickname, wechatId }
+    const update: any = { username, gender, nickname, wechatId, lang }
+
     if (password) {
       const hashed = await bcrypt.hash(password, 10)
       update.password = hashed
@@ -43,10 +44,10 @@ export async function POST(request: Request) {
       )
       const key = `avatars/${user._id}.svg`
       const url = await uploadAvatar(key, Buffer.from(svg), 'image/svg+xml')
+
       user.image = url
       await user.save()
     }
-
     return NextResponse.json({ success: true, user })
   } catch (err: any) {
     console.error('Failed to upsert user:', err)
