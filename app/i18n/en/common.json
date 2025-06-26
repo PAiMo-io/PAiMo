@@ -153,8 +153,6 @@
   "enterScore": "Enter Score",
   "rematch": "Rematch",
   "saving": "Saving...",
-  "save": "Save",
-  "participants": "Participants",
   "matches": "Matches",
   "wins": "Wins",
   "losses": "Losses",
@@ -162,6 +160,7 @@
   "totalScore": "Total Score",
   "scoreMargin": "Score Margin",
   "avgScore": "Avg Score",
-  "noMatchesPlayed": "No matches played"
+  "noMatchesPlayed": "No matches played",
+  "emailRequired": "Email is required"
 }
   

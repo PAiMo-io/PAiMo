@@ -134,5 +134,6 @@
   "freeStyle": "自由打",
   "randomMatching": "多人转",
   "eventPlayDate": "活动日期",
-  "gymInfo": "球馆信息"
+  "gymInfo": "球馆信息",
+  "emailRequired": "请输入邮箱"
 }
