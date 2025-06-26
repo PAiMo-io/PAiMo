@@ -43,7 +43,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : 'button'
 
     const handleClick = (event: React.MouseEvent) => {
-      const { onClick } = props 
+      const { onClick } = props;
+
+      event.stopPropagation();
+      
       if (hapticEffect) {
         if ('vibrate' in navigator) {
           navigator.vibrate(100); 
@@ -67,13 +70,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             scale: 0.95, 
           } : {}}
           className={cn(buttonVariants({ variant, size, className }))}
-          onClick={handleClick}
         >
           <Comp
             ref={ref}
             {...props}
             className="w-full h-full"
             disabled={disabled}
+            onClick={handleClick}
           />
         </motion.div>
       )
