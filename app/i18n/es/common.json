@@ -117,6 +117,7 @@
     "searchUsers": "Buscar usuarios",
     "signupTitle": "Registrarse",
     "signupWithGoogle": "Regístrate con Google",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta? Inicia sesión",
     "forgotPassword": "¿Olvidaste tu contraseña?",
     "sendResetEmail": "Enviar correo electrónico de restablecimiento de contraseña",
     "passwordResetEmailSent": "Correo electrónico de restablecimiento de contraseña enviado",
@@ -134,6 +135,20 @@
     "freeStyle": "Estilo libre",
     "randomMatching": "Emparejamiento aleatorio",
     "eventPlayDate": "Fecha de juego del evento",
-    "gymInfo": "Información del gimnasio"
+    "gymInfo": "Información del gimnasio",
+    "clubNameRequired": "El nombre del club es obligatorio",
+    "clubCreated": "Club creado exitosamente!",
+    "failedToCreateClub": "Error al crear el club",
+    "creating": "Creando...",
+    "clubName": "Nombre del club",
+    "clubLocation": "Ubicación",
+    "clubDescription": "Descripción",
+    "clubVisibility": "Visibilidad",
+    "noClubsAvailable": "No hay clubes disponibles",
+    "create": "Crear",
+    "male": "Hombre",
+    "female": "Mujer",
+    "genderStats": "Hombres: {{maleCount}}, Mujeres: {{femaleCount}}",
+    "eventsCount": "Eventos: {{count}}"
   }
   

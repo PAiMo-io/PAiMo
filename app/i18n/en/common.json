@@ -36,6 +36,7 @@
   "googleLoginSuggestion": "We recommend using Google login. You can change your password later in your profile.",
   "signupLink": "Sign Up",
   "userTitle": "My Clubs",
+  "noClubs": "You are not a member of any clubs.",
   "host": "Host: {{club}}",
   "status": "Status: {{status}}",
   "registerBy": "Register by: {{time}}",
@@ -94,7 +95,6 @@
   "admin": "Admin",
   "member": "Member",
   "clubDirectory": "Club Directory",
-  "noClubs": "You are not a member of any clubs.",
   "myClubs": "My Clubs",
   "clubsDirectory": "Clubs Directory",
   "createdBy": "Created by: {{createdBy}}",
@@ -135,6 +135,20 @@
   "freeStyle": "Free Style",
   "randomMatching": "Random Matching",
   "eventPlayDate": "Event Play Date",
-  "gymInfo": "Gym Information"
+  "gymInfo": "Gym Information",
+  "clubNameRequired": "Club name is required",
+  "clubCreated": "Club created successfully!",
+  "failedToCreateClub": "Failed to create club",
+  "creating": "Creating...",
+  "clubName": "Club Name",
+  "clubLocation": "Location",
+  "clubDescription": "Description",
+  "clubVisibility": "Visibility",
+  "noClubsAvailable": "No clubs available",
+  "create": "Create",
+  "male": "Male",
+  "female": "Female",
+  "genderStats": "Male: {{maleCount}}, Female: {{femaleCount}}",
+  "eventsCount": "Events: {{count}}"
 }
   

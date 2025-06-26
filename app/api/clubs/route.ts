@@ -23,8 +23,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
-  if (!session || session.user?.role !== 'super-admin') {
-    return NextResponse.json({ success: false }, { status: 403 });
+  if (!session || !session.user?.id) {
+    return NextResponse.json({ success: false }, { status: 401 });
   }
   const { name, description, location, logoUrl, visibility } = await request.json();
   await connect();
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     location,
     logoUrl,
     visibility: visibility === 'public' ? 'public' : 'private',
-    createdBy: nickname,
+    createdBy: user?.nickname || user?.username,
     createdAt: new Date(),
     members: [{ id: user._id, username: user?.username || user?.email || 'unknown' }],
   });

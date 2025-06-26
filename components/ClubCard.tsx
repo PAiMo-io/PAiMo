@@ -11,6 +11,7 @@ export interface ClubCardProps {
     createdBy?: string
     createdAt?: string
     logoUrl?: string
+    eventsCount?: number
   }
   children?: React.ReactNode
 }
@@ -44,6 +45,11 @@ export default function ClubCard({ club, children }: ClubCardProps) {
             </p>
           )}
         </div>
+        {club.eventsCount !== undefined && (
+          <p className="text-sm text-muted-foreground">
+            {t('eventsCount', { count: club.eventsCount })}
+          </p>
+        )}
       </div>
       {children}
     </div>

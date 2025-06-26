@@ -60,7 +60,10 @@ export default function MyClubPage() {
     <div className="p-4 space-y-2">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl">{t('myClubs')}</h1>
-        <Link href="/clubs" className="text-sm underline">{t('clubDirectory')}</Link>
+        <div className="flex items-center space-x-2">
+          <Link href="/create-club" className="text-sm underline">{t('createClub')}</Link>
+          <Link href="/clubs" className="text-sm underline">{t('clubDirectory')}</Link>
+        </div>
       </div>
       {clubs.length === 0 ? (
         <p>{t('noClubs')}</p>
