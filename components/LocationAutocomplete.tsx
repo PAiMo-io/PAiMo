@@ -49,7 +49,7 @@ export default function LocationAutocomplete({ value, onChange, placeholder }: P
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Input
         placeholder={placeholder}
         value={query}
@@ -61,7 +61,7 @@ export default function LocationAutocomplete({ value, onChange, placeholder }: P
         }}
         onFocus={() => query && suggestions.length > 0 && setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 100)}
-        className="flex-1"
+        className="w-full flex-1"
       />
       {open && suggestions.length > 0 && (
         <div className="absolute z-10 w-full bg-white border rounded shadow max-h-60 overflow-y-auto">
