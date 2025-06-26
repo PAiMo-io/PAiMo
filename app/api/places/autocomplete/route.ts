@@ -6,7 +6,7 @@ export async function GET(request: Request) {
   if (!input) {
     return NextResponse.json({ predictions: [] });
   }
-  const key = process.env.GOOGLE_MAPS_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const key = process.env.GOOGLE_MAPS_API_KEY || process.env.GOOGLE_MAPS_API_KEY;
   if (!key) {
     console.error('Google Maps API key not configured');
     return NextResponse.json({ predictions: [] }, { status: 500 });
