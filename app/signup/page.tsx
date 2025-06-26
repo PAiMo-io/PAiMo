@@ -71,7 +71,13 @@ export default function SignupPage() {
             onBlur={handleEmailBlur}
           />
           {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
-          <Button className="bg-white text-black w-full" onClick={handleSubmit}>{t('signupButton')}</Button>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleSubmit}
+          >
+            {t('signupButton')}
+          </Button>
           <Button className="black w-full flex items-center justify-center gap-2" onClick={handleGoogle}>
             <Image src="/google-logo.svg" alt="Google" width={20} height={20} />
             {t('signupWithGoogle')}
