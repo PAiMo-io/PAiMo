@@ -6,6 +6,7 @@ import PendingUser from '@/models/PendingUser';
 import { Resend } from 'resend';
 import { renderLocalizedEmailTemplate } from '@/utils/templates/renderEmailTemplates';
 
+
 export async function POST(
   request: Request,
   { params }: { params: { id: string } }
