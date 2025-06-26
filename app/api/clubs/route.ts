@@ -29,16 +29,16 @@ export async function POST(request: Request) {
   const { name, description, location, logoUrl, visibility } = await request.json();
   await connect();
   const user = await User.findById(session.user.id);
-  const username = user?.username || user?.email || 'unknown';
+  const nickname = user?.nickname || 'unknown';
   const club = await Club.create({
     name,
     description,
     location,
     logoUrl,
     visibility: visibility === 'public' ? 'public' : 'private',
-    createdBy: user?.email || '',
+    createdBy: nickname,
     createdAt: new Date(),
-    members: [{ id: user._id, username }],
+    members: [{ id: user._id, username: user?.username || user?.email || 'unknown' }],
   });
   // also store the club reference on user for convenience
   if (user) {
