@@ -1,65 +1,73 @@
-"use client"
+'use client'
 
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import { useTranslation } from 'react-i18next'
 import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from '../ui/select'
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+} from '../ui/dialog'
 
 interface ClubMapProps {
-  location: string
+  locations: string[] // multiple addresses
 }
 
-export default function ClubMap({ location }: ClubMapProps) {
+export default function ClubMap({ locations }: ClubMapProps) {
   const { t } = useTranslation('common')
-  const [provider, setProvider] = useState('google')
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
 
-  const src = `https://maps.google.com/maps?q=${encodeURIComponent(location)}&z=13&output=embed`
+  const openNativeMap = () => {
+    if (!selectedLocation) return
 
-  const getDirectionUrl = () => {
-    switch (provider) {
-      case 'apple':
-        return `https://maps.apple.com/?daddr=${encodeURIComponent(location)}`
-      case 'bing':
-        return `https://www.bing.com/maps?rtp=~adr.${encodeURIComponent(location)}`
-      default:
-        return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location)}`
+    const encoded = encodeURIComponent(selectedLocation)
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+    const isAndroid = /Android/i.test(navigator.userAgent)
+
+    let url = ''
+
+    if (isIOS) {
+      url = `http://maps.apple.com/?daddr=${encoded}`
+    } else if (isAndroid) {
+      url = `geo:0,0?q=${encoded}`
+    } else {
+      // Fallback for desktop
+      url = `https://www.google.com/maps/dir/?api=1&destination=${encoded}`
     }
-  }
 
-  const openDirections = () => {
-    window.open(getDirectionUrl(), '_blank')
+    window.location.href = url
+    setDialogOpen(false)
   }
 
   return (
-    <div>
-      <div className="w-full h-64 border rounded-md overflow-hidden">
-        <iframe
-          title="Club location map"
-          src={src}
-          width="100%"
-          height="100%"
-          loading="lazy"
-        />
-      </div>
-      <div className="w-full flex items-center space-x-2 mt-2">
-        <Select value={provider} onValueChange={setProvider}>
-          <SelectTrigger className="w-full flex-1">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="google">Google Maps</SelectItem>
-            <SelectItem value="apple">Apple Maps</SelectItem>
-            <SelectItem value="bing">Bing Maps</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button onClick={openDirections}>{t('getDirections')}</Button>
-      </div>
+    <div className="space-y-3">
+      {locations.map((location, idx) => (
+        <Dialog
+          key={idx}
+          open={dialogOpen && selectedLocation === location}
+          onOpenChange={setDialogOpen}
+        >
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full text-left"
+              onClick={() => {
+                setSelectedLocation(location)
+                setDialogOpen(true)
+              }}
+            >
+              📍 {location}
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="space-y-2">
+            <p className="font-medium">{t('chooseMapApp') || 'Open in Maps'}</p>
+            <Button onClick={openNativeMap}>
+              {t('openNavigation') || 'Open Navigation'}
+            </Button>
+          </DialogContent>
+        </Dialog>
+      ))}
     </div>
   )
 }
