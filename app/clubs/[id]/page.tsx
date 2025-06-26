@@ -18,6 +18,8 @@ import { useTranslation } from 'react-i18next'
 interface Member {
   id: string;
   username: string;
+  nickname?: string;
+  gender?: string;
   image?: string | null;
 }
 
@@ -164,6 +166,7 @@ export default function ClubHome({ params }: { params: { id: string } }) {
           createdBy: clubCreatedBy,
           createdAt: clubCreatedAt,
           logoUrl: clubLogo,
+          eventsCount: events.length,
         }}
       />
       {clubLocation && (
@@ -213,7 +216,16 @@ export default function ClubHome({ params }: { params: { id: string } }) {
         </div>
       )}
       <div>
-        <h2 className="text-xl mb-2">{t('membersJoined')}</h2>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-xl">{t('membersJoined')} ({members.length})</h2>
+          <div className="text-sm text-gray-600">
+            {(() => {
+              const maleCount = members.filter(m => m.gender === 'male' || m.gender === 'Male').length;
+              const femaleCount = members.filter(m => m.gender === 'female' || m.gender === 'Female').length;
+              return t('genderStats', { maleCount, femaleCount });
+            })()}
+          </div>
+        </div>
         <div className="space-y-1">
           {members?.map(m => (
             <UserCard key={m.id} user={m} />

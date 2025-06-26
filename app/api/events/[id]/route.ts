@@ -11,7 +11,7 @@ export async function GET(
 ) {
   await connect();
   const event: any = await Event.findById(params.id)
-    .populate('participants', 'username image')
+    .populate('participants', 'username nickname image')
     .populate('club', 'name')
     .lean();
   if (!event) {
@@ -20,6 +20,7 @@ export async function GET(
   const participants = (event.participants || []).map((p: any) => ({
     id: p._id.toString(),
     username: p.username,
+    nickname: p.nickname,
     image: p.image || null,
   }));
   return NextResponse.json({
