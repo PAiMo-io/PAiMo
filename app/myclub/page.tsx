@@ -68,20 +68,21 @@ export default function MyClubPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {clubs.map(c => (
             <div key={c.id} className="space-y-1">
-              <ClubCard club={c}>
-                <div className="flex justify-end">
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => {
-                      setLeaveId(c.id)
-                      setShowLeave(true)
-                    }}
-                  >
-                    {t('leave')}
-                  </Button>
-                </div>
-              </ClubCard>
+              <Link href={`/clubs/${c.id}`} className="block">
+                <ClubCard club={c} />
+              </Link>
+              <div className="flex justify-end mt-1">
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => {
+                    setLeaveId(c.id)
+                    setShowLeave(true)
+                  }}
+                >
+                  {t('leave')}
+                </Button>
+              </div>
             </div>
           ))}
         </div>
