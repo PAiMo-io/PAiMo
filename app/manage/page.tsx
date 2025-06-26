@@ -12,6 +12,7 @@ import {
   SelectItem,
 } from '../../components/ui/select';
 import { Input } from '../../components/ui/input';
+import LocationAutocomplete from '../../components/LocationAutocomplete';
 import { Button } from '../../components/ui/button';
 import ClubCard from '../../components/ClubCard';
 import Link from 'next/link';
@@ -189,11 +190,10 @@ export default function ManagePage() {
             onChange={e => setClubName(e.target.value)}
             className="flex-1"
           />
-          <Input
+          <LocationAutocomplete
             placeholder={t('locationPlace')}
             value={clubLocation}
-            onChange={e => setClubLocation(e.target.value)}
-            className="flex-1"
+            onChange={setClubLocation}
           />
           <Select
             value={clubVisibility}
