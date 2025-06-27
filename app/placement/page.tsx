@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 
 function PlacementClient() {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
   const { request, loading, error } = useApi()
   const [parts, setParts] = useState<any[]>([])
   const [answers, setAnswers] = useState<Record<string,string>>({})
@@ -47,6 +47,7 @@ function PlacementClient() {
     const level = calculateLevel()
     try {
       await request({ url: '/api/placement', method: 'post', data: { level } })
+      await update()
       router.push('/')
     } catch {
       // ignore

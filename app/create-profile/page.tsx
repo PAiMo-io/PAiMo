@@ -118,49 +118,84 @@ function CreateProfileClient() {
     <div className="mx-auto max-w-xs py-8">
       <h1 className="text-2xl font-semibold mb-4">{t('profileTitle')}</h1>
       <div className="space-y-4">
-        <Input
-          placeholder={t('usernamePlaceholder')}
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-        />
-        <Input
-          placeholder={t('nicknamePlaceholder')}
-          value={nickname}
-          onChange={e => setNickname(e.target.value)}
-        />
-        <Select value={gender} onValueChange={setGender}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder={t('genderPlaceholder')} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Male">{t('genderMale')}</SelectItem>
-            <SelectItem value="Female">{t('genderFemale')}</SelectItem>
-          </SelectContent>
-        </Select>
-        <Input
-          placeholder={t('wechatPlaceholder')}
-          value={wechatId}
-          onChange={e => setWechatId(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder={t("passwordPlaceholder")}
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder={t("confirmPasswordPlaceholder")}
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
-          onBlur={() => {
-            if (confirmPassword && password !== confirmPassword) {
-              setConfirmPasswordError('Passwords do not match');
-            } else {
-              setConfirmPasswordError('');
-            }
-          }}
-        />
+        <div>
+          <Label htmlFor="username" className="block">
+            {t('username')}
+          </Label>
+          <Input
+            id="username"
+            placeholder={t('usernamePlaceholder')}
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="nickname" className="block">
+            {t('nicknamePlaceholder')}
+          </Label>
+          <Input
+            id="nickname"
+            placeholder={t('nicknamePlaceholder')}
+            value={nickname}
+            onChange={e => setNickname(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="gender" className="block">
+            {t('genderPlaceholder')}
+          </Label>
+          <Select value={gender} onValueChange={setGender}>
+            <SelectTrigger id="gender" className="w-full">
+              <SelectValue placeholder={t('genderPlaceholder')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Male">{t('genderMale')}</SelectItem>
+              <SelectItem value="Female">{t('genderFemale')}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="wechat" className="block">
+            {t('wechatPlaceholder')}
+          </Label>
+          <Input
+            id="wechat"
+            placeholder={t('wechatPlaceholder')}
+            value={wechatId}
+            onChange={e => setWechatId(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="password" className="block">
+            {t('passwordPlaceholder')}
+          </Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder={t('passwordPlaceholder')}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="confirmPassword" className="block">
+            {t('confirmPasswordPlaceholder')}
+          </Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            placeholder={t('confirmPasswordPlaceholder')}
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+            onBlur={() => {
+              if (confirmPassword && password !== confirmPassword) {
+                setConfirmPasswordError('Passwords do not match');
+              } else {
+                setConfirmPasswordError('');
+              }
+            }}
+          />
+        </div>
         {confirmPasswordError && <p className="text-red-500 text-sm">{confirmPasswordError}</p>}
         {error && <p className="text-red-500 text-sm">{error}</p>}
       <Button className="w-full" onClick={handleSubmit}>
