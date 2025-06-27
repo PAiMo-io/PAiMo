@@ -19,6 +19,14 @@ import { useTranslation } from 'react-i18next';
 
 
 import { Suspense } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from '../../components/ui/dialog';
 import { SUPPORTED_LANGUAGES, SupportedLanguage } from '../constants/i18n';
 
 function CreateProfileClient() {
@@ -37,6 +45,10 @@ function CreateProfileClient() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [showPlacement, setShowPlacement] = useState(false);
+  const [experience, setExperience] = useState('');
+  const [frequency, setFrequency] = useState('');
+  const [jumpSmash, setJumpSmash] = useState('');
   const { t, i18n } = useTranslation('common');
 
   const effectiveEmail = session?.user?.email || queryEmail;
@@ -81,19 +93,30 @@ function CreateProfileClient() {
       setError(confirmPasswordError);
       return;
     }
+    setShowPlacement(true);
+  };
+
+  const calculateLevel = () => {
+    let score = 0;
+    score += experience === 'less' ? 1 : experience === 'mid' ? 3 : 5;
+    score += frequency === 'rarely' ? 1 : frequency === 'sometimes' ? 2 : 3;
+    score += jumpSmash === 'yes' ? 2 : 0;
+    return score;
+  };
+
+  const handlePlacementSubmit = async () => {
+    const level = calculateLevel();
     try {
       await request({
         url: '/api/signup',
         method: 'post',
-        data: { email, username, gender, nickname, wechatId, password, lang: i18n.language },
+        data: { email, username, gender, nickname, wechatId, password, level, lang: i18n.language },
       });
-      // login after signup using NextAuth credentials provider
       const res = await signIn('credentials', {
         redirect: false,
         email,
-        password
+        password,
       });
-      console.log('Login error:', res);
       if (res?.error) {
         setError('Login failed. Please try again.');
         console.error('Login error:', res.error);
@@ -163,14 +186,58 @@ function CreateProfileClient() {
         />
         {confirmPasswordError && <p className="text-red-500 text-sm">{confirmPasswordError}</p>}
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        <Button className="w-full" onClick={handleSubmit}>
-          {t('saveProfile')}
-        </Button>
-        <Button variant="outline" className="w-full">
-          <Link href="/login" className="block w-full h-full">{t('backToLogin')}</Link>
-        </Button>
-      </div>
+      <Button className="w-full" onClick={handleSubmit}>
+        {t('saveProfile')}
+      </Button>
+      <Button variant="outline" className="w-full">
+        <Link href="/login" className="block w-full h-full">{t('backToLogin')}</Link>
+      </Button>
     </div>
+    <Dialog open={showPlacement} onOpenChange={setShowPlacement}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('placementTitle')}</DialogTitle>
+          <DialogDescription></DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <Select value={experience} onValueChange={setExperience}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={t('placementExperience')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="less">{t('placementExperience.lessThanYear')}</SelectItem>
+              <SelectItem value="mid">{t('placementExperience.oneToThree')}</SelectItem>
+              <SelectItem value="more">{t('placementExperience.moreThanThree')}</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={frequency} onValueChange={setFrequency}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={t('placementFrequency')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="rarely">{t('placementFrequency.rarely')}</SelectItem>
+              <SelectItem value="sometimes">{t('placementFrequency.sometimes')}</SelectItem>
+              <SelectItem value="often">{t('placementFrequency.often')}</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={jumpSmash} onValueChange={setJumpSmash}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={t('placementJumpSmash')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="yes">{t('placementJumpSmash.yes')}</SelectItem>
+              <SelectItem value="no">{t('placementJumpSmash.no')}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <DialogFooter className="pt-4">
+          <Button className="w-full" onClick={async () => { setShowPlacement(false); await handlePlacementSubmit(); }}>
+            {t('placementSubmit')}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  </div>
   );
 }
 
