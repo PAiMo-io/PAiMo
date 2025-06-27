@@ -11,12 +11,14 @@ import { useTranslation } from 'react-i18next'
 interface Option { text: string; score: number }
 interface Question { id?: string; question: string; options: Option[]; order?: number }
 interface Part { id?: string; name: string; weight: number; multiplier: number; order?: number; questions: Question[] }
+interface Level { id?: string; code: string; name: string; min: number; max: number; order?: number }
 
 export default function PlacementManagementPage() {
   const router = useRouter()
   const { data: session, status } = useSession()
   const { request, loading, error } = useApi()
   const [parts, setParts] = useState<Part[]>([])
+  const [levels, setLevels] = useState<Level[]>([])
   const { t } = useTranslation('common')
 
   useEffect(() => {
@@ -30,7 +32,12 @@ export default function PlacementManagementPage() {
       const res = await request<{ parts: Part[] }>({ url: '/api/placement-parts', method: 'get' })
       setParts(res.parts)
     }
+    const fetchLevels = async () => {
+      const res = await request<{ levels: Level[] }>({ url: '/api/placement-levels', method: 'get' })
+      setLevels(res.levels)
+    }
     fetchParts()
+    fetchLevels()
   }, [status, session, router, request])
 
   const handleSave = async (idx: number) => {
@@ -51,6 +58,26 @@ export default function PlacementManagementPage() {
       await request({ url: `/api/placement-parts/${part.id}`, method: 'delete' })
     }
     setParts(prev => prev.filter((_, i) => i !== idx))
+  }
+
+  const handleSaveLevel = async (idx: number) => {
+    const level = levels[idx]
+    if (!level.name.trim() || !level.code.trim()) return
+    if (level.id) {
+      await request({ url: `/api/placement-levels/${level.id}`, method: 'put', data: level })
+    } else {
+      const res = await request<{ id: string }>({ url: '/api/placement-levels', method: 'post', data: level })
+      level.id = res.id
+      setLevels(prev => prev.map((l, i) => i === idx ? level : l))
+    }
+  }
+
+  const handleDeleteLevel = async (idx: number) => {
+    const level = levels[idx]
+    if (level.id) {
+      await request({ url: `/api/placement-levels/${level.id}`, method: 'delete' })
+    }
+    setLevels(prev => prev.filter((_, i) => i !== idx))
   }
 
   if (status === 'loading' || loading) return <PageSkeleton />
@@ -147,6 +174,61 @@ export default function PlacementManagementPage() {
       ))}
       <Button onClick={() => setParts(prev => [...prev, { name: '', weight: 1, multiplier: 1, questions: [] }])}>
         {t('addPart')}
+      </Button>
+
+      <h2 className="text-lg font-semibold pt-6">{t('placementLevels')}</h2>
+      {levels.map((lvl, lidx) => (
+        <div key={lidx} className="border p-4 space-y-2">
+          <div className="flex space-x-2">
+            <Input
+              placeholder={t('levelCode') || 'Code'}
+              value={lvl.code}
+              onChange={e => {
+                const val = e.target.value
+                setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, code: val } : pp))
+              }}
+              className="w-24"
+            />
+            <Input
+              placeholder={t('levelName') || 'Name'}
+              value={lvl.name}
+              onChange={e => {
+                const val = e.target.value
+                setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, name: val } : pp))
+              }}
+              className="flex-1"
+            />
+          </div>
+          <div className="flex space-x-2">
+            <Input
+              type="number"
+              placeholder={t('levelMin') || 'Min'}
+              value={lvl.min}
+              onChange={e => {
+                const val = parseFloat(e.target.value)
+                setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, min: val } : pp))
+              }}
+              className="w-24"
+            />
+            <Input
+              type="number"
+              placeholder={t('levelMax') || 'Max'}
+              value={lvl.max}
+              onChange={e => {
+                const val = parseFloat(e.target.value)
+                setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, max: val } : pp))
+              }}
+              className="w-24"
+            />
+          </div>
+          <div className="space-x-2">
+            <Button onClick={() => handleSaveLevel(lidx)}>{t('save')}</Button>
+            <Button variant="destructive" onClick={() => handleDeleteLevel(lidx)}>{t('remove')}</Button>
+          </div>
+        </div>
+      ))}
+      <Button onClick={() => setLevels(prev => [...prev, { code: '', name: '', min: 0, max: 0 }])}>
+        {t('addLevel')}
       </Button>
     </div>
   )
