@@ -60,7 +60,7 @@ export default function Home() {
     fetchUser()
   }, [status, request, router, session])
 
-  if (status === 'loading' || initialLoading) {
+  if (status === 'loading') {
     return <PageSkeleton />
   }
 
