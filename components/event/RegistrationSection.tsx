@@ -8,6 +8,7 @@ export interface Participant {
     username?: string
     nickname?: string
     image?: string | null
+    avatarUpdatedAt?: string | number | null // Add this line
 }
 
 interface RegistrationSectionProps {
@@ -23,6 +24,14 @@ export default function RegistrationSection({
     isAdmin,
     onRemoveParticipant
 }: RegistrationSectionProps) {
+    // Helper for cache-busting avatar URL
+    function getAvatarUrl(image?: string | null, avatarUpdatedAt?: string | number | null) {
+        if (!image) return '';
+        return avatarUpdatedAt
+            ? `${image}?v=${new Date(avatarUpdatedAt).getTime()}`
+            : image;
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -37,7 +46,7 @@ export default function RegistrationSection({
                         <div className="flex items-center space-x-2">
                             {p.image && (
                                 <img
-                                    src={p.image}
+                                    src={getAvatarUrl(p.image, p.avatarUpdatedAt)}
                                     alt={p.nickname || p.username}
                                     className="h-6 w-6 rounded-full"
                                 />
