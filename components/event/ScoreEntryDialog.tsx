@@ -8,8 +8,9 @@ import Image from 'next/image'
 import Avatar from 'boring-avatars'
 
 interface Player {
-    id: string
-    username: string
+    _id?: string
+    id?: string
+    username?: string
     nickname?: string
     email?: string
     image?: string | null
