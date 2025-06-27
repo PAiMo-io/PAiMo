@@ -24,7 +24,7 @@ export default function CreateClubPage() {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
   const [clubLocation, setClubLocation] = useState('');
-  const [clubVisibility, setClubVisibility] = useState<'private' | 'public'>('public');
+  const [clubVisibility, setClubVisibility] = useState<'private' | 'publicView' | 'publicJoin'>('publicJoin');
   const [message, setMessage] = useState('');
 
   const handleCreateClub = async () => {
@@ -105,14 +105,15 @@ export default function CreateClubPage() {
           <label className="block text-sm font-medium mb-2">{t('clubVisibility')}</label>
           <Select
             value={clubVisibility}
-            onValueChange={value => setClubVisibility(value as 'private' | 'public')}
+            onValueChange={value => setClubVisibility(value as 'private' | 'publicView' | 'publicJoin')}
           >
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="private">{t('private')}</SelectItem>
-              <SelectItem value="public">{t('public')}</SelectItem>
+              <SelectItem value="publicView">{t('publicView')}</SelectItem>
+              <SelectItem value="publicJoin">{t('publicJoin')}</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     description,
     location,
     logoUrl,
-    visibility: visibility === 'public' ? 'public' : 'private',
+    visibility,
     createdBy: user?.nickname || user?.username,
     createdAt: new Date(),
     members: [{ id: user._id, username: user?.username || user?.email || 'unknown' }],
