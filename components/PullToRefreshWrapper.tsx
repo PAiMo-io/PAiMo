@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { TopLoader } from "./ui/top-loader";
+import { useHaptic } from "use-haptic";
 
 interface PullToRefreshWrapperProps {
   onRefresh: () => Promise<void>;
@@ -22,6 +23,8 @@ export const PullToRefreshWrapper: React.FC<PullToRefreshWrapperProps> = ({
   const startYRef = useRef<number | null>(null);
   const lastRefreshTimeRef = useRef<number>(0);
   const deltaYRef = useRef(0);
+  const hasTriggeredHaptic = useRef(false);
+  const { triggerHaptic } = useHaptic();
 
   const now = () => Date.now();
 
@@ -33,7 +36,6 @@ export const PullToRefreshWrapper: React.FC<PullToRefreshWrapperProps> = ({
     if (!canTrigger()) return;
     lastRefreshTimeRef.current = now();
     setRefreshing(true);
-    console.log("triggering refresh");
     await onRefresh();
     setRefreshing(false);
   };
@@ -56,8 +58,15 @@ export const PullToRefreshWrapper: React.FC<PullToRefreshWrapperProps> = ({
 
       if (delta > threshold) {
         setPulling(true);
+
+        if (!hasTriggeredHaptic.current) {
+            console.log("triggering haptic");
+            triggerHaptic();
+            hasTriggeredHaptic.current = true;
+        }
       } else {
         setPulling(false);
+        hasTriggeredHaptic.current = false;
       }
     };
 
@@ -68,6 +77,7 @@ export const PullToRefreshWrapper: React.FC<PullToRefreshWrapperProps> = ({
       startYRef.current = null;
       deltaYRef.current = 0;
       setPulling(false);
+      hasTriggeredHaptic.current = false;
     };
 
     const handleWheel = (e: WheelEvent) => {
