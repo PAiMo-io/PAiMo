@@ -8,7 +8,7 @@ import { uploadAvatar } from '../../../lib/r2';
 
 export async function POST(request: Request) {
   try {
-    const { email, username, gender, nickname, wechatId, password, level, lang } = await request.json()
+    const { email, username, gender, nickname, wechatId, password, level, lang, profileComplete } = await request.json()
   
     if (!email) {
       return NextResponse.json(
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
     await connect()
 
-    const update: any = { username, gender, nickname, wechatId, lang }
+    const update: any = { username, gender, nickname, wechatId, lang, profileComplete }
     if (level != null) {
       update.level = level
     }

@@ -110,7 +110,17 @@ function CreateProfileClient() {
       await request({
         url: '/api/signup',
         method: 'post',
-        data: { email, username, gender, nickname, wechatId, password, level, lang: i18n.language },
+        data: {
+          email,
+          username,
+          gender,
+          nickname,
+          wechatId,
+          password,
+          level,
+          lang: i18n.language,
+          profileComplete: true, // Add this line
+        },
       });
       const res = await signIn('credentials', {
         redirect: false,
