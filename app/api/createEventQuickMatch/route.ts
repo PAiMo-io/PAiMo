@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false }, { status: 401 });
   }
 
-  const { eventId, rematchFrom } = await request.json();
+  const { eventId, rematchFrom, swapPartners } = await request.json();
   
   if (!eventId) {
     return NextResponse.json({ success: false, error: 'Event ID is required' }, { status: 400 });
@@ -54,10 +54,24 @@ export async function POST(request: Request) {
     const originalMatch = await Match.findById(rematchFrom);
     if (originalMatch && originalMatch.isQuickMatch) {
       // Get all players from both teams
-      playersFromRematch = [
+      let allPlayers = [
         ...originalMatch.teams[0].players,
         ...originalMatch.teams[1].players
       ];
+      
+      // If swapPartners is true, swap partners
+      if (swapPartners && allPlayers.length === 4) {
+        // Original teams: [P1, P2] vs [P3, P4]
+        // Swap to: [P1, P3] vs [P2, P4]
+        allPlayers = [
+          allPlayers[0], // P1
+          allPlayers[2], // P3
+          allPlayers[1], // P2
+          allPlayers[3]  // P4
+        ];
+      }
+      
+      playersFromRematch = allPlayers;
     }
   }
 
@@ -207,6 +221,29 @@ export async function PUT(request: Request) {
       const shuffledPlayers = [...quickMatch.teams[0].players].sort(() => Math.random() - 0.5);
       quickMatch.teams[0].players = shuffledPlayers.slice(0, 2);
       quickMatch.teams[1].players = shuffledPlayers.slice(2, 4);
+      break;
+
+    case 'complete':
+      if (!isUserInMatch) {
+        return NextResponse.json({ 
+          success: false, 
+          error: 'Not in this match' 
+        }, { status: 403 });
+      }
+
+      if (quickMatch.teams[1].players.length === 0) {
+        return NextResponse.json({ 
+          success: false, 
+          error: 'Match not started yet' 
+        }, { status: 400 });
+      }
+
+      // Mark match as completed by setting a high score for one team if no scores exist
+      if (quickMatch.teams[0].score === 0 && quickMatch.teams[1].score === 0) {
+        // Set a default completion score
+        quickMatch.teams[0].score = 21;
+        quickMatch.teams[1].score = 19;
+      }
       break;
 
     default:

@@ -22,7 +22,7 @@ export async function GET(
   const memberIds = club.members.map((m: any) => m.id);
   const members: any[] = await User.find(
     { _id: { $in: memberIds } },
-    { username: 1, image: 1 }
+    { username: 1, nickname: 1, gender: 1, image: 1 }
   ).lean();
   const events: any[] = await Event.find({ club: params.id }, {
     name: 1,
@@ -46,6 +46,8 @@ export async function GET(
     members: members.map(m => ({
       id: m._id.toString(),
       username: m.username,
+      nickname: m.nickname,
+      gender: m.gender,
       image: m.image || null,
     })),
     events: events.map(e => ({

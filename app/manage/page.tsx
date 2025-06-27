@@ -40,9 +40,6 @@ export default function ManagePage() {
   const { request, loading, error } = useApi();
   const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState('');
-  const [clubName, setClubName] = useState('');
-  const [clubLocation, setClubLocation] = useState('');
-  const [clubVisibility, setClubVisibility] = useState<'private' | 'public'>('private');
   const [eventName, setEventName] = useState('');
   const [clubs, setClubs] = useState<ClubOption[]>([]);
   const [selectedClub, setSelectedClub] = useState<string>('');
@@ -60,18 +57,6 @@ export default function ManagePage() {
       data: { username, role: newRole },
     });
     setUsers(prev => prev.map(u => (u.username === username ? { ...u, role: newRole } : u)));
-  };
-
-  const handleCreateClub = async () => {
-    await request({
-      url: '/api/clubs',
-      method: 'post',
-      data: { name: clubName, location: clubLocation, visibility: clubVisibility },
-    });
-    setClubName('');
-    setClubLocation('');
-    setClubVisibility('private');
-    fetchClubs();
   };
 
   const fetchClubs = useCallback(async () => {
@@ -107,7 +92,6 @@ export default function ManagePage() {
   const handleResend = async (id: string) => {
     await request({ url: `/api/pending-users/${id}/resend`, method: 'post', data: { lang: i18n.language } });
   };
-
 
   const handleRemove = async (id: string) => {
     await request({ url: `/api/pending-users/${id}`, method: 'delete' });
@@ -183,32 +167,6 @@ export default function ManagePage() {
         </table>
       </div>
       <div className="mt-8 mb-8 space-y-4">
-        <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-          <Input
-            placeholder={t('newClubName')}
-            value={clubName}
-            onChange={e => setClubName(e.target.value)}
-            className="flex-1 sm:min-w-[300px]"
-          />
-          <LocationAutocomplete
-            placeholder={t('locationPlace')}
-            value={clubLocation}
-            onChange={setClubLocation}
-          />
-          <Select
-            value={clubVisibility}
-            onValueChange={value => setClubVisibility(value as 'private' | 'public')}
-          >
-            <SelectTrigger className="sm:w-[140px] w-full">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="private">{t('private')}</SelectItem>
-              <SelectItem value="public">{t('public')}</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button onClick={handleCreateClub} className="flex-shrink-0">{t('createClub')}</Button>
-        </div>
         <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
           <Input
             placeholder={t('newEventName')}

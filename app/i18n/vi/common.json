@@ -117,6 +117,7 @@
     "searchUsers": "Tìm kiếm người dùng",
     "signupTitle": "Đăng ký",
     "signupWithGoogle": "Đăng ký bằng Google",
+    "alreadyHaveAccount": "Đã có tài khoản? Đăng nhập",
     "forgotPassword": "Quên mật khẩu?",
     "sendResetEmail": "Gửi email đặt lại mật khẩu",
     "passwordResetEmailSent": "Email đặt lại mật khẩu đã được gửi",
@@ -135,6 +136,20 @@
     "randomMatching": "Ghép đôi ngẫu nhiên",
     "eventPlayDate": "Ngày chơi sự kiện",
     "gymInfo": "Thông tin phòng tập",
-    "emailRequired": "Yêu cầu email"
+    "emailRequired": "Yêu cầu email",
+    "clubNameRequired": "Tên câu lạc bộ là bắt buộc",
+    "clubCreated": "Tạo câu lạc bộ thành công!",
+    "failedToCreateClub": "Tạo câu lạc bộ thất bại",
+    "creating": "Đang tạo...",
+    "clubName": "Tên câu lạc bộ",
+    "clubLocation": "Địa điểm",
+    "clubDescription": "Mô tả",
+    "clubVisibility": "Hiển thị",
+    "noClubsAvailable": "Không có câu lạc bộ nào",
+    "create": "Tạo",
+    "male": "Nam",
+    "female": "Nữ",
+    "genderStats": "Nam: {{maleCount}}, Nữ: {{femaleCount}}",
+    "eventsCount": "Sự kiện: {{count}}"
   }
   

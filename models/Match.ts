@@ -61,11 +61,5 @@ const matchSchema = new Schema<IMatch>(
   }
 );
 
-// ensure you don’t accidentally create two matches on the same event/round/court
-matchSchema.index(
-  { event: 1, round: 1, court: 1, group: 1 },
-  { unique: true }
-);
-
 export default mongoose.models.Match ||
   mongoose.model<IMatch>('Match', matchSchema);

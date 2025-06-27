@@ -6,6 +6,7 @@ import { Trash } from 'lucide-react'
 export interface Participant {
     id: string
     username?: string
+    nickname?: string
     image?: string | null
 }
 
@@ -37,11 +38,11 @@ export default function RegistrationSection({
                             {p.image && (
                                 <img
                                     src={p.image}
-                                    alt={p.username}
+                                    alt={p.nickname || p.username}
                                     className="h-6 w-6 rounded-full"
                                 />
                             )}
-                            <span>{p.username || 'Anonymous'}</span>
+                            <span>{p.nickname || p.username || 'Anonymous'}</span>
                         </div>
                         {isAdmin && p.id !== currentUserId && (
                             <Button
