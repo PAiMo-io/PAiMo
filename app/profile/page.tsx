@@ -56,7 +56,7 @@ export default function ProfilePage() {
       <h1 className="text-2xl mb-4">{t('profile')}</h1>
       {data.image ? (
         <Image
-          src={data.image}
+          src={data.image + '?t=' + Date.now()} // cache-busting query
           alt="Profile picture"
           width={96}
           height={96}
