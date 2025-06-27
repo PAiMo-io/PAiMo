@@ -26,12 +26,14 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "dotenv": "^16.3.1",
+    "framer-motion": "^12.19.1",
     "handlebars": "^4.7.8",
     "i18next": "^25.2.1",
     "lodash": "^4.17.21",
     "lucide-react": "^0.386.0",
     "mongodb": "^6.17.0",
     "mongoose": "^8.0.0",
+    "motion": "^12.19.1",
     "next": "^14.2.30",
     "next-auth": "^4.24.11",
     "react": "^18",
@@ -41,7 +43,8 @@
     "resend": "^4.6.0",
     "sharp": "^0.33.5",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "use-haptic": "^1.1.11"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.18",

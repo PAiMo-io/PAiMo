@@ -19,6 +19,11 @@ export default function SignupPage() {
   const { t, i18n } = useTranslation('common');
 
   const handleEmailBlur = async () => {
+    if (!email) {
+      setEmailError(t('emailRequired'));
+      return;
+    }
+
     const valid = /\S+@\S+\.\S+/.test(email);
     if (!valid) {
       setEmailError(t('invalidEmail'));
@@ -40,6 +45,10 @@ export default function SignupPage() {
   };
 
   const handleSubmit = async () => {
+    if (!email) {
+      setEmailError(t('emailRequired'));
+      return;
+    }
     if (emailError) return;
     try {
       await request({
@@ -79,11 +88,11 @@ export default function SignupPage() {
             {t('signupButton')}
           </Button>
           <Button className="black w-full flex items-center justify-center gap-2" onClick={handleGoogle}>
-            <Image src="/google-logo.svg" alt="Google" width={20} height={20} />
-            {t('signupWithGoogle')}
+            <Image src="/google-logo.svg" alt="Google" width={20} height={20} className="inline-block"/>
+            <span className='ml-2'>{t('signupWithGoogle')}</span>
           </Button>
-          <Button variant="outline" className="w-full" asChild>
-            <Link href="/login">{t('backToLogin')}</Link>
+          <Button variant="outline" className="w-full">
+            <Link href="/login" className="block w-full h-full">{t('backToLogin')}</Link>
           </Button>
         </div>
       )}

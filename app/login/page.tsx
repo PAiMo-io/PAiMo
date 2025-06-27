@@ -50,16 +50,16 @@ export default function LoginPage() {
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <Button variant="outline" className="w-full" onClick={handleEmailLogin}>{t('loginButton')}</Button>
         <Button className="black w-full flex items-center justify-center gap-2" onClick={handleGoogle}>
-          <Image src="/google-logo.svg" alt="Google" width={20} height={20} />
-          {t('loginWithGoogle')}
+          <Image src="/google-logo.svg" alt="Google" width={20} height={20} className="inline-block"/>
+          <span className='ml-2'>{t('loginWithGoogle')}</span>
         </Button>
         <p className="text-center text-sm text-muted-foreground">
           {t('googleLoginSuggestion')}
         </p>
-        <Button variant="outline" className="w-full" asChild>
-          <Link href="/signup">{t('signupLink')}</Link>
+        <Button variant="outline" className="w-full">
+          <Link href="/signup" className="block w-full h-full">{t('signupLink')}</Link>
         </Button>
-        <Button variant="link" className="w-full p-0" asChild>
+        <Button variant="link" className="w-full p-0" asChild hapticEffect={false}>
           <Link href="/forgot-password">{t('forgotPassword')}</Link>
         </Button>
       </div>

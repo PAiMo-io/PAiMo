@@ -23,11 +23,15 @@ export async function POST(
   const resend = new Resend(process.env.RESEND_API_KEY || '');
   const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   try {
-    const { html, subject } = await renderLocalizedEmailTemplate('confirm-email', lang || 'en', {
-      verifyUrl: `${appUrl}/api/verify-email?token=${pending.token}`,
-      appUrl,
-      year: new Date().getFullYear(),
-    });
+    const { html, subject } = await renderLocalizedEmailTemplate(
+      "confirm-email",
+      lang || "en",
+      {
+        verifyUrl: `${appUrl}/api/verify-email?token=${pending.token}&lang=${lang}`,
+        appUrl,
+        year: new Date().getFullYear(),
+      }
+    );
     await resend.emails.send({
       from: 'PAiMO <hello@paimo.io>',
       to: pending.email,

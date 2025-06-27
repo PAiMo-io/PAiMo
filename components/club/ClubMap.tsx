@@ -55,15 +55,16 @@ export default function ClubMap({ locations }: ClubMapProps) {
                 setSelectedLocation(location)
                 setDialogOpen(true)
               }}
+              hapticEffect={false}
             >
               📍 {location.split(',')[0]}
             </Button>
           </DialogTrigger>
           <DialogContent className="space-y-2 w-[95vw] max-w-sm p-4 rounded-lg">
             <p className="font-medium text-base sm:text-lg">{t('chooseMapApp') || 'Choose Map App'}</p>
-            <Button className="w-full py-3 text-base" onClick={() => openMap('google')}>Google Maps</Button>
-            <Button className="w-full py-3 text-base" onClick={() => openMap('apple')}>Apple Maps</Button>
-            <Button className="w-full py-3 text-base" onClick={() => openMap('bing')}>Bing Maps</Button>
+            <Button className="w-full text-base flex items-center justify-center" onClick={() => openMap('google')}>Google Maps</Button>
+            <Button className="w-full text-base flex items-center justify-center" onClick={() => openMap('apple')}>Apple Maps</Button>
+            <Button className="w-full text-base flex items-center justify-center" onClick={() => openMap('bing')}>Bing Maps</Button>
           </DialogContent>
         </Dialog>
       ))}

@@ -136,6 +136,7 @@
   "randomMatching": "多人转",
   "eventPlayDate": "活动日期",
   "gymInfo": "球馆信息",
+  "emailRequired": "请输入邮箱",
   "clubNameRequired": "俱乐部名称是必填项",
   "clubCreated": "俱乐部创建成功！",
   "failedToCreateClub": "创建俱乐部失败",
