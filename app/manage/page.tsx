@@ -197,7 +197,7 @@ export default function ManagePage() {
           </div>
         </div>
         <div className="pt-4">
-          <Link href="/manage/placement-questions" className="underline text-blue-600">
+          <Link href="/manage/placement" className="underline text-blue-600">
             {t('placementManagement')}
           </Link>
         </div>

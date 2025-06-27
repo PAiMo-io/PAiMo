@@ -46,10 +46,16 @@ function CreateProfileClient() {
   const [error, setError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [showPlacement, setShowPlacement] = useState(false);
-  const [questions, setQuestions] = useState<{
+  const [parts, setParts] = useState<{
     id: string
-    question: string
-    options: { text: string; score: number }[]
+    name: string
+    weight: number
+    multiplier: number
+    questions: {
+      id: string
+      question: string
+      options: { text: string; score: number }[]
+    }[]
   }[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const { t, i18n } = useTranslation('common');
@@ -76,15 +82,15 @@ function CreateProfileClient() {
   }, [session, queryEmail, status, router]);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const fetchParts = async () => {
       try {
-        const res = await request<{ questions: any[] }>({ url: '/api/placement-questions', method: 'get' })
-        setQuestions(res.questions)
+        const res = await request<{ parts: any[] }>({ url: '/api/placement-parts', method: 'get' })
+        setParts(res.parts)
       } catch (e) {
         console.error('Failed to load placement questions', e)
       }
     }
-    fetchQuestions()
+    fetchParts()
   }, [request])
 
   if (status !== 'loading' && session?.user?.profileComplete) {
@@ -112,10 +118,13 @@ function CreateProfileClient() {
   };
 
   const calculateLevel = () => {
-    return questions.reduce((total, q) => {
-      const idx = parseInt(answers[q.id] || '', 10)
-      const opt = isNaN(idx) ? null : q.options[idx]
-      return total + (opt?.score || 0)
+    return parts.reduce((total, part) => {
+      const partScore = (part.questions || []).reduce((pt, q) => {
+        const idx = parseInt(answers[q.id] || '', 10)
+        const opt = isNaN(idx) ? null : q.options[idx]
+        return pt + (opt?.score || 0)
+      }, 0)
+      return total + partScore * (part.multiplier || 1) * (part.weight || 1)
     }, 0)
   }
 
@@ -215,25 +224,30 @@ function CreateProfileClient() {
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          {questions.map(question => (
-            <Select
-              key={question.id}
-              value={answers[question.id]}
-              onValueChange={value =>
-                setAnswers(prev => ({ ...prev, [question.id]: value }))
-              }
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={question.question} />
-              </SelectTrigger>
-              <SelectContent>
-                {question.options.map((opt, idx) => (
-                  <SelectItem key={idx} value={String(idx)}>
-                    {opt.text}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          {parts.map(part => (
+            <div key={part.id} className="space-y-2">
+              <h3 className="font-semibold">{part.name}</h3>
+              {part.questions.map(question => (
+                <Select
+                  key={question.id}
+                  value={answers[question.id]}
+                  onValueChange={value =>
+                    setAnswers(prev => ({ ...prev, [question.id]: value }))
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={question.question} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {question.options.map((opt, idx) => (
+                      <SelectItem key={idx} value={String(idx)}>
+                        {opt.text}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ))}
+            </div>
           ))}
         </div>
         <DialogFooter className="pt-4">
