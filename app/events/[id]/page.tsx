@@ -14,6 +14,7 @@ import EventRanking from '@/components/event/EventRanking';
 import MatchLobby from '@/components/event/MatchLobby';
 import { useTranslation } from 'react-i18next';
 import { GameStyle } from '@/types/gameStyle';
+import { PullToRefreshWrapper } from '@/components/PullToRefreshWrapper';
 
 export default function EventPage({ params }: { params: { id: string } }) {
 	const {
@@ -49,38 +50,39 @@ export default function EventPage({ params }: { params: { id: string } }) {
 				</TabsList>
 
 				<TabsContent value="event">
-					<EventHeader
-						event={event}
-						isAdmin={isAdmin}
-						onPrev={() => {
-							if (isAdmin && event.status === 'arranging') {
-								setCountdown(5)
-								setShowRevertModal(true)
-							} else {
-								actions.prevStep()
-							}
-						}}
-						onNext={actions.nextStep}
-					/>
-
-					<RegistrationControls
-						canRegister={canRegister}
-						canUnregister={canUnregister}
-						onRegister={actions.joinEvent}
-						onUnregister={actions.leaveEvent}
-					/>
-
-					<div className="space-y-4">
-						<EventInfoForm event={event} isAdmin={isAdmin} onSave={actions.updateInfo} />
-						{(event.status === 'preparing' || event.status === 'registration') && (
-							<RegistrationSection
-								participants={event.participants}
-								currentUserId={session?.user?.id}
-								isAdmin={isAdmin}
-								onRemoveParticipant={actions.removeParticipant}
-							/>
-						)}
-					</div>
+					<PullToRefreshWrapper onRefresh={() => actions.fetchEvent()}>
+						<EventHeader
+							event={event}
+							isAdmin={isAdmin}
+							onPrev={() => {
+								if (isAdmin && event.status === 'arranging') {
+									setCountdown(5)
+									setShowRevertModal(true)
+								} else {
+									actions.prevStep()
+								}
+							}}
+							onNext={actions.nextStep}
+						/>
+						<RegistrationControls
+							canRegister={canRegister}
+							canUnregister={canUnregister}
+							onRegister={actions.joinEvent}
+							onUnregister={actions.leaveEvent}
+						/>
+					
+							<div className="space-y-4">
+								<EventInfoForm event={event} isAdmin={isAdmin} onSave={actions.updateInfo} />
+								{(event.status === 'preparing' || event.status === 'registration') && (
+									<RegistrationSection
+										participants={event.participants}
+										currentUserId={session?.user?.id}
+										isAdmin={isAdmin}
+										onRemoveParticipant={actions.removeParticipant}
+									/>
+								)}
+							</div>
+					</PullToRefreshWrapper>
 
 					<ConfirmRevertDialog
 						open={showRevertModal}

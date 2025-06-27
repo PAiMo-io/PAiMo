@@ -90,7 +90,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <Comp
               ref={ref}
               {...props}
-              className="w-full h-full"
+              className={`w-full h-full ${className}`}
               disabled={disabled || loading}
               onClick={handleClick}
             />

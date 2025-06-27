@@ -6,6 +6,7 @@ import EventCard from '@/components/EventCard'
 import PageSkeleton from '@/components/PageSkeleton'
 import { useApi } from '@/lib/useApi'
 import { useTranslation } from 'react-i18next'
+import { PullToRefreshWrapper } from '@/components/PullToRefreshWrapper'
 
 interface EventItem {
     id: string
@@ -19,20 +20,36 @@ interface EventItem {
 
 export default function EventsPage() {
     const { data: session, status } = useSession()
-    const { request, loading, error } = useApi()
+    const { request, error } = useApi()
     const [events, setEvents] = useState<EventItem[]>([])
+    const [initialLoading, setInitialLoading] = useState(true)
+    const [refreshing, setRefreshing] = useState(false)
     const { t } = useTranslation('home')
+
+    const fetchData = async (refresh = false) => {
+      if (refresh) {
+        setRefreshing(true);
+      } else {
+        setInitialLoading(true);
+      }
+      const evRes = await request<{ events: EventItem[] }>({
+        url: "/api/events",
+        method: "get",
+      });
+      setEvents(evRes.events);
+      if (refresh) {
+        setRefreshing(false);
+      } else {
+        setInitialLoading(false);
+      }
+    };
 
     useEffect(() => {
         if (status !== 'authenticated') return
-        const fetchData = async () => {
-            const evRes = await request<{ events: EventItem[] }>({ url: '/api/events', method: 'get' })
-            setEvents(evRes.events)
-        }
         fetchData()
     }, [status, request])
 
-    if (status === 'loading' || loading) {
+    if (status === 'loading' || initialLoading) {
         return <PageSkeleton />
     }
 
@@ -42,20 +59,23 @@ export default function EventsPage() {
 
     return (
         <div className="p-4 space-y-4">
-            <div className="space-y-4">
-                <h1 className="text-2xl mb-2">{t('availableEvents')}</h1>
-                {events.length === 0 ? (
-                    <p>{t('noEvents')}</p>
-                ) : (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {events.map(e => (
-                            <Link key={e.id} href={`/events/${e.id}`} className="block">
-                                <EventCard event={e} />
-                            </Link>
-                        ))}
-                    </div>
-                )}
-            </div>
+            <PullToRefreshWrapper onRefresh={() => fetchData(true)}>
+                <div className="space-y-4">
+                    <h1 className="text-2xl mb-2">{t('availableEvents')}</h1>
+                    {events.length === 0 ? (
+                        <p>{t('noEvents')}</p>
+                    ) : (
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {events.map(e => (
+                                <Link key={e.id} href={`/events/${e.id}`} className="block">
+                                    <EventCard event={e} />
+                                </Link>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                {/* <TopLoader /> */}
+            </PullToRefreshWrapper>
         </div>
     )
 }
