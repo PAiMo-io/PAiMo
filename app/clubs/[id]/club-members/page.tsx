@@ -15,6 +15,7 @@ interface Member {
   nickname?: string;
   gender?: string;
   image?: string | null;
+  avatarUpdatedAt?: string | number | null;
 }
 
 interface EventItem {

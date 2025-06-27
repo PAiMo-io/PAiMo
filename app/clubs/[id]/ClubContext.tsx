@@ -7,6 +7,7 @@ interface Member {
   nickname?: string;
   gender?: string;
   image?: string | null;
+  avatarUpdatedAt?: string | number | null;
 }
 
 interface AdminUser {
@@ -14,6 +15,7 @@ interface AdminUser {
   username: string;
   nickname?: string;
   image?: string | null;
+  avatarUpdatedAt?: string | number | null;
 }
 
 interface EventItem {
