@@ -28,5 +28,7 @@
   "passwordResetEmailSent": "Correo electrónico de restablecimiento de contraseña enviado",
   "failedToSendResetEmail": "No se pudo enviar el correo electrónico de restablecimiento de contraseña",
   "nicknameUpdated": "Apodo actualizado",
-  "failedToUpdateNickname": "No se pudo actualizar el apodo"
+  "failedToUpdateNickname": "No se pudo actualizar el apodo",
+  "placementLevelCode": "Código de nivel",
+  "placementLevelName": "Nombre del nivel"
 }

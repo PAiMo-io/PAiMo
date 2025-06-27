@@ -16,6 +16,8 @@ interface ProfileData {
   role?: string;
   image?: string | null;
   clubs?: string[];
+  levelCode?: string;
+  levelName?: string;
 }
 
 export default function ProfilePage() {
@@ -80,6 +82,16 @@ export default function ProfilePage() {
       {data.role && (
         <p>
           <strong>{t('role')}:</strong> {data.role}
+        </p>
+      )}
+      {data.levelCode && (
+        <p>
+          <strong>{t('placementLevelCode')}:</strong> {data.levelCode}
+        </p>
+      )}
+      {data.levelName && (
+        <p>
+          <strong>{t('placementLevelName')}:</strong> {data.levelName}
         </p>
       )}
       {data.clubs && data.clubs.length > 0 && (

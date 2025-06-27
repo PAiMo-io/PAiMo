@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../auth';
 import connect from '../../../utils/mongoose';
 import User from '../../../models/User';
+import PlacementLevel from '../../../models/PlacementLevel';
 import bcrypt from 'bcryptjs';
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -20,6 +21,16 @@ export async function POST(request: Request) {
   const query = email ? { email } : { username };
   const user = await User.findOne(query).populate({ path: 'clubs', strictPopulate: false });
 
+  let code: string | undefined
+  let name: string | undefined
+  if (user && typeof user.level === 'number') {
+    const lvl = await PlacementLevel.findOne({ min: { $lte: user.level }, max: { $gte: user.level } })
+    if (lvl) {
+      code = lvl.code
+      name = lvl.name
+    }
+  }
+
   if (!user) {
     return NextResponse.json({ success: false }, { status: 404 });
   }
@@ -33,6 +44,8 @@ export async function POST(request: Request) {
     clubs: Array.isArray(user.clubs)
       ? (user.clubs as any[]).map(c => c.name)
       : [],
+    levelCode: code,
+    levelName: name,
   });
 }
 
@@ -68,6 +81,15 @@ export async function GET() {
 
   await connect();
   const user = await User.findOne({ _id: session.user.id }).populate({ path: 'clubs', strictPopulate: false });
+  let code: string | undefined
+  let name: string | undefined
+  if (user && typeof user.level === 'number') {
+    const lvl = await PlacementLevel.findOne({ min: { $lte: user.level }, max: { $gte: user.level } })
+    if (lvl) {
+      code = lvl.code
+      name = lvl.name
+    }
+  }
   const result = {
     user: {
       email: user.email,
@@ -78,6 +100,8 @@ export async function GET() {
       clubs: Array.isArray(user.clubs)
         ? (user.clubs as any[]).map(c => c.name)
         : [],
+      levelCode: code,
+      levelName: name,
     }
   };
   return NextResponse.json(result);

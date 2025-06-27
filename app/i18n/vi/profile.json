@@ -28,5 +28,7 @@
   "passwordResetEmailSent": "Email đặt lại mật khẩu đã được gửi",
   "failedToSendResetEmail": "Không thể gửi email đặt lại mật khẩu",
   "nicknameUpdated": "Apodo đã được cập nhật",
-  "failedToUpdateNickname": "Không thể cập nhật apodo"
+  "failedToUpdateNickname": "Không thể cập nhật apodo",
+  "placementLevelCode": "Mã cấp độ",
+  "placementLevelName": "Tên cấp độ"
 }

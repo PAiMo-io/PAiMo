@@ -28,5 +28,7 @@
   "passwordResetEmailSent": "Password reset email sent",
   "failedToSendResetEmail": "Failed to send password reset email",
   "nicknameUpdated": "Nickname updated",
-  "failedToUpdateNickname": "Failed to update nickname"
+  "failedToUpdateNickname": "Failed to update nickname",
+  "placementLevelCode": "Level Code",
+  "placementLevelName": "Level Name"
 }
