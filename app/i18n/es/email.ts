@@ -30,4 +30,14 @@ export const email = {
     fallbackTip:
       "Si el botón no funciona, copia y pega este enlace en tu navegador:",
   },
+  "reset-placement-email": {
+    subject: "Vuelve a completar tu cuestionario de nivel",
+    title: "Reiniciar nivel",
+    subTitle: "Es hora de repetir el cuestionario",
+    intro: "Un administrador ha reiniciado tu cuestionario de nivel. Haz clic abajo para completarlo de nuevo.",
+    startButton: "Responder cuestionario",
+    fallbackTip: "Si el botón no funciona, copia y pega este enlace en tu navegador:",
+    footerNote: "Recibiste este mensaje porque se restableció tu nivel.",
+    copyright: "Todos los derechos reservados.",
+  },
 };

@@ -162,6 +162,7 @@
     "resend": "Reenviar",
     "resetPlacement": "Restablecer cuestionario",
     "resetEmailFailed": "No se pudo enviar el correo electrónico de restablecimiento de contraseña",
+    "placementResetEmailSent": "Correo de reinicio de nivel enviado",
     "chooseMapApp": "Elige la aplicación de mapas",
     "leaveClub": "¿Salir del club?",
     "freeStyle": "Estilo libre",

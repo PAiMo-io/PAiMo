@@ -162,6 +162,7 @@
     "resend": "Gửi lại",
     "resetPlacement": "Đặt lại câu hỏi đánh giá",
     "resetEmailFailed": "Không thể gửi email đặt lại mật khẩu",
+    "placementResetEmailSent": "Đã gửi email đặt lại đánh giá",
     "chooseMapApp": "Chọn ứng dụng bản đồ",
     "leaveClub": "Rời khỏi câu lạc bộ",
     "freeStyle": "Tự do",

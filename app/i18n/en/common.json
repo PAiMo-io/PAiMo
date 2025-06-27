@@ -164,6 +164,7 @@
   "resend": "Resend",
   "resetPlacement": "Reset Placement",
   "resetEmailFailed": "Failed to send reset email",
+  "placementResetEmailSent": "Placement reset email sent",
   "freeStyle": "Free Style",
   "randomMatching": "Random Matching",
   "eventPlayDate": "Event Play Date",

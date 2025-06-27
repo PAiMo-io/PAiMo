@@ -162,6 +162,7 @@
   "resend": "重发",
   "resetPlacement": "重新填写问卷",
   "resetEmailFailed": "发送重置密码邮件失败",
+  "placementResetEmailSent": "分级重置邮件已发送",
   "chooseMapApp": "选择地图应用",
   "leaveClub": "退出俱乐部",
   "freeStyle": "自由打",

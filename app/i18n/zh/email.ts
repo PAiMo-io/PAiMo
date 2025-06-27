@@ -26,4 +26,14 @@ export const email = {
     confirmButton: "验证我的邮箱",
     fallbackTip: "如果按钮无法点击，请将以下链接复制粘贴到浏览器中：",
   },
+  "reset-placement-email": {
+    subject: "重新填写你的分级问卷",
+    title: "重新进行分级",
+    subTitle: "请再次完成问卷",
+    intro: "管理员已重置你的分级问卷，点击下方按钮重新填写。",
+    startButton: "开始问卷",
+    fallbackTip: "如果按钮无法点击，请将以下链接复制粘贴到浏览器中：",
+    footerNote: "你收到此邮件是因为你的分级已被重置。",
+    copyright: "版权所有。",
+  },
 };

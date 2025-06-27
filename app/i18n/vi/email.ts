@@ -30,4 +30,14 @@ export const email = {
     fallbackTip:
       "Nếu nút không hoạt động, hãy sao chép và dán liên kết này vào trình duyệt của bạn:",
   },
+  "reset-placement-email": {
+    subject: "Làm lại bài khảo sát xếp hạng của bạn",
+    title: "Đặt lại xếp hạng",
+    subTitle: "Hãy hoàn thành lại bài khảo sát",
+    intro: "Quản trị viên đã đặt lại bài khảo sát xếp hạng của bạn. Nhấn vào nút bên dưới để thực hiện lại.",
+    startButton: "Làm khảo sát",
+    fallbackTip: "Nếu nút không hoạt động, hãy sao chép và dán liên kết này vào trình duyệt của bạn:",
+    footerNote: "Bạn nhận được email này vì xếp hạng của bạn đã được đặt lại.",
+    copyright: "Đã đăng ký bản quyền.",
+  },
 };
