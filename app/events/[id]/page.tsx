@@ -41,8 +41,8 @@ export default function EventPage({ params }: { params: { id: string } }) {
 	if (!event) return <PageSkeleton />;
 
 	return (
-		<div className="p-4 space-y-6 w-full max-w-lg">
-			<PullToRefreshWrapper className='pb-6' onRefresh={() => actions.fetchEvent()}>
+		<PullToRefreshWrapper className='mt-2' onRefresh={() => actions.fetchEvent()}>
+			<div className="p-4 space-y-6 w-full max-w-lg">	
 				<Tabs value={tab} onValueChange={v => setTab(v as any)}>
 					<TabsList className="mb-4">
 						<TabsTrigger value="event">{t('event')}</TabsTrigger>
@@ -143,7 +143,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
 						<EventRanking eventId={params.id} />
 					</TabsContent>
 				</Tabs>
-			</PullToRefreshWrapper>
-		</div>
+			</div>
+		</PullToRefreshWrapper>
 	);
 }
