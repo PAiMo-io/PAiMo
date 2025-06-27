@@ -6,6 +6,7 @@ import PageSkeleton from '../../../components/PageSkeleton'
 import { useApi } from '../../../lib/useApi'
 import { Input } from '../../../components/ui/input'
 import { Button } from '../../../components/ui/button'
+import { Label } from '../../../components/ui/label'
 import { useTranslation } from 'react-i18next'
 
 interface Option { text: string; score: number }
@@ -89,69 +90,104 @@ export default function PlacementManagementPage() {
       {parts.map((part, pidx) => (
         <div key={pidx} className="border p-4 space-y-4">
           <div className="space-y-2">
-            <Input
-              placeholder={t('partName') || 'Part Name'}
-              value={part.name}
-              onChange={e => {
-                const val = e.target.value
-                setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, name: val } : pp))
-              }}
-            />
+            <div>
+              <Label htmlFor={`part-name-${pidx}`} className="block">
+                {t('partName')}
+              </Label>
+              <Input
+                id={`part-name-${pidx}`}
+                placeholder={t('partName') || 'Part Name'}
+                value={part.name}
+                onChange={e => {
+                  const val = e.target.value
+                  setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, name: val } : pp))
+                }}
+              />
+            </div>
             <div className="flex space-x-2">
-              <Input
-                type="number"
-                placeholder={t('partWeight') || 'Weight'}
-                value={part.weight}
-                onChange={e => {
-                  const val = parseFloat(e.target.value)
-                  setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, weight: val } : pp))
-                }}
-                className="w-24"
-              />
-              <Input
-                type="number"
-                placeholder={t('partMultiplier') || 'Multiplier'}
-                value={part.multiplier}
-                onChange={e => {
-                  const val = parseFloat(e.target.value)
-                  setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, multiplier: val } : pp))
-                }}
-                className="w-24"
-              />
+              <div>
+                <Label htmlFor={`part-weight-${pidx}`} className="block">
+                  {t('partWeight')}
+                </Label>
+                <Input
+                  id={`part-weight-${pidx}`}
+                  type="number"
+                  placeholder={t('partWeight') || 'Weight'}
+                  value={part.weight}
+                  onChange={e => {
+                    const val = parseFloat(e.target.value)
+                    setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, weight: val } : pp))
+                  }}
+                  className="w-24"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`part-multiplier-${pidx}`} className="block">
+                  {t('partMultiplier')}
+                </Label>
+                <Input
+                  id={`part-multiplier-${pidx}`}
+                  type="number"
+                  placeholder={t('partMultiplier') || 'Multiplier'}
+                  value={part.multiplier}
+                  onChange={e => {
+                    const val = parseFloat(e.target.value)
+                    setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, multiplier: val } : pp))
+                  }}
+                  className="w-24"
+                />
+              </div>
             </div>
           </div>
           <div className="space-y-2">
             {part.questions.map((q, qidx) => (
               <div key={qidx} className="border p-2 space-y-2">
-                <Input
-                  placeholder={t('questionText') || 'Question'}
-                  value={q.question}
-                  onChange={e => {
-                    const val = e.target.value
-                    setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, question: val } : qq) } : pp))
-                  }}
-                />
+                <div>
+                  <Label htmlFor={`q-${pidx}-${qidx}`} className="block">
+                    {t('questionText')}
+                  </Label>
+                  <Input
+                    id={`q-${pidx}-${qidx}`}
+                    placeholder={t('questionText') || 'Question'}
+                    value={q.question}
+                    onChange={e => {
+                      const val = e.target.value
+                      setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, question: val } : qq) } : pp))
+                    }}
+                  />
+                </div>
                 {q.options.map((o, oidx) => (
                   <div key={oidx} className="flex space-x-2">
-                    <Input
-                      placeholder={t('optionText') || 'Option'}
-                      value={o.text}
-                      onChange={e => {
-                        const val = e.target.value
-                        setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, options: qq.options.map((oo, k) => k === oidx ? { ...oo, text: val } : oo) } : qq) } : pp))
-                      }}
-                      className="flex-1"
-                    />
-                    <Input
-                      type="number"
-                      placeholder={t('optionScore') || 'Score'}
-                      value={o.score}
-                      onChange={e => {
-                        const val = parseFloat(e.target.value)
-                        setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, options: qq.options.map((oo, k) => k === oidx ? { ...oo, score: val } : oo) } : qq) } : pp))
-                      }}
-                      className="w-20"
-                    />
+                    <div className="flex-1">
+                      <Label htmlFor={`q-${pidx}-${qidx}-opt-${oidx}-text`} className="block">
+                        {t('optionText')}
+                      </Label>
+                      <Input
+                        id={`q-${pidx}-${qidx}-opt-${oidx}-text`}
+                        placeholder={t('optionText') || 'Option'}
+                        value={o.text}
+                        onChange={e => {
+                          const val = e.target.value
+                          setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, options: qq.options.map((oo, k) => k === oidx ? { ...oo, text: val } : oo) } : qq) } : pp))
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor={`q-${pidx}-${qidx}-opt-${oidx}-score`} className="block">
+                        {t('optionScore')}
+                      </Label>
+                      <Input
+                        id={`q-${pidx}-${qidx}-opt-${oidx}-score`}
+                        type="number"
+                        placeholder={t('optionScore') || 'Score'}
+                        value={o.score}
+                        onChange={e => {
+                          const val = parseFloat(e.target.value)
+                          setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, options: qq.options.map((oo, k) => k === oidx ? { ...oo, score: val } : oo) } : qq) } : pp))
+                        }}
+                        className="w-20"
+                      />
+                    </div>
                   </div>
                 ))}
                 <Button
@@ -180,46 +216,70 @@ export default function PlacementManagementPage() {
       {levels.map((lvl, lidx) => (
         <div key={lidx} className="border p-4 space-y-2">
           <div className="flex space-x-2">
-            <Input
-              placeholder={t('levelCode') || 'Code'}
-              value={lvl.code}
-              onChange={e => {
-                const val = e.target.value
-                setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, code: val } : pp))
-              }}
-              className="w-24"
-            />
-            <Input
-              placeholder={t('levelName') || 'Name'}
-              value={lvl.name}
-              onChange={e => {
-                const val = e.target.value
-                setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, name: val } : pp))
-              }}
-              className="flex-1"
-            />
+            <div>
+              <Label htmlFor={`level-code-${lidx}`} className="block">
+                {t('levelCode')}
+              </Label>
+              <Input
+                id={`level-code-${lidx}`}
+                placeholder={t('levelCode') || 'Code'}
+                value={lvl.code}
+                onChange={e => {
+                  const val = e.target.value
+                  setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, code: val } : pp))
+                }}
+                className="w-24"
+              />
+            </div>
+            <div className="flex-1">
+              <Label htmlFor={`level-name-${lidx}`} className="block">
+                {t('levelName')}
+              </Label>
+              <Input
+                id={`level-name-${lidx}`}
+                placeholder={t('levelName') || 'Name'}
+                value={lvl.name}
+                onChange={e => {
+                  const val = e.target.value
+                  setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, name: val } : pp))
+                }}
+                className="w-full"
+              />
+            </div>
           </div>
           <div className="flex space-x-2">
-            <Input
-              type="number"
-              placeholder={t('levelMin') || 'Min'}
-              value={lvl.min}
-              onChange={e => {
-                const val = parseFloat(e.target.value)
-                setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, min: val } : pp))
-              }}
-              className="w-24"
-            />
-            <Input
-              type="number"
-              placeholder={t('levelMax') || 'Max'}
-              value={lvl.max}
-              onChange={e => {
-                const val = parseFloat(e.target.value)
-                setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, max: val } : pp))
-              }}
-              className="w-24"
-            />
+            <div>
+              <Label htmlFor={`level-min-${lidx}`} className="block">
+                {t('levelMin')}
+              </Label>
+              <Input
+                id={`level-min-${lidx}`}
+                type="number"
+                placeholder={t('levelMin') || 'Min'}
+                value={lvl.min}
+                onChange={e => {
+                  const val = parseFloat(e.target.value)
+                  setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, min: val } : pp))
+                }}
+                className="w-24"
+              />
+            </div>
+            <div>
+              <Label htmlFor={`level-max-${lidx}`} className="block">
+                {t('levelMax')}
+              </Label>
+              <Input
+                id={`level-max-${lidx}`}
+                type="number"
+                placeholder={t('levelMax') || 'Max'}
+                value={lvl.max}
+                onChange={e => {
+                  const val = parseFloat(e.target.value)
+                  setLevels(prev => prev.map((pp, i) => i === lidx ? { ...pp, max: val } : pp))
+                }}
+                className="w-24"
+              />
+            </div>
           </div>
           <div className="space-x-2">
             <Button onClick={() => handleSaveLevel(lidx)}>{t('save')}</Button>

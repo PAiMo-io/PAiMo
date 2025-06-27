@@ -162,6 +162,7 @@
   "newPassword": "New Password",
   "pendingSignups": "Pending Signups",
   "resend": "Resend",
+  "resetPlacement": "Reset Placement",
   "resetEmailFailed": "Failed to send reset email",
   "freeStyle": "Free Style",
   "randomMatching": "Random Matching",

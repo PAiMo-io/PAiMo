@@ -59,6 +59,13 @@ export default function ManagePage() {
     setUsers(prev => prev.map(u => (u.username === username ? { ...u, role: newRole } : u)));
   };
 
+  const handleResetPlacement = async (username: string) => {
+    await request({
+      url: `/api/users/${username}/reset-placement`,
+      method: 'post',
+    });
+  };
+
   const fetchClubs = useCallback(async () => {
     const res = await request<{ clubs: any[] }>({ url: '/api/clubs?all=1', method: 'get' });
     setClubs(
@@ -140,6 +147,7 @@ export default function ManagePage() {
             <tr>
               <th className="border p-2 text-left">{t('username')}</th>
               <th className="border p-2 text-left">{t('role')}</th>
+              <th className="border p-2 text-left">{t('resetPlacement')}</th>
             </tr>
           </thead>
           <tbody>
@@ -160,6 +168,11 @@ export default function ManagePage() {
                       <SelectItem value="member">{t('member')}</SelectItem>
                     </SelectContent>
                   </Select>
+                </td>
+                <td className="border p-2">
+                  <Button size="sm" onClick={() => handleResetPlacement(u.username)}>
+                    {t('resetPlacement')}
+                  </Button>
                 </td>
               </tr>
             ))}

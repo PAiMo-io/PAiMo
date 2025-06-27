@@ -13,6 +13,7 @@ import {
   SelectContent,
   SelectItem,
 } from '../../components/ui/select';
+import { Label } from '../../components/ui/label';
 import PageSkeleton from '../../components/PageSkeleton'
 import { useApi } from '../../lib/useApi'
 import { useTranslation } from 'react-i18next';
@@ -228,24 +229,26 @@ function CreateProfileClient() {
             <div key={part.id} className="space-y-2">
               <h3 className="font-semibold">{part.name}</h3>
               {part.questions.map(question => (
-                <Select
-                  key={question.id}
-                  value={answers[question.id]}
-                  onValueChange={value =>
-                    setAnswers(prev => ({ ...prev, [question.id]: value }))
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder={question.question} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {question.options.map((opt, idx) => (
-                      <SelectItem key={idx} value={String(idx)}>
-                        {opt.text}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div key={question.id} className="space-y-1">
+                  <Label className="block">{question.question}</Label>
+                  <Select
+                    value={answers[question.id]}
+                    onValueChange={value =>
+                      setAnswers(prev => ({ ...prev, [question.id]: value }))
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder={question.question} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {question.options.map((opt, idx) => (
+                        <SelectItem key={idx} value={String(idx)}>
+                          {opt.text}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               ))}
             </div>
           ))}
