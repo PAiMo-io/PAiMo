@@ -19,6 +19,15 @@ import { useTranslation } from 'react-i18next';
 
 
 import { Suspense } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from '../../components/ui/dialog';
+import { PLACEMENT_QUESTIONS } from '../constants/placement';
 import { SUPPORTED_LANGUAGES, SupportedLanguage } from '../constants/i18n';
 
 function CreateProfileClient() {
@@ -37,6 +46,8 @@ function CreateProfileClient() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [showPlacement, setShowPlacement] = useState(false);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
   const { t, i18n } = useTranslation('common');
 
   const effectiveEmail = session?.user?.email || queryEmail;
@@ -81,19 +92,30 @@ function CreateProfileClient() {
       setError(confirmPasswordError);
       return;
     }
+    setShowPlacement(true);
+  };
+
+  const calculateLevel = () => {
+    return PLACEMENT_QUESTIONS.reduce((total, q) => {
+      const value = answers[q.key];
+      const opt = q.options.find(o => o.value === value);
+      return total + (opt?.score || 0);
+    }, 0);
+  };
+
+  const handlePlacementSubmit = async () => {
+    const level = calculateLevel();
     try {
       await request({
         url: '/api/signup',
         method: 'post',
-        data: { email, username, gender, nickname, wechatId, password, lang: i18n.language },
+        data: { email, username, gender, nickname, wechatId, password, level, lang: i18n.language },
       });
-      // login after signup using NextAuth credentials provider
       const res = await signIn('credentials', {
         redirect: false,
         email,
-        password
+        password,
       });
-      console.log('Login error:', res);
       if (res?.error) {
         setError('Login failed. Please try again.');
         console.error('Login error:', res.error);
@@ -163,14 +185,49 @@ function CreateProfileClient() {
         />
         {confirmPasswordError && <p className="text-red-500 text-sm">{confirmPasswordError}</p>}
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        <Button className="w-full" onClick={handleSubmit}>
-          {t('saveProfile')}
-        </Button>
-        <Button variant="outline" className="w-full">
-          <Link href="/login" className="block w-full h-full">{t('backToLogin')}</Link>
-        </Button>
-      </div>
+      <Button className="w-full" onClick={handleSubmit}>
+        {t('saveProfile')}
+      </Button>
+      <Button variant="outline" className="w-full">
+        <Link href="/login" className="block w-full h-full">{t('backToLogin')}</Link>
+      </Button>
     </div>
+    <Dialog open={showPlacement} onOpenChange={setShowPlacement}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('placementTitle')}</DialogTitle>
+          <DialogDescription></DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          {PLACEMENT_QUESTIONS.map(question => (
+            <Select
+              key={question.key}
+              value={answers[question.key]}
+              onValueChange={value =>
+                setAnswers(prev => ({ ...prev, [question.key]: value }))
+              }
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder={t(question.questionKey)} />
+              </SelectTrigger>
+              <SelectContent>
+                {question.options.map(opt => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {t(opt.labelKey)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ))}
+        </div>
+        <DialogFooter className="pt-4">
+          <Button className="w-full" onClick={async () => { setShowPlacement(false); await handlePlacementSubmit(); }}>
+            {t('placementSubmit')}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  </div>
   );
 }
 
