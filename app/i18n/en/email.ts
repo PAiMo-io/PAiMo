@@ -32,4 +32,14 @@ export const email = {
     fallbackTip:
       "If that button doesn’t work, just copy and paste this link into your browser:",
   },
+  "reset-placement-email": {
+    subject: "Redo Your Placement Questionnaire",
+    title: "Placement Reset",
+    subTitle: "Time to Retake Your Quiz",
+    intro: "An admin has reset your placement questionnaire. Click below to complete it again.",
+    startButton: "Redo Questionnaire",
+    fallbackTip: "If that button doesn’t work, just copy and paste this link into your browser:",
+    footerNote: "You’re receiving this because your placement was reset.",
+    copyright: "All rights reserved."
+  },
 };

@@ -13,6 +13,7 @@ export interface IUser {
   password?: string;
   level?: number;
   profileComplete?: boolean;
+  placementComplete?: boolean;
   lang?: SupportedLanguage;
   avatarUpdatedAt?: Date | null; // Add this line
 }
@@ -32,7 +33,8 @@ const userSchema = new Schema({
   image: { type: String },
   password: { type: String },
   level: { type: Number },
-  profileComplete: { type: Boolean, default: false }, 
+  profileComplete: { type: Boolean, default: false },
+  placementComplete: { type: Boolean, default: false },
   lang: { type: String, enum: SUPPORTED_LANGUAGES, default: 'en' },
   avatarUpdatedAt: { type: Date, default: null }, // Add this line
 });

@@ -51,6 +51,11 @@ export default function Home() {
     if (status !== 'authenticated') return
     if (session.user?.profileComplete === false) {
       router.push('/create-profile');
+      return
+    }
+    if (session.user?.placementComplete === false) {
+      router.push('/placement');
+      return
     }
     const fetchUser = async () => {
       const userRes = await request<{ user: IUser }>({ url: '/api/profile', method: 'get' })

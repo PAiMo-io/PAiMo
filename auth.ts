@@ -17,6 +17,7 @@ declare module "next-auth" {
       nickname?: string | null;
       clubs?: string[];
       profileComplete?: boolean;
+      placementComplete?: boolean;
     };
   }
 }
@@ -29,6 +30,7 @@ declare module "next-auth/jwt" {
     nickname?: string | null;
     clubs?: string[];
     profileComplete?: boolean;
+    placementComplete?: boolean;
   }
 }
 
@@ -88,7 +90,8 @@ export const authOptions: NextAuthOptions = {
       token.role = dbUser.role || null;
       token.nickname = dbUser.nickname || null;
       token.clubs = dbUser.clubs ? dbUser.clubs.map((c: any) => c.toString()) : [];
-      token.profileComplete = !!dbUser.username;
+      token.profileComplete = !!dbUser.profileComplete;
+      token.placementComplete = !!dbUser.placementComplete;
 
       return token;
     },
@@ -100,6 +103,7 @@ export const authOptions: NextAuthOptions = {
         session.user.clubs = token.clubs as string[] | [];
 
         session.user.profileComplete = token.profileComplete as boolean;
+        session.user.placementComplete = token.placementComplete as boolean;
       }
       return session;
     },
