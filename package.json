@@ -43,7 +43,8 @@
     "resend": "^4.6.0",
     "sharp": "^0.33.5",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "use-haptic": "^1.1.11"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.18",
