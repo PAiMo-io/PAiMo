@@ -16,6 +16,14 @@ interface ProfileData {
   role?: string;
   image?: string | null;
   clubs?: string[];
+  avatarUpdatedAt?: string;
+}
+
+function getAvatarUrl(image?: string | null, avatarUpdatedAt?: string | number | null) {
+  if (!image) return '';
+  return avatarUpdatedAt
+    ? `${image}?v=${new Date(avatarUpdatedAt).getTime()}`
+    : image;
 }
 
 export default function ProfilePage() {
@@ -36,6 +44,7 @@ export default function ProfilePage() {
         method: 'post',
         data: { email: session.user.email },
       });
+      
       setData(res);
       setUsernameEdit(res.username || '');
       setNicknameEdit(res.nickname || '');
@@ -51,12 +60,13 @@ export default function ProfilePage() {
     return <div className="p-4">{t('failedToLoad')}</div>;
   }
 
+
   return (
     <div className="p-4 space-y-4">
       <h1 className="text-2xl mb-4">{t('profile')}</h1>
       {data.image ? (
         <Image
-          src={data.image}
+          src={getAvatarUrl(data.image, data.avatarUpdatedAt)}
           alt="Profile picture"
           width={96}
           height={96}
@@ -101,13 +111,17 @@ export default function ProfilePage() {
             const form = new FormData();
             form.append('avatar', avatarFile);
             try {
-              const res = await request<{ url: string }>({
+              const res = await request<{ url: string; avatarUpdatedAt: string }>({
                 url: '/api/profile/avatar',
                 method: 'post',
                 data: form,
                 headers: { 'Content-Type': 'multipart/form-data' },
               });
-              setData(prev => (prev ? { ...prev, image: res.url } : prev));
+              setData(prev =>
+                prev
+                  ? { ...prev, image: res.url, avatarUpdatedAt: res.avatarUpdatedAt }
+                  : prev
+              );
               setAvatarFile(null);
               setMessage(t('avatarUpdated'));
             } catch {

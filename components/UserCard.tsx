@@ -8,6 +8,7 @@ export interface UserCardProps {
     username: string
     nickname?: string
     image?: string | null
+    avatarUpdatedAt?: string | number | null
   },
   className?: string
 }
@@ -20,7 +21,11 @@ export default function UserCard({ user, className }: UserCardProps) {
     >
       {user.image ? (
         <Image
-          src={user.image}
+          src={
+            user.image
+              ? `${user.image}${user.avatarUpdatedAt ? `?v=${new Date(user.avatarUpdatedAt).getTime()}` : ''}`
+              : ''
+          }
           alt={displayName}
           width={32}
           height={32}
