@@ -55,10 +55,16 @@ function CreateProfileClient() {
 
   // Populate email from NextAuth session or query param
   useEffect(() => {
-    // Redirect to login if profile is complete or no email
-    if (status !== 'loading' && (session?.user?.profileComplete || !(session?.user?.email || queryEmail))) {
-      router.replace('/');
-      return;
+    // Redirect to main page if profile is complete, or to login if no email
+    if (status !== 'loading') {
+      if (session?.user?.profileComplete) {
+        router.replace('/');
+        return;
+      }
+      if (!(session?.user?.email || queryEmail)) {
+        router.replace('/login');
+        return;
+      }
     }
     if (session?.user?.email) {
       setEmail(session.user.email);
