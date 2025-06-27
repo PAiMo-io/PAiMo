@@ -50,7 +50,10 @@ export async function POST(request: Request) {
   const key = `avatars/${session.user.id}.webp`;
   const url = await uploadAvatar(key, compressed, 'image/webp');
 
-  await User.updateOne({ _id: session.user.id }, { image: url });
+  await User.updateOne(
+    { _id: session.user.id },
+    { image: url, avatarUpdatedAt: new Date() }
+  );
 
-  return NextResponse.json({ success: true, url });
+  return NextResponse.json({ success: true, url, avatarUpdatedAt: new Date() });
 }
