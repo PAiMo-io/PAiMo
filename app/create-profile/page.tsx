@@ -27,7 +27,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from '../../components/ui/dialog';
-import { PLACEMENT_QUESTIONS } from '../constants/placement';
 import { SUPPORTED_LANGUAGES, SupportedLanguage } from '../constants/i18n';
 
 function CreateProfileClient() {
@@ -47,6 +46,11 @@ function CreateProfileClient() {
   const [error, setError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [showPlacement, setShowPlacement] = useState(false);
+  const [questions, setQuestions] = useState<{
+    id: string
+    question: string
+    options: { text: string; score: number }[]
+  }[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const { t, i18n } = useTranslation('common');
 
@@ -70,6 +74,18 @@ function CreateProfileClient() {
       if (lang && SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)) i18n.changeLanguage(lang);
     }
   }, [session, queryEmail, status, router]);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const res = await request<{ questions: any[] }>({ url: '/api/placement-questions', method: 'get' })
+        setQuestions(res.questions)
+      } catch (e) {
+        console.error('Failed to load placement questions', e)
+      }
+    }
+    fetchQuestions()
+  }, [request])
 
   if (status !== 'loading' && session?.user?.profileComplete) {
     return <div className="p-4">{t('profileExists')}</div>;
@@ -96,12 +112,12 @@ function CreateProfileClient() {
   };
 
   const calculateLevel = () => {
-    return PLACEMENT_QUESTIONS.reduce((total, q) => {
-      const value = answers[q.key];
-      const opt = q.options.find(o => o.value === value);
-      return total + (opt?.score || 0);
-    }, 0);
-  };
+    return questions.reduce((total, q) => {
+      const idx = parseInt(answers[q.id] || '', 10)
+      const opt = isNaN(idx) ? null : q.options[idx]
+      return total + (opt?.score || 0)
+    }, 0)
+  }
 
   const handlePlacementSubmit = async () => {
     const level = calculateLevel();
@@ -199,21 +215,21 @@ function CreateProfileClient() {
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          {PLACEMENT_QUESTIONS.map(question => (
+          {questions.map(question => (
             <Select
-              key={question.key}
-              value={answers[question.key]}
+              key={question.id}
+              value={answers[question.id]}
               onValueChange={value =>
-                setAnswers(prev => ({ ...prev, [question.key]: value }))
+                setAnswers(prev => ({ ...prev, [question.id]: value }))
               }
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder={t(question.questionKey)} />
+                <SelectValue placeholder={question.question} />
               </SelectTrigger>
               <SelectContent>
-                {question.options.map(opt => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {t(opt.labelKey)}
+                {question.options.map((opt, idx) => (
+                  <SelectItem key={idx} value={String(idx)}>
+                    {opt.text}
                   </SelectItem>
                 ))}
               </SelectContent>

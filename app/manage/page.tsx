@@ -196,6 +196,11 @@ export default function ManagePage() {
             ))}
           </div>
         </div>
+        <div className="pt-4">
+          <Link href="/manage/placement-questions" className="underline text-blue-600">
+            {t('placementManagement')}
+          </Link>
+        </div>
         {pendingUsers.length > 0 && (
           <div>
             <h2 className="text-lg font-semibold mt-4">{t('pendingSignups')}</h2>
