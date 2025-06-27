@@ -8,6 +8,7 @@ import { useApi } from '@/lib/useApi'
 import UserCard from '@/components/UserCard'
 import { MatchUI } from '../MatchesScheduleSection'
 import ScoreEntryDialog from './ScoreEntryDialog'
+import { X } from 'lucide-react'
 
 interface Player {
   id: string
@@ -108,6 +109,32 @@ export default function MatchLobby({
     }
   }
 
+  const handleCompleteMatch = async (matchId: string) => {
+    try {
+      await request({
+        url: '/api/createEventQuickMatch',
+        method: 'put',
+        data: { matchId, action: 'complete' }
+      })
+      onRefresh()
+    } catch (error) {
+      console.error('Failed to complete match:', error)
+    }
+  }
+
+  const handleSwapAndRematch = async (originalMatchId: string) => {
+    try {
+      await request({
+        url: '/api/createEventQuickMatch',
+        method: 'post',
+        data: { eventId, rematchFrom: originalMatchId, swapPartners: true }
+      })
+      onRefresh()
+    } catch (error) {
+      console.error('Failed to create swap rematch:', error)
+    }
+  }
+
   const handleUpdateScore = async (matchId: string, scores: [number, number]) => {
     try {
       await request({
@@ -134,10 +161,17 @@ export default function MatchLobby({
     // If team 1 is empty, it's waiting
     if (!match.teams[1] || match.teams[1].players.length === 0) return 'waiting'
 
-    // If either team has a score > 0, it's completed
-    if ((match.teams[0]?.score > 0) || (match.teams[1]?.score > 0)) return 'completed'
+    // Check if match is manually completed (you'd need to add a completed field to track this)
+    // For now, we'll consider a match completed only when both teams have equal scores that are > 0
+    // This is a temporary solution - ideally you'd add a 'completed' field to the Match model
+    const team1Score = match.teams[0]?.score || 0
+    const team2Score = match.teams[1]?.score || 0
+    
+    // Only consider completed if one team has scored significantly more (indicating match finished)
+    if (team1Score > 0 && team2Score > 0 && Math.abs(team1Score - team2Score) >= 2) return 'completed'
+    if (team1Score >= 21 || team2Score >= 21) return 'completed' // Standard badminton winning score
 
-    // Otherwise it's playing
+    // If both teams have players but no completion criteria met, it's playing
     return 'playing'
   }
 
@@ -274,24 +308,33 @@ export default function MatchLobby({
                     </div>
                   </div>
 
-                  {/* Match Results for Completed Matches */}
-                  {status === 'completed' && match.teams && match.teams.length >= 2 && (
+                  {/* Match Results for Completed/Playing Matches */}
+                  {(status === 'completed' || status === 'playing') && match.teams && match.teams.length >= 2 && (
                     <div>
                       <h4 className="text-sm font-medium mb-2">{t('result')}</h4>
-                      <div className="bg-gray-50 p-3 rounded-lg">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <div className="text-sm font-medium">
-                              {(match.teams[0]?.players || []).map(p => p.username || p.nickname || p.email || 'Unknown').join(', ')}
+                      <div className="bg-gray-50 p-2 rounded-lg max-w-full overflow-hidden">
+                        <div className="space-y-2">
+                          {/* Team 1 */}
+                          <div className="flex justify-between items-center">
+                            <div className="flex-1 min-w-0">
+                              <div className="text-xs font-medium truncate">
+                                {(match.teams[0]?.players || []).map(p => p.username || p.nickname || p.email || 'Unknown').join(' & ')}
+                              </div>
                             </div>
-                            <div className="text-lg font-bold">{match.teams[0]?.score || 0}</div>
+                            <div className="text-lg font-bold ml-2">{match.teams[0]?.score || 0}</div>
                           </div>
-                          <div className="text-gray-500">vs</div>
-                          <div className="text-right">
-                            <div className="text-sm font-medium">
-                              {(match.teams[1]?.players || []).map(p => p.username || p.nickname || p.email || 'Unknown').join(', ')}
+                          
+                          {/* VS Divider */}
+                          <div className="text-center text-xs text-gray-500">vs</div>
+                          
+                          {/* Team 2 */}
+                          <div className="flex justify-between items-center">
+                            <div className="flex-1 min-w-0">
+                              <div className="text-xs font-medium truncate">
+                                {(match.teams[1]?.players || []).map(p => p.username || p.nickname || p.email || 'Unknown').join(' & ')}
+                              </div>
                             </div>
-                            <div className="text-lg font-bold">{match.teams[1]?.score || 0}</div>
+                            <div className="text-lg font-bold ml-2">{match.teams[1]?.score || 0}</div>
                           </div>
                         </div>
                       </div>
@@ -299,7 +342,7 @@ export default function MatchLobby({
                   )}
 
                   {/* Action Buttons */}
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {status === 'waiting' && (
                       <>
                         {canJoinMatch(match) && (
@@ -333,23 +376,45 @@ export default function MatchLobby({
                     )}
 
                     {status === 'playing' && (
-                      <Button
-                        onClick={() => openScoreDialog(match)}
-                        size="sm"
-                        className="bg-orange-600 hover:bg-orange-700"
-                      >
-                        {t('enterScore')}
-                      </Button>
+                      <>
+                        <Button
+                          onClick={() => openScoreDialog(match)}
+                          size="sm"
+                          className="bg-orange-600 hover:bg-orange-700"
+                        >
+                          {t('enterScore')}
+                        </Button>
+                        {isUserInMatch(match) && (
+                          <Button
+                            onClick={() => handleCompleteMatch(match._id)}
+                            size="sm"
+                            className="bg-green-600 hover:bg-green-700"
+                          >
+                            {t('completeMatch')}
+                          </Button>
+                        )}
+                      </>
                     )}
 
                     {status === 'completed' && isUserInMatch(match) && (
-                      <Button
-                        onClick={() => handleRematch(match._id)}
-                        size="sm"
-                        variant="outline"
-                      >
-                        {t('rematch')}
-                      </Button>
+                      <>
+                        <Button
+                          onClick={() => handleRematch(match._id)}
+                          size="sm"
+                          variant="outline"
+                        >
+                          {t('rematch')}
+                        </Button>
+                        <Button
+                          onClick={() => handleSwapAndRematch(match._id)}
+                          size="sm"
+                          variant="outline"
+                          className="flex items-center gap-1"
+                        >
+                          <X size={14} />
+                          {t('swapRematch')}
+                        </Button>
+                      </>
                     )}
                   </div>
                 </CardContent>
