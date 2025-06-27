@@ -7,5 +7,6 @@
   "availableEvents": "Eventos disponibles",
   "noEvents": "No hay eventos.",
   "hi": "Hola, {{name}}",
-  "defaultName": "Amigos"
+  "defaultName": "Amigos",
+  "loading": "Cargando..."
 }

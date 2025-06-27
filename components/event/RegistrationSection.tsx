@@ -49,6 +49,7 @@ export default function RegistrationSection({
                                 size="icon"
                                 variant="destructive"
                                 onClick={() => onRemoveParticipant(p.id)}
+                                className='flex items-center justify-center'
                             >
                                 <Trash size={16} />
                             </Button>

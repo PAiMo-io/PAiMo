@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { IUser } from '@/models/User'
 
 import { useTranslation } from 'react-i18next'
+import { PullToRefreshWrapper } from '@/components/PullToRefreshWrapper'
 interface EventItem {
   id: string
   name: string
@@ -23,10 +24,27 @@ interface EventItem {
 
 export default function Home() {
   const { data: session, status } = useSession()
-  const { request, loading, error } = useApi()
+  const { request, error } = useApi()
   const [events, setEvents] = useState<EventItem[]>([])
   const [user, setUser] = useState<IUser>({} as IUser)
+  const [initialLoading, setInitialLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
   const router = useRouter();
+
+  const fetchEvents = async (refresh = false) => {
+    if (refresh) {
+      setRefreshing(true)
+    } else {
+      setInitialLoading(true)
+    }
+    const evRes = await request<{ events: EventItem[] }>({ url: '/api/user-events', method: 'get' })
+    setEvents(evRes.events)
+    if (refresh) {
+      setRefreshing(false)
+    } else {
+      setInitialLoading(false)
+    }
+  }
 
   const { t } = useTranslation('home')
   useEffect(() => {
@@ -38,15 +56,11 @@ export default function Home() {
       const userRes = await request<{ user: IUser }>({ url: '/api/profile', method: 'get' })
       setUser(userRes.user)
     }
-    const fetchEvents = async () => {
-      const evRes = await request<{ events: EventItem[] }>({ url: '/api/user-events', method: 'get' })
-      setEvents(evRes.events)
-    }
     fetchEvents()
     fetchUser()
   }, [status, request, router, session])
 
-  if (status === 'loading' || loading) {
+  if (status === 'loading') {
     return <PageSkeleton />
   }
 
@@ -72,27 +86,30 @@ export default function Home() {
   }
 
   return (
-    <div className="p-4 space-y-4 w-full">
-      <div className="flex space-x-2">
-        <span className="text-lg font-semibold flex-1">
-          👋 {t('hi', { name: user?.nickname ?? t('defaultName') })}!
-        </span>
-      </div>
-
-      <div className="space-y-4">
-        <h1 className="text-2xl mb-2">{t('availableEvents')}</h1>
-        {events.length === 0 ? (
-          <p>{t('noEvents')}</p>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {events.map(e => (
-              <Link key={e.id} href={`/events/${e.id}`} className="block">
-                <EventCard event={e} />
-              </Link>
-            ))}
+    
+      <div className="p-4 space-y-4 w-full h-full">
+        <PullToRefreshWrapper onRefresh={() => fetchEvents(true)}>
+          <div className="flex space-x-2">
+            <span className="text-lg font-semibold flex-1">
+              👋 {t('hi', { name: user?.nickname ?? t('defaultName') })}!
+            </span>
           </div>
-        )}
+
+          <div className="space-y-4">
+            <h1 className="text-2xl mb-2">{t('availableEvents')}</h1>
+            {events.length === 0 ? (
+              <p>{t('noEvents')}</p>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {events.map(e => (
+                  <Link key={e.id} href={`/events/${e.id}`} className="block">
+                    <EventCard event={e} />
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </PullToRefreshWrapper>
       </div>
-    </div>
   )
 }

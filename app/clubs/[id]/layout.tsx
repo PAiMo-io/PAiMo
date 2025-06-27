@@ -46,6 +46,7 @@ interface Club {
 }
 
 import ClubDataContext, { ClubData } from './ClubContext';
+import { PullToRefreshWrapper } from '@/components/PullToRefreshWrapper';
 
 export default function ClubLayout({
   children,
@@ -61,6 +62,8 @@ export default function ClubLayout({
   const { request, loading, error } = useApi();
   const [clubData, setClubData] = useState<ClubData | null>(null);
   const [activeTab, setActiveTab] = useState('home');
+  const [refreshing, setRefreshing] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(false);
 
   // Determine active tab from pathname
   useEffect(() => {
@@ -82,7 +85,12 @@ export default function ClubLayout({
     fetchClubData();
   }, [status, session, router, params.id]);
 
-  const fetchClubData = async () => {
+  const fetchClubData = async (refresh = false) => {
+    if (refresh) {
+      setRefreshing(true);
+    } else {
+      setInitialLoading(true);
+    }
     try {
       const res = await request<{ club: any; members: Member[]; events: EventItem[]; adminList: AdminUser[] }>({
         url: `/api/clubs/${params.id}`,
@@ -114,6 +122,11 @@ export default function ClubLayout({
     } catch (err) {
       console.error('Failed to fetch club data:', err);
     }
+    if (refresh) {
+      setRefreshing(false);
+    } else {
+      setInitialLoading(false);
+    }
   };
 
   const handleTabChange = (value: string) => {
@@ -131,7 +144,7 @@ export default function ClubLayout({
     }
   };
 
-  if (status === 'loading' || loading) {
+  if (status === 'loading' || initialLoading) {
     return <PageSkeleton />;
   }
 
@@ -142,6 +155,7 @@ export default function ClubLayout({
   return (
     <ClubDataContext.Provider value={{ clubData, fetchClubData, loading }}>
       <div className="min-h-screen">
+      <PullToRefreshWrapper className='mt-4' onRefresh={() => fetchClubData(true)}>
         {/* Sticky Tabs */}
         <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-2">
           <Tabs value={activeTab} onValueChange={handleTabChange}>
@@ -152,9 +166,10 @@ export default function ClubLayout({
             </TabsList>
           </Tabs>
         </div>
-
+        
         {/* Page Content */}
         {children}
+      </PullToRefreshWrapper>
       </div>
     </ClubDataContext.Provider>
   );

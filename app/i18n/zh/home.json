@@ -7,5 +7,6 @@
   "availableEvents": "当前活动",
   "noEvents": "暂无活动。",
   "hi": "你好, {{name}}",
-  "defaultName": "朋友"
+  "defaultName": "朋友",
+  "loading": "加载中"
 }

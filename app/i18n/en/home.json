@@ -7,5 +7,6 @@
   "availableEvents": "Available Events",
   "noEvents": "No events.",
   "hi": "Hi, {{name}}",
-  "defaultName": "there"
+  "defaultName": "there",
+  "loading": "Loading..."
 }
