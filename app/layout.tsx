@@ -27,7 +27,7 @@ export default async function RootLayout({
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
       </head>
-      <body suppressHydrationWarning className="h-dvh overflow-x-hidden overflow-y-hidden overscroll-contain">
+      <body suppressHydrationWarning className="h-dvh overflow-x-hidden overflow-y-hidden overscroll-contain w-full">
         <Providers session={session}>
           {children}
         </Providers>

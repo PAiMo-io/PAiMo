@@ -72,10 +72,10 @@ export default function Home() {
   }
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-4 w-full">
       <div className="flex space-x-2">
         <span className="text-lg font-semibold flex-1">
-        👋 {t('hi', { name: user?.nickname ?? t('defaultName') })}!
+          👋 {t('hi', { name: user?.nickname ?? t('defaultName') })}!
         </span>
       </div>
 

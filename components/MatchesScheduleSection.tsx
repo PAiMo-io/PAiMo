@@ -60,6 +60,7 @@ export default function MatchesScheduleSection({ matches, onScoreUpdated }: Matc
                 open={dialogOpen}
                 matchId={activeMatch?._id || ''}
                 initialScores={activeMatch ? [activeMatch.teams[0].score, activeMatch.teams[1].score] : [0, 0]}
+                teams={activeMatch?.teams}
                 onClose={() => setDialogOpen(false)}
                 handleSaveScores={handleSaveScores}
             />

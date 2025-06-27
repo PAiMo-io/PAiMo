@@ -3,12 +3,28 @@
 import React, { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Plus, Minus } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import Image from 'next/image'
+import Avatar from 'boring-avatars'
+
+interface Player {
+    id: string
+    username: string
+    nickname?: string
+    email?: string
+    image?: string | null
+}
+
+interface Team {
+    players: Player[]
+    score: number
+}
 
 interface ScoreEntryDialogProps {
     open: boolean
     matchId: string
     initialScores: [number, number]
+    teams?: [Team, Team]
     onClose: () => void
     handleSaveScores: (matchId: string, scores: [number, number]) => void
 }
@@ -17,6 +33,7 @@ export default function ScoreEntryDialog({
     open,
     matchId,
     initialScores,
+    teams,
     onClose,
     handleSaveScores,
 }: ScoreEntryDialogProps) {
@@ -31,11 +48,10 @@ export default function ScoreEntryDialog({
         }
     }, [open, initialScores])
 
-    const stepScore = (teamIndex: 0 | 1, delta: number) => {
+    const updateScore = (teamIndex: 0 | 1, newScore: number) => {
         setScores(prev => {
             const next = [...prev] as [number, number]
-            const newVal = Math.max(0, next[teamIndex] + delta)
-            next[teamIndex] = newVal
+            next[teamIndex] = newScore
             return next
         })
     }
@@ -64,30 +80,58 @@ export default function ScoreEntryDialog({
                 </DialogDescription>
 
                 <div className="flex flex-col space-y-4 mt-4">
-                    {['Team A', 'Team B'].map((label, idx) => (
-                        <div key={idx} className="flex items-center justify-between">
-                            <span className="font-medium">{label}</span>
-                            <div className="flex items-center space-x-2">
-                                <Button
-                                    size="icon"
-                                    variant="outline"
-                                    onClick={() => stepScore(idx as 0 | 1, -1)}
-                                    disabled={scores[idx] <= 0 || saving}
-                                >
-                                    <Minus />
-                                </Button>
-                                <span className="w-10 text-center text-xl font-semibold">{scores[idx]}</span>
-                                <Button
-                                    size="icon"
-                                    variant="outline"
-                                    onClick={() => stepScore(idx as 0 | 1, +1)}
-                                    disabled={saving}
-                                >
-                                    <Plus />
-                                </Button>
+                    {[0, 1].map((teamIndex) => {
+                        const team = teams?.[teamIndex]
+
+                        return (
+                            <div key={teamIndex} className="flex items-center justify-between">
+                                <div className="flex items-center space-x-2 flex-1">
+                                    {team?.players ? (
+                                        team.players.map((player, playerIndex) => {
+                                            const displayName = player.nickname || player.username || player.email || 'Unknown'
+                                            return (
+                                                <div key={playerIndex} className="flex-shrink-0">
+                                                    {player.image ? (
+                                                        <Image
+                                                            src={player.image}
+                                                            alt={displayName}
+                                                            width={32}
+                                                            height={32}
+                                                            className="rounded-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <Avatar size={32} name={displayName} variant="beam" />
+                                                    )}
+                                                </div>
+                                            )
+                                        })
+                                    ) : (
+                                        <span className="font-medium text-sm text-gray-500">
+                                            Team {teamIndex === 0 ? 'A' : 'B'}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="flex items-center ml-4">
+                                    <Select
+                                        value={scores[teamIndex].toString()}
+                                        onValueChange={(value) => updateScore(teamIndex as 0 | 1, parseInt(value))}
+                                        disabled={saving}
+                                    >
+                                        <SelectTrigger className="w-20">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {Array.from({ length: 51 }, (_, i) => (
+                                                <SelectItem key={i} value={i.toString()}>
+                                                    {i}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
 
                 <DialogFooter className="mt-6 flex justify-end space-x-2">

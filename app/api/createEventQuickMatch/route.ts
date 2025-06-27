@@ -238,11 +238,24 @@ export async function PUT(request: Request) {
         }, { status: 400 });
       }
 
-      // Mark match as completed by setting a high score for one team if no scores exist
+      // Mark match as completed
+      // If no scores exist, set default completion scores
       if (quickMatch.teams[0].score === 0 && quickMatch.teams[1].score === 0) {
-        // Set a default completion score
         quickMatch.teams[0].score = 21;
         quickMatch.teams[1].score = 19;
+      } else {
+        // If scores already exist, ensure at least one team has a winning score
+        const team1Score = quickMatch.teams[0].score;
+        const team2Score = quickMatch.teams[1].score;
+        
+        // If neither team has reached 21 points, set the higher scoring team to 21
+        if (team1Score < 21 && team2Score < 21) {
+          if (team1Score >= team2Score) {
+            quickMatch.teams[0].score = Math.max(21, team1Score);
+          } else {
+            quickMatch.teams[1].score = Math.max(21, team2Score);
+          }
+        }
       }
       break;
 

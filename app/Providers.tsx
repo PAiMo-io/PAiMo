@@ -17,7 +17,7 @@ export function Providers({
   return (
     <SessionProvider session={session}>
       <I18nProvider>
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full w-full">
           <AppBar />
           <main className="flex-grow overflow-y-auto">{children}</main>
           <AppFooter />

@@ -1,11 +1,28 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import UserCard from '@/components/UserCard'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { useTranslation } from 'react-i18next'
 import { useApi } from '@/lib/useApi'
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  getSortedRowModel,
+  SortingState,
+} from '@tanstack/react-table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import Image from 'next/image'
+import Avatar from 'boring-avatars'
 
 interface RankingData {
   user: {
@@ -32,11 +49,107 @@ export default function EventRanking({ eventId }: EventRankingProps) {
   const { request } = useApi()
   const [rankings, setRankings] = useState<RankingData[]>([])
   const [loading, setLoading] = useState(true)
+  const [sorting, setSorting] = useState<SortingState>([])
   const [eventInfo, setEventInfo] = useState<{
     eventName: string
     totalParticipants: number
     totalMatches: number
   } | null>(null)
+
+  // Define table columns
+  const columns: ColumnDef<RankingData>[] = [
+    {
+      id: 'rank',
+      header: '#',
+      cell: ({ row }) => (
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-800 font-bold text-sm">
+          #{row.index + 1}
+        </div>
+      ),
+      enableSorting: false,
+    },
+    {
+      id: 'user',
+      header: 'Player',
+      cell: ({ row }) => {
+        const user = row.original.user
+        const displayName = user.username || user.email || 'Unknown'
+        return (
+          <div className="flex items-center space-x-3">
+            {user.image ? (
+              <Image
+                src={user.image}
+                alt={displayName}
+                width={32}
+                height={32}
+                className="rounded-full object-cover"
+              />
+            ) : (
+              <Avatar size={32} name={displayName} variant="beam" />
+            )}
+            <span className="font-medium">{displayName}</span>
+          </div>
+        )
+      },
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'matchesPlayed',
+      header: 'Matches',
+      cell: ({ row }) => (
+        <div className="text-center font-medium">
+          {row.original.matchesPlayed}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'wins',
+      header: 'Wins',
+      cell: ({ row }) => (
+        <div className="text-center font-semibold text-green-600">
+          {row.original.wins}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'losses',
+      header: 'Losses',
+      cell: ({ row }) => (
+        <div className="text-center font-semibold text-red-600">
+          {row.original.losses}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'totalScore',
+      header: 'Total Score',
+      cell: ({ row }) => (
+        <div className="text-center font-medium">
+          {row.original.totalScore}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'totalScoreMargin',
+      header: 'Score Margin',
+      cell: ({ row }) => (
+        <div className="text-center font-medium">
+          {row.original.totalScoreMargin > 0 ? '+' : ''}{row.original.totalScoreMargin}
+        </div>
+      ),
+    },
+  ]
+
+  const table = useReactTable({
+    data: rankings,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: {
+      sorting,
+    },
+  })
 
   useEffect(() => {
     const fetchRankings = async () => {
@@ -51,7 +164,7 @@ export default function EventRanking({ eventId }: EventRankingProps) {
           url: `/api/eventRanking?eventId=${eventId}`,
           method: 'get'
         })
-        
+
         setRankings(response.rankings)
         setEventInfo({
           eventName: response.eventName,
@@ -100,58 +213,57 @@ export default function EventRanking({ eventId }: EventRankingProps) {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-3">
-          {rankings.map((ranking, index) => (
-            <Card key={ranking.user.id} className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-800 font-bold text-sm">
-                    #{index + 1}
-                  </div>
-                  <UserCard user={ranking.user} />
-                </div>
-                
-                <div className="flex items-center space-x-6 text-sm">
-                  {ranking.matchesPlayed > 0 ? (
-                    <>
-                      <div className="text-center">
-                        <div className="font-semibold text-green-600">{ranking.wins}W</div>
-                        <div className="text-xs text-gray-500">{t('wins')}</div>
-                      </div>
-                      
-                      <div className="text-center">
-                        <div className="font-semibold text-red-600">{ranking.losses}L</div>
-                        <div className="text-xs text-gray-500">{t('losses')}</div>
-                      </div>
-                      
-                      <div className="text-center">
-                        <div className="font-semibold">{ranking.winRate.toFixed(1)}%</div>
-                        <div className="text-xs text-gray-500">{t('winRate')}</div>
-                      </div>
-                      
-                      <div className="text-center">
-                        <div className="font-semibold">{ranking.totalScore}</div>
-                        <div className="text-xs text-gray-500">{t('totalScore')}</div>
-                      </div>
-                      
-                      <div className="text-center">
-                        <div className="font-semibold">{ranking.totalScoreMargin}</div>
-                        <div className="text-xs text-gray-500">{t('scoreMargin')}</div>
-                      </div>
-                      
-                      <div className="text-center">
-                        <div className="font-semibold">{ranking.averageScore.toFixed(1)}</div>
-                        <div className="text-xs text-gray-500">{t('avgScore')}</div>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="text-gray-500 text-sm">{t('noMatchesPlayed')}</div>
-                  )}
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+        <Card>
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id} className="text-center">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                      className="hover:bg-gray-50"
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className="py-3">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center text-gray-500"
+                    >
+                      {t('noResultsYet')}
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       )}
     </div>
   )

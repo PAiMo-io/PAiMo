@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import Avatar from 'boring-avatars'
 
-export interface UserCardProps {
+export interface UserMiniCardProps {
   user: {
     id: string
     username: string
@@ -12,11 +12,11 @@ export interface UserCardProps {
   className?: string
 }
 
-export default function UserCard({ user, className }: UserCardProps) {
+export default function UserMiniCard({ user, className }: UserMiniCardProps) {
   const displayName = user.nickname || user.username;
   return (
     <div
-      className={`flex items-center space-x-2 p-2 border rounded-md ${className || ''}`}
+      className={`flex flex-col items-center py-2 border rounded-md ${className || ''}`}
     >
       {user.image ? (
         <Image
@@ -29,8 +29,12 @@ export default function UserCard({ user, className }: UserCardProps) {
       ) : (
         <Avatar size={32} name={displayName} variant="beam" />
       )}
-      <span className="truncate text-xs mt-1 text-center"
-        style={{ maxWidth: '100px' }}>{displayName}</span>
+      <span
+        className="truncate text-xs mt-1 text-center"
+        style={{ maxWidth: '100px' }}
+      >
+        {displayName}
+      </span>
     </div>
   )
 }
