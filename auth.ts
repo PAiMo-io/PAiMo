@@ -88,7 +88,7 @@ export const authOptions: NextAuthOptions = {
       token.role = dbUser.role || null;
       token.nickname = dbUser.nickname || null;
       token.clubs = dbUser.clubs ? dbUser.clubs.map((c: any) => c.toString()) : [];
-      token.profileComplete = !!dbUser.username;
+      token.profileComplete = !!dbUser.profileComplete;
 
       return token;
     },

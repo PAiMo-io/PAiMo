@@ -19,7 +19,14 @@ export async function POST(request: Request) {
 
     await connect()
 
-    const update: any = { username, gender, nickname, wechatId, lang }
+    const update: any = {
+      username,
+      gender,
+      nickname,
+      wechatId,
+      lang,
+      profileComplete: true,
+    }
     if (level != null) {
       update.level = level
     }
