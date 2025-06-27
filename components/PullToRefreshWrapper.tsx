@@ -60,7 +60,6 @@ export const PullToRefreshWrapper: React.FC<PullToRefreshWrapperProps> = ({
         setPulling(true);
 
         if (!hasTriggeredHaptic.current) {
-            console.log("triggering haptic");
             triggerHaptic();
             hasTriggeredHaptic.current = true;
         }
@@ -98,7 +97,7 @@ export const PullToRefreshWrapper: React.FC<PullToRefreshWrapperProps> = ({
       wrapper.removeEventListener("wheel", handleWheel);
     };
   }, [onRefresh, refreshing, debounceMs, threshold]);
-
+  
   return (
     <div ref={wrapperRef} className={`overflow-y-auto h-full ${className}`}>
       <div className="sticky top-0 z-10">

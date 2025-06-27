@@ -155,6 +155,7 @@ export default function ClubLayout({
   return (
     <ClubDataContext.Provider value={{ clubData, fetchClubData, loading }}>
       <div className="min-h-screen">
+      <PullToRefreshWrapper className='mt-4' onRefresh={() => fetchClubData(true)}>
         {/* Sticky Tabs */}
         <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-2">
           <Tabs value={activeTab} onValueChange={handleTabChange}>
@@ -165,10 +166,10 @@ export default function ClubLayout({
             </TabsList>
           </Tabs>
         </div>
-        <PullToRefreshWrapper className='mt-4' onRefresh={() => fetchClubData(true)}>
-          {/* Page Content */}
-          {children}
-        </PullToRefreshWrapper>
+        
+        {/* Page Content */}
+        {children}
+      </PullToRefreshWrapper>
       </div>
     </ClubDataContext.Provider>
   );
