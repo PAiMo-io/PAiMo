@@ -15,15 +15,15 @@ export async function GET(request: Request) {
 
   try {
     // Get event with participants
-    const event = await Event.findById(eventId).populate('participants', 'username email image');
+    const event = await Event.findById(eventId).populate('participants', 'username email image avatarUpdatedAt');
     if (!event) {
       return NextResponse.json({ success: false, error: 'Event not found' }, { status: 404 });
     }
 
     // Get all matches for this event (both regular and quick matches)
     const matches = await Match.find({ event: eventId })
-      .populate('teams.0.players', 'username email image')
-      .populate('teams.1.players', 'username email image');
+      .populate('teams.0.players', 'username email image avatarUpdatedAt')
+      .populate('teams.1.players', 'username email image avatarUpdatedAt');
 
     // Calculate ranking for each participant
     const rankingMap: Record<string, {
@@ -43,7 +43,8 @@ export async function GET(request: Request) {
           id: userId,
           username: participant.username || participant.email,
           email: participant.email,
-          image: participant.image
+          image: participant.image,
+          avatarUpdatedAt: participant.avatarUpdatedAt
         },
         wins: 0,
         losses: 0,
