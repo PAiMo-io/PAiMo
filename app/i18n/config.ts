@@ -22,30 +22,40 @@ import zhScheduler from './zh/scheduler.json';
 import viScheduler from './vi/scheduler.json';
 import esScheduler from './es/scheduler.json';
 
+// club page (/clubs/[id])
+import enClub from './en/club.json';
+import zhClub from './zh/club.json';
+import viClub from './vi/club.json';
+import esClub from './es/club.json';
+
 const resources = {
   en: {
     common: enCommon,
     home: enHome,
     profile: enProfile,
     scheduler: enScheduler,
+    club: enClub,
   },
   zh: {
     common: zhCommon,
     home: zhHome,
     profile: zhProfile,
     scheduler: zhScheduler,
+    club: zhClub,
   },
   vi: {
     common: viCommon,
     home: viHome,
     profile: viProfile,
     scheduler: viScheduler,
+    club: viClub,
   },
   es: {
     common: esCommon,
     home: esHome,
     profile: esProfile,
     scheduler: esScheduler,
+    club: esClub,
   },
 };
 
@@ -54,7 +64,7 @@ i18n
   .init({
     fallbackLng: 'en',
     lng: 'en',
-    ns: ['common', 'home', 'profile', 'scheduler'],      
+    ns: ['common', 'home', 'profile', 'scheduler', 'club'],      
     defaultNS: 'common',
     resources,
     interpolation: {

@@ -10,7 +10,7 @@ const clubSchema = new Schema({
   logoUrl: String,
   visibility: {
     type: String,
-    enum: ['private', 'public'],
+    enum: ['private', 'publicView', 'publicJoin'],
     default: 'private',
   },
   members: [
@@ -19,6 +19,7 @@ const clubSchema = new Schema({
       username: String,
     },
   ],
+  adminList: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
 
 export default models.Club || model('Club', clubSchema);

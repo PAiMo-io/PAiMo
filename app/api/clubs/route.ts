@@ -39,6 +39,7 @@ export async function POST(request: Request) {
     createdBy: user?.nickname || user?.username,
     createdAt: new Date(),
     members: [{ id: user._id, username: user?.username || user?.email || 'unknown' }],
+    adminList: [user._id], // Auto-assign club creator as admin
   });
   // also store the club reference on user for convenience
   if (user) {
