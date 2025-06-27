@@ -173,12 +173,12 @@ export default function MatchLobby({
 		if ((team1Score === 21 && team2Score === 19) || (team1Score === 19 && team2Score === 21)) {
 			return 'completed'
 		}
-		
+
 		// Also consider completed if either team has 21+ points (standard badminton win)
 		if (team1Score >= 21 || team2Score >= 21) {
 			return 'completed'
 		}
-		
+
 		// Or if both teams have scores and there's a large gap (indicates manual completion)
 		if ((team1Score > 0 || team2Score > 0) && Math.abs(team1Score - team2Score) >= 10) {
 			return 'completed'
@@ -435,10 +435,10 @@ export default function MatchLobby({
 													onClick={() => handleSwapAndRematch(match._id)}
 													size="sm"
 													variant="outline"
-													className="flex items-center gap-1"
+													className="flex flex-row items-center gap-1"
 												>
-													<Shuffle size={14} />
-													{t('swapRematch')}
+													<Shuffle size={14} className="inline-block mr-2" />
+													<span className="inline-block">{t('swapRematch')}</span>
 												</Button>
 											</>
 										)}

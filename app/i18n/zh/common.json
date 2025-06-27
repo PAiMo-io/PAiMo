@@ -150,5 +150,20 @@
   "male": "男",
   "female": "女",
   "genderStats": "男：{{maleCount}}, 女：{{femaleCount}}",
-  "eventsCount": "活动数：{{count}}"
+  "eventsCount": "活动数：{{count}}",
+  "createMatch": "创建比赛",
+  "noQuickMatches": "暂无快速比赛。创建一个开始吧！",
+  "matchs": "比赛",
+  "waiting": "等待中",
+  "playing": "进行中",
+  "completed": "已完成",
+  "quickMatches": "快速比赛",
+  "players": "玩家",
+  "joinMatch": "加入比赛",
+  "leaveMatch": "离开比赛",
+  "startMatch": "开始比赛",
+  "enterScore": "输入分数",
+  "completeMatch": "完成比赛",
+  "rematch": "再来一把",
+  "swapRematch": "换人再开"
 }

@@ -150,6 +150,21 @@
     "male": "Nam",
     "female": "Nữ",
     "genderStats": "Nam: {{maleCount}}, Nữ: {{femaleCount}}",
-    "eventsCount": "Sự kiện: {{count}}"
+    "eventsCount": "Sự kiện: {{count}}",
+    "createMatch": "Tạo trận đấu",
+    "noQuickMatches": "Không có trận đấu nhanh nào. Tạo một trận đấu để bắt đầu!",
+    "matchs": "Trận đấu",
+    "waiting": "Đang chờ",
+    "playing": "Đang chơi",
+    "completed": "Đã hoàn thành",
+    "quickMatches": "Trận đấu nhanh",
+    "players": "Người chơi",
+    "joinMatch": "Tham gia trận đấu",
+    "leaveMatch": "Rời khỏi trận đấu",
+    "startMatch": "Bắt đầu trận đấu",
+    "enterScore": "Nhập điểm số",
+    "completeMatch": "Hoàn thành trận đấu",
+    "rematch": "Trận đấu lại",
+    "swapRematch": "Hoán đổi & Trận đấu lại"
   }
   

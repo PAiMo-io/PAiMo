@@ -150,6 +150,21 @@
     "male": "Hombre",
     "female": "Mujer",
     "genderStats": "Hombres: {{maleCount}}, Mujeres: {{femaleCount}}",
-    "eventsCount": "Eventos: {{count}}"
+    "eventsCount": "Eventos: {{count}}",
+    "createMatch": "Crear partido",
+    "noQuickMatches": "No hay partidos rápidos disponibles. ¡Crea uno para comenzar!",
+    "matchs": "Partidos",
+    "waiting": "Esperando",
+    "playing": "Jugando",
+    "completed": "Completado",
+    "quickMatches": "Partidos rápidos",
+    "players": "Jugadores",
+    "joinMatch": "Unirse al partido",
+    "leaveMatch": "Salir del partido",
+    "startMatch": "Iniciar partido",
+    "enterScore": "Ingresar puntuación",
+    "completeMatch": "Completar partido",
+    "rematch": "Repetir partido",
+    "swapRematch": "Intercambiar y repetir partido"
   }
   
