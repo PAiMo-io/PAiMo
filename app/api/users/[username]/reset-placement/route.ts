@@ -19,7 +19,7 @@ export async function POST(
   if (!user) {
     return NextResponse.json({ success: false }, { status: 404 })
   }
-  user.profileComplete = false
+  user.placementComplete = false
   user.level = null
   await user.save()
 
@@ -31,7 +31,7 @@ export async function POST(
         'reset-placement-email',
         user.lang,
         {
-          placementUrl: `${appUrl}/create-profile?email=${encodeURIComponent(user.email)}&lang=${user.lang}`,
+          placementUrl: `${appUrl}/placement?email=${encodeURIComponent(user.email)}&lang=${user.lang}`,
           appUrl,
           year: new Date().getFullYear(),
         }

@@ -20,14 +20,6 @@ import { useTranslation } from 'react-i18next';
 
 
 import { Suspense } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-} from '../../components/ui/dialog';
 import { SUPPORTED_LANGUAGES, SupportedLanguage } from '../constants/i18n';
 
 function CreateProfileClient() {
@@ -46,19 +38,6 @@ function CreateProfileClient() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [showPlacement, setShowPlacement] = useState(false);
-  const [parts, setParts] = useState<{
-    id: string
-    name: string
-    weight: number
-    multiplier: number
-    questions: {
-      id: string
-      question: string
-      options: { text: string; score: number }[]
-    }[]
-  }[]>([]);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
   const { t, i18n } = useTranslation('common');
 
   const effectiveEmail = session?.user?.email || queryEmail;
@@ -82,17 +61,6 @@ function CreateProfileClient() {
     }
   }, [session, queryEmail, status, router]);
 
-  useEffect(() => {
-    const fetchParts = async () => {
-      try {
-        const res = await request<{ parts: any[] }>({ url: '/api/placement-parts', method: 'get' })
-        setParts(res.parts)
-      } catch (e) {
-        console.error('Failed to load placement questions', e)
-      }
-    }
-    fetchParts()
-  }, [request])
 
   if (status !== 'loading' && session?.user?.profileComplete) {
     return <div className="p-4">{t('profileExists')}</div>;
@@ -115,27 +83,11 @@ function CreateProfileClient() {
       setError(confirmPasswordError);
       return;
     }
-    setShowPlacement(true);
-  };
-
-  const calculateLevel = () => {
-    return parts.reduce((total, part) => {
-      const partScore = (part.questions || []).reduce((pt, q) => {
-        const idx = parseInt(answers[q.id] || '', 10)
-        const opt = isNaN(idx) ? null : q.options[idx]
-        return pt + (opt?.score || 0)
-      }, 0)
-      return total + partScore * (part.multiplier || 1) * (part.weight || 1)
-    }, 0)
-  }
-
-  const handlePlacementSubmit = async () => {
-    const level = calculateLevel();
     try {
       await request({
         url: '/api/signup',
         method: 'post',
-        data: { email, username, gender, nickname, wechatId, password, level, lang: i18n.language },
+        data: { email, username, gender, nickname, wechatId, password, lang: i18n.language },
       });
       const res = await signIn('credentials', {
         redirect: false,
@@ -148,7 +100,7 @@ function CreateProfileClient() {
         return;
       }
       await update();
-      router.push('/');
+      router.push('/placement');
     } catch (e: any) {
       setError(t('signupFailed'));
     }
@@ -218,48 +170,6 @@ function CreateProfileClient() {
         <Link href="/login" className="block w-full h-full">{t('backToLogin')}</Link>
       </Button>
     </div>
-    <Dialog open={showPlacement} onOpenChange={setShowPlacement}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t('placementTitle')}</DialogTitle>
-          <DialogDescription></DialogDescription>
-        </DialogHeader>
-        <div className="space-y-4">
-          {parts.map(part => (
-            <div key={part.id} className="space-y-2">
-              <h3 className="font-semibold">{part.name}</h3>
-              {part.questions.map(question => (
-                <div key={question.id} className="space-y-1">
-                  <Label className="block">{question.question}</Label>
-                  <Select
-                    value={answers[question.id]}
-                    onValueChange={value =>
-                      setAnswers(prev => ({ ...prev, [question.id]: value }))
-                    }
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder={question.question} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {question.options.map((opt, idx) => (
-                        <SelectItem key={idx} value={String(idx)}>
-                          {opt.text}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-        <DialogFooter className="pt-4">
-          <Button className="w-full" onClick={async () => { setShowPlacement(false); await handlePlacementSubmit(); }}>
-            {t('placementSubmit')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   </div>
   );
 }
