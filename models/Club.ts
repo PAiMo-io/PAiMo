@@ -13,6 +13,7 @@ const clubSchema = new Schema({
     enum: ['private', 'publicView', 'publicJoin'],
     default: 'private',
   },
+  placementRequired: { type: Boolean, default: false },
   members: [
     {
       id: { type: Schema.Types.ObjectId, ref: 'User' },

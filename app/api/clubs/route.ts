@@ -17,6 +17,7 @@ export async function GET(request: Request) {
     logoUrl: 1,
     createdBy: 1,
     createdAt: 1,
+    placementRequired: 1,
   });
   return NextResponse.json({ clubs });
 }
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
   if (!session || !session.user?.id) {
     return NextResponse.json({ success: false }, { status: 401 });
   }
-  const { name, description, location, logoUrl, visibility } = await request.json();
+  const { name, description, location, logoUrl, visibility, placementRequired } = await request.json();
   await connect();
   const user = await User.findById(session.user.id);
   const nickname = user?.nickname || 'unknown';
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
     location,
     logoUrl,
     visibility,
+    placementRequired: !!placementRequired,
     createdBy: user?.nickname || user?.username,
     createdAt: new Date(),
     members: [{ id: user._id, username: user?.username || user?.email || 'unknown' }],

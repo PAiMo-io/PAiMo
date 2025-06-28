@@ -37,6 +37,7 @@ interface Club {
   createdAt?: string;
   logoUrl?: string;
   visibility?: string;
+  placementRequired?: boolean;
 }
 
 export interface ClubData {

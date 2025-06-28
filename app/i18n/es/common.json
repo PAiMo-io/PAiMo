@@ -58,6 +58,7 @@
     "partName": "Nombre de la sección",
     "partWeight": "Peso de sección",
     "partMultiplier": "Multiplicador de sección",
+    "requirePlacement": "Requerir evaluación",
     "partA": "Sección A",
     "partB": "Sección B",
     "loadFailed": "Error al cargar.",

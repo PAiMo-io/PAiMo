@@ -58,6 +58,7 @@
     "partName": "Tên phần",
     "partWeight": "Trọng số phần",
     "partMultiplier": "Hệ số phần",
+    "requirePlacement": "Bắt buộc đánh giá",
     "partA": "Phần A",
     "partB": "Phần B",
     "loadFailed": "Tải thất bại.",

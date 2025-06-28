@@ -58,6 +58,7 @@
   "partName": "部分名称",
   "partWeight": "部分权重",
   "partMultiplier": "部分倍数",
+  "requirePlacement": "需要做评级",
   "partA": "A 部分",
   "partB": "B 部分",
   "loadFailed": "加载失败。",

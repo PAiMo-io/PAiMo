@@ -104,6 +104,7 @@ export default function ClubLayout({
           createdAt: res.club.createdAt || '',
           logoUrl: res.club.logoUrl || '',
           visibility: res.club.visibility || 'private',
+          placementRequired: res.club.placementRequired || false,
         },
         members: res.members,
         events: res.events.map(e => ({ ...e, clubName: res.club.name })),

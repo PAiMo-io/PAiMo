@@ -100,8 +100,7 @@ function CreateProfileClient() {
         return;
       }
       await update();
-      const cid = session?.user?.clubs && session.user.clubs[0];
-      router.push(cid ? `/placement?clubId=${cid}` : '/');
+      router.push('/');
     } catch (e: any) {
       setError(t('signupFailed'));
     }

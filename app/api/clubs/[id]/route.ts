@@ -41,6 +41,7 @@ export async function GET(
       location: club.location,
       logoUrl: club.logoUrl,
       visibility: club.visibility,
+      placementRequired: club.placementRequired,
       createdBy: club.createdBy,
       createdAt: club.createdAt,
     },
@@ -124,12 +125,13 @@ export async function PUT(
   if (!isClubAdmin && !isSuperAdmin) {
     return NextResponse.json({ success: false }, { status: 403 });
   }
-  const { name, description, location, logoUrl, visibility } = await request.json();
+  const { name, description, location, logoUrl, visibility, placementRequired } = await request.json();
   if (name !== undefined) club.name = name;
   if (description !== undefined) club.description = description;
   if (location !== undefined) club.location = location;
   if (logoUrl !== undefined) club.logoUrl = logoUrl;
   if (visibility !== undefined) club.visibility = visibility;
+  if (placementRequired !== undefined) club.placementRequired = !!placementRequired;
   await club.save();
   return NextResponse.json({ success: true });
 }

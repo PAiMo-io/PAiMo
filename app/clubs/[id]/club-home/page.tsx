@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { useApi } from '@/lib/useApi';
+import { useRouter } from 'next/navigation';
 import ClubCard from '@/components/ClubCard';
 import ClubMap from '@/components/club/ClubMap';
 import EventCard from '@/components/EventCard';
@@ -19,13 +20,16 @@ import { useClubData } from '../ClubContext';
 export default function ClubHomePage() {
   const { t } = useTranslation('common');
   const { data: session, update } = useSession();
+  const router = useRouter();
   const { request } = useApi();
   const { clubData, fetchClubData } = useClubData();
   const [newEventName, setNewEventName] = useState('');
   const [clubLocation, setClubLocation] = useState('');
   const [clubVisibility, setClubVisibility] = useState('private');
+  const [placementRequired, setPlacementRequired] = useState(false);
   const [savingLocation, setSavingLocation] = useState(false);
   const [savingVisibility, setSavingVisibility] = useState(false);
+  const [savingPlacement, setSavingPlacement] = useState(false);
   const [showLeave, setShowLeave] = useState(false);
 
   // Update local state when clubData changes
@@ -33,6 +37,7 @@ export default function ClubHomePage() {
     if (clubData) {
       setClubLocation(clubData.club.location || '');
       setClubVisibility(clubData.club.visibility || 'private');
+      setPlacementRequired(!!clubData.club.placementRequired);
     }
   }, [clubData]);
 
@@ -87,6 +92,18 @@ export default function ClubHomePage() {
       data: { visibility: newVisibility },
     });
     setSavingVisibility(false);
+    fetchClubData();
+  };
+
+  const updatePlacementRequired = async (val: boolean) => {
+    setSavingPlacement(true);
+    setPlacementRequired(val);
+    await request({
+      url: `/api/clubs/${clubData.club.id}`,
+      method: 'put',
+      data: { placementRequired: val },
+    });
+    setSavingPlacement(false);
     fetchClubData();
   };
 
@@ -154,8 +171,8 @@ export default function ClubHomePage() {
             {/* Visibility Control */}
             <div>
               <label className="text-sm font-medium mb-2 block">Club Visibility</label>
-              <Select 
-                value={clubVisibility} 
+              <Select
+                value={clubVisibility}
                 onValueChange={updateVisibility}
                 disabled={savingVisibility}
               >
@@ -168,6 +185,25 @@ export default function ClubHomePage() {
                   <SelectItem value="publicJoin">{t('publicJoin')}</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* Placement Requirement */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">{t('requirePlacement')}</label>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={placementRequired}
+                  onChange={e => updatePlacementRequired(e.target.checked)}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => router.push(`/manage/placement?clubId=${clubData.club.id}`)}
+                >
+                  {t('placementManagement')}
+                </Button>
+              </div>
             </div>
 
             {/* Create Event */}

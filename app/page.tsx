@@ -31,25 +31,32 @@ export default function Home() {
   const { t } = useTranslation('home')
   useEffect(() => {
     if (status !== 'authenticated') return
-    if (session.user?.profileComplete === false) {
-      router.push('/create-profile');
-      return
-    }
-    if (session.user?.placementComplete === false && !session.user?.bypassPlacement) {
-      const cid = session.user?.clubs && session.user.clubs[0];
-      router.push(cid ? `/placement?clubId=${cid}` : '/');
-      return
-    }
-    const fetchUser = async () => {
+    const run = async () => {
+      if (session.user?.profileComplete === false) {
+        router.push('/create-profile');
+        return
+      }
+      if (session.user?.placementComplete === false && !session.user?.bypassPlacement) {
+        const cid = session.user?.clubs && session.user.clubs[0]
+        if (cid) {
+          try {
+            const res = await request<{ club: { placementRequired?: boolean } }>({ url: `/api/clubs/${cid}`, method: 'get' })
+            if (res.club.placementRequired) {
+              router.push(`/placement?clubId=${cid}`)
+              return
+            }
+          } catch {
+            // ignore
+          }
+        }
+      }
+
       const userRes = await request<{ user: IUser }>({ url: '/api/profile', method: 'get' })
       setUser(userRes.user)
-    }
-    const fetchEvents = async () => {
       const evRes = await request<{ events: EventItem[] }>({ url: '/api/user-events', method: 'get' })
       setEvents(evRes.events)
     }
-    fetchEvents()
-    fetchUser()
+    run()
   }, [status, request, router, session])
 
   if (status === 'loading' || loading) {

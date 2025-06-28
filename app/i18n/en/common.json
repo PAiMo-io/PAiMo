@@ -58,6 +58,7 @@
   "partName": "Part Name",
   "partWeight": "Part Weight",
   "partMultiplier": "Part Multiplier",
+  "requirePlacement": "Require Placement",
   "partA": "Part A",
   "partB": "Part B",
   "loadFailed": "Failed to load.",
