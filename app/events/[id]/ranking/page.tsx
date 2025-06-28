@@ -1,19 +1,10 @@
-'use client'
+'use client';
+import EventRanking from '@/components/event/EventRanking';
 
-import { useEventPage } from '@/hooks/useEventPage'
-import PageSkeleton from '@/components/PageSkeleton'
-import EventRanking from '@/components/event/EventRanking'
-
-export default function EventRankingPage({ params }: { params: { id: string } }) {
-  const { event } = useEventPage(params.id)
-
-  if (!event) {
-    return <PageSkeleton />
-  }
-
+export default function RankingPage({ params }: { params: { id: string } }) {
   return (
-    <div className="p-4">
+    <div className="w-full">
       <EventRanking eventId={params.id} />
     </div>
-  )
+  );
 }

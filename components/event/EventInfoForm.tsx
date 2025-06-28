@@ -29,6 +29,20 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
   const { t } = useTranslation('common')
   const [isSaving, setIsSaving] = useState(false)
   
+  // Don't render the form if event data is not yet loaded
+  if (!event || !event.id) {
+    return (
+      <div className="p-4 border rounded-lg">
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    )
+  }
+  
   const { control, reset, getValues, formState: { isDirty } } = useForm<FormData>({
     defaultValues: {
       name: '',
@@ -44,7 +58,7 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
 
   // Reset form when event changes
   useEffect(() => {
-    if (!event) return
+    if (!event || !event.id) return
     
     const formData = {
       name: event.name || '',
@@ -57,8 +71,13 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
       courtCount: event.courtCount || undefined,
     }
     
-    reset(formData)
-  }, [event, reset])
+    // Use setTimeout to ensure the reset happens after navigation
+    const timeoutId = setTimeout(() => {
+      reset(formData)
+    }, 0)
+    
+    return () => clearTimeout(timeoutId)
+  }, [event?.id, event?.name, event?.visibility, event?.registrationEndTime, event?.playDate, event?.gymInfo, event?.gameStyle, event?.maxPoint, event?.courtCount, reset])
 
   // Handle save button click
   const handleSave = async () => {

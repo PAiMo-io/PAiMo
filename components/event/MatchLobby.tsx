@@ -22,13 +22,15 @@ interface MatchLobbyProps {
 	currentUserId?: string
 	quickMatches: MatchUI[]
 	onRefresh: () => void
+	disabled?: boolean
 }
 
 export default function MatchLobby({
 	eventId,
 	currentUserId,
 	quickMatches,
-	onRefresh
+	onRefresh,
+	disabled = false
 }: MatchLobbyProps) {
 	const { t } = useTranslation('common')
 	const { request } = useApi()
@@ -257,7 +259,7 @@ export default function MatchLobby({
 				<h3 className="text-lg font-semibold">{t('quickMatches')}</h3>
 				<Button
 					onClick={handleCreateMatch}
-					disabled={isCreating}
+					disabled={isCreating || disabled}
 					className="bg-green-600 hover:bg-green-700"
 				>
 					{isCreating ? t('creating') : t('createMatch')}
@@ -381,6 +383,7 @@ export default function MatchLobby({
 														onClick={() => handleJoinMatch(match._id)}
 														size="sm"
 														className="bg-blue-600 hover:bg-blue-700"
+														disabled={disabled}
 													>
 														{t('joinMatch')}
 													</Button>
@@ -390,6 +393,7 @@ export default function MatchLobby({
 														onClick={() => handleLeaveMatch(match._id)}
 														size="sm"
 														variant="outline"
+														disabled={disabled}
 													>
 														{t('leaveMatch')}
 													</Button>
@@ -399,6 +403,7 @@ export default function MatchLobby({
 														onClick={() => handleStartMatch(match._id)}
 														size="sm"
 														className="bg-green-600 hover:bg-green-700"
+														disabled={disabled}
 													>
 														{t('startMatch')}
 													</Button>
@@ -412,6 +417,7 @@ export default function MatchLobby({
 													onClick={() => openScoreDialog(match)}
 													size="sm"
 													className="bg-orange-600 hover:bg-orange-700"
+													disabled={disabled}
 												>
 													{t('enterScore')}
 												</Button>
@@ -420,6 +426,7 @@ export default function MatchLobby({
 														onClick={() => handleCompleteMatch(match._id)}
 														size="sm"
 														className="bg-green-600 hover:bg-green-700"
+														disabled={disabled}
 													>
 														{t('completeMatch')}
 													</Button>
@@ -433,6 +440,7 @@ export default function MatchLobby({
 													onClick={() => handleRematch(match._id)}
 													size="sm"
 													variant="outline"
+													disabled={disabled}
 												>
 													{t('rematch')}
 												</Button>
@@ -441,6 +449,7 @@ export default function MatchLobby({
 													size="sm"
 													variant="outline"
 													className="flex flex-row items-center gap-1"
+													disabled={disabled}
 												>
 													<Shuffle size={14} className="inline-block mr-2" />
 													<span className="inline-block">{t('swapRematch')}</span>
