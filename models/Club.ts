@@ -17,6 +17,11 @@ const clubSchema = new Schema({
     {
       id: { type: Schema.Types.ObjectId, ref: 'User' },
       username: String,
+      role: {
+        type: String,
+        enum: ['president', 'vice', 'member'],
+        default: 'member',
+      },
     },
   ],
   adminList: [{ type: Schema.Types.ObjectId, ref: 'User' }],

@@ -15,6 +15,14 @@ interface Member {
   nickname?: string;
   gender?: string;
   image?: string | null;
+  role?: string;
+}
+
+interface AdminUser {
+  id: string;
+  username: string;
+  nickname?: string;
+  image?: string | null;
 }
 
 interface EventItem {
@@ -44,6 +52,7 @@ interface ClubData {
   club: Club;
   members: Member[];
   events: EventItem[];
+  adminList: AdminUser[];
   isMember: boolean;
   isAdmin: boolean;
 }
@@ -66,12 +75,14 @@ export default function ClubEventPage({ params }: { params: { id: string } }) {
 
   const fetchClubData = async () => {
     try {
-      const res = await request<{ club: any; members: Member[]; events: EventItem[] }>({
+      const res = await request<{ club: any; members: Member[]; events: EventItem[]; adminList: AdminUser[] }>({
         url: `/api/clubs/${params.id}`,
         method: 'get',
       });
-      
-      const isAdmin = session?.user?.role === 'admin' || session?.user?.role === 'super-admin';
+
+      const isClubAdmin = res.adminList.some((a: AdminUser) => a.id === session?.user?.id);
+      const isSuperAdmin = session?.user?.role === 'super-admin';
+      const isAdmin = isClubAdmin || isSuperAdmin;
       const isMember = res.members.some((m: Member) => m.id === session?.user?.id);
 
       setClubData({
@@ -87,6 +98,7 @@ export default function ClubEventPage({ params }: { params: { id: string } }) {
         },
         members: res.members,
         events: res.events.map(e => ({ ...e, clubName: res.club.name })),
+        adminList: res.adminList,
         isMember,
         isAdmin,
       });
