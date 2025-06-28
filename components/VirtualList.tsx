@@ -26,7 +26,8 @@ function VirtualResponsiveGridInner<T>({
       totalCount={data.length}
       itemContent={(index) => renderItem(data[index], index)}
       components={{
-        Scroller: React.forwardRef((props, ref) => {
+        Scroller: React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+            (props, ref) => {
           const { style, children } =
             props as React.HTMLAttributes<HTMLDivElement>;
           return (
@@ -39,7 +40,8 @@ function VirtualResponsiveGridInner<T>({
             </div>
           );
         }),
-        List: React.forwardRef((props, ref) => {
+        List: React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+            (props, ref) => {
           const { style, children } =
             props as React.HTMLAttributes<HTMLDivElement>;
           return (
