@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '../../../../../auth'
+import { getDb } from '@/lib/db'
 import Pusher from 'pusher'
 
 const pusher = new Pusher({
@@ -11,15 +12,46 @@ const pusher = new Pusher({
   useTLS: true,
 })
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  _request: Request,
+  { params }: { params: { id: string } }
+) {
+  const db = await getDb()
+  const messages = await db
+    .collection('messages')
+    .find({ clubId: params.id })
+    .sort({ timestamp: -1 })
+    .limit(50)
+    .toArray()
+  return NextResponse.json({ messages: messages.reverse() })
+}
+
+export async function POST(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   const session = await getServerSession(authOptions)
-  const { text } = await request.json()
-  const user = session?.user as any
-  const username = user?.username || user?.email || 'anonymous'
+  if (!session || !session.user?.id) {
+    return NextResponse.json({ success: false }, { status: 401 })
+  }
+  const { content } = await request.json()
+  if (!content) {
+    return NextResponse.json({ success: false }, { status: 400 })
+  }
+  const db = await getDb()
+  const user = session.user as any
+  const doc = {
+    clubId: params.id,
+    senderId: session.user.id,
+    senderName: user.username || user.email || 'anonymous',
+    content,
+    timestamp: new Date(),
+  }
+  await db.collection('messages').insertOne(doc)
   await pusher.trigger(`club-${params.id}`, 'message', {
-    user: username,
-    text,
-    timestamp: Date.now(),
+    senderName: doc.senderName,
+    content: doc.content,
+    timestamp: doc.timestamp,
   })
   return NextResponse.json({ success: true })
 }

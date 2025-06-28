@@ -7,15 +7,27 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 interface Message {
-  user: string
-  text: string
-  timestamp?: number
+  senderName: string
+  content: string
+  timestamp?: string
 }
 
 export default function ChatBox({ clubId }: { clubId: string }) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await axios.get(`/api/clubs/${clubId}/messages`)
+        setMessages(res.data.messages || [])
+      } catch (err) {
+        console.error('Failed to load messages', err)
+      }
+    }
+    load()
+  }, [clubId])
 
   useEffect(() => {
     const pusherKey = process.env.NEXT_PUBLIC_PUSHER_KEY
@@ -44,8 +56,12 @@ export default function ChatBox({ clubId }: { clubId: string }) {
 
   const sendMessage = async () => {
     if (!input.trim()) return
-    await axios.post(`/api/clubs/${clubId}/messages`, { text: input })
-    setInput('')
+    try {
+      await axios.post(`/api/clubs/${clubId}/messages`, { content: input })
+      setInput('')
+    } catch (err) {
+      console.error('Failed to send message', err)
+    }
   }
 
   return (
@@ -53,8 +69,8 @@ export default function ChatBox({ clubId }: { clubId: string }) {
       <div className="h-64 overflow-y-auto space-y-1">
         {messages.map((m, idx) => (
           <div key={idx} className="p-1 border-b text-sm">
-            <strong>{m.user}: </strong>
-            {m.text}
+            <strong>{m.senderName}: </strong>
+            {m.content}
           </div>
         ))}
         <div ref={bottomRef} />
