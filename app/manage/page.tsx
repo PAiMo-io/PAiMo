@@ -186,6 +186,14 @@ export default function ManagePage() {
             </SelectContent>
           </Select>
           <Button onClick={handleCreateEvent}>{t('createEvent')}</Button>
+          {selectedClub && (
+            <Button
+              variant="outline"
+              onClick={() => router.push(`/manage/placement?clubId=${selectedClub}`)}
+            >
+              {t('placementManagement')}
+            </Button>
+          )}
         </div>
         <div>
           <h2 className="text-lg font-semibold mt-4">{t('allClubs')}</h2>
@@ -196,13 +204,6 @@ export default function ManagePage() {
               </Link>
             ))}
           </div>
-        </div>
-        <div className="pt-4">
-          {selectedClub && (
-            <Link href={`/manage/placement?clubId=${selectedClub}`} className="underline text-blue-600">
-              {t('placementManagement')}
-            </Link>
-          )}
         </div>
         {pendingUsers.length > 0 && (
           <div>
