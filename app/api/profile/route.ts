@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   if (!session) {
     return NextResponse.json({ success: false }, { status: 401 });
   }
-  const { email, username } = await request.json();
+  const { email, username, clubId } = await request.json();
 
   if (!email && !username) {
     return NextResponse.json({ success: false }, { status: 400 });
@@ -23,11 +23,16 @@ export async function POST(request: Request) {
 
   let code: string | undefined
   let name: string | undefined
-  if (user && typeof user.level === 'number' && user.placementClub) {
-    const lvl = await PlacementLevel.findOne({ club: user.placementClub, min: { $lte: user.level }, max: { $gte: user.level } })
-    if (lvl) {
-      code = lvl.code
-      name = lvl.name
+  let level: number | undefined
+  if (user) {
+    const club = clubId || user.placementClub?.toString()
+    if (club) {
+      const entry = user.placementScores.find((p: any) => p.club.toString() === club)
+      level = entry ? entry.score : user.level
+      if (level != null) {
+        const lvl = await PlacementLevel.findOne({ club, min: { $lte: level }, max: { $gte: level } })
+        if (lvl) { code = lvl.code; name = lvl.name }
+      }
     }
   }
 
@@ -73,21 +78,29 @@ export async function PUT(request: Request) {
   return NextResponse.json({ success: true });
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ success: false }, { status: 401 });
   }
 
+  const { searchParams } = new URL(request.url)
+  const clubId = searchParams.get('clubId') || undefined
+
   await connect();
   const user = await User.findOne({ _id: session.user.id }).populate({ path: 'clubs', strictPopulate: false });
   let code: string | undefined
   let name: string | undefined
-  if (user && typeof user.level === 'number' && user.placementClub) {
-    const lvl = await PlacementLevel.findOne({ club: user.placementClub, min: { $lte: user.level }, max: { $gte: user.level } })
-    if (lvl) {
-      code = lvl.code
-      name = lvl.name
+  let level: number | undefined
+  if (user) {
+    const club = clubId || user.placementClub?.toString()
+    if (club) {
+      const entry = user.placementScores.find((p: any) => p.club.toString() === club)
+      level = entry ? entry.score : user.level
+      if (level != null) {
+        const lvl = await PlacementLevel.findOne({ club, min: { $lte: level }, max: { $gte: level } })
+        if (lvl) { code = lvl.code; name = lvl.name }
+      }
     }
   }
   const result = {

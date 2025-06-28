@@ -20,6 +20,7 @@ declare module "next-auth" {
       placementComplete?: boolean;
       bypassPlacement?: boolean;
       placementClub?: string | null;
+      placementScores?: { club: string; score: number }[];
     };
   }
 }
@@ -35,6 +36,7 @@ declare module "next-auth/jwt" {
     placementComplete?: boolean;
     bypassPlacement?: boolean;
     placementClub?: string | null;
+    placementScores?: { club: string; score: number }[];
   }
 }
 
@@ -98,6 +100,9 @@ export const authOptions: NextAuthOptions = {
       token.placementComplete = !!dbUser.placementComplete;
       token.bypassPlacement = !!dbUser.bypassPlacement;
       token.placementClub = dbUser.placementClub ? dbUser.placementClub.toString() : null;
+      token.placementScores = dbUser.placementScores
+        ? dbUser.placementScores.map((p: any) => ({ club: p.club.toString(), score: p.score }))
+        : [];
 
       return token;
     },
@@ -112,6 +117,7 @@ export const authOptions: NextAuthOptions = {
         session.user.placementComplete = token.placementComplete as boolean;
         session.user.bypassPlacement = token.bypassPlacement as boolean;
         session.user.placementClub = token.placementClub as string | null;
+        session.user.placementScores = token.placementScores as { club: string; score: number }[];
       }
       return session;
     },

@@ -13,6 +13,7 @@ export interface IUser {
   password?: string;
   level?: number;
   placementClub?: string;
+  placementScores?: { club: string; score: number }[];
   profileComplete?: boolean;
   placementComplete?: boolean;
   bypassPlacement?: boolean;
@@ -35,6 +36,15 @@ const userSchema = new Schema({
   password: { type: String },
   level: { type: Number },
   placementClub: { type: Schema.Types.ObjectId, ref: 'Club' },
+  placementScores: {
+    type: [
+      {
+        club: { type: Schema.Types.ObjectId, ref: 'Club' },
+        score: Number,
+      },
+    ],
+    default: [],
+  },
   profileComplete: { type: Boolean, default: false },
   placementComplete: { type: Boolean, default: false },
   bypassPlacement: { type: Boolean, default: false },

@@ -52,6 +52,7 @@ export interface ClubData {
 const ClubDataContext = createContext<{
   clubData: ClubData | null;
   fetchClubData: () => Promise<void>;
+  setClubData: (data: ClubData) => void;
   loading: boolean;
 } | null>(null);
 

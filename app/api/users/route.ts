@@ -22,11 +22,21 @@ export async function GET(request: Request) {
     }
   }
   const query = clubId ? { clubs: clubId } : {};
-  const users = await User.find(
-    query,
-    { _id: 0, username: 1, role: 1, placementComplete: 1, bypassPlacement: 1, level: 1 }
-  );
-  return NextResponse.json({ users });
+  const users = await User.find(query, {
+    _id: 0,
+    username: 1,
+    role: 1,
+    placementComplete: 1,
+    bypassPlacement: 1,
+    placementScores: 1,
+  }).lean();
+  const formatted = users.map(u => {
+    const lvl = clubId
+      ? u.placementScores?.find((p: any) => p.club.toString() === clubId)?.score
+      : u.level;
+    return { username: u.username, placementComplete: u.placementComplete, bypassPlacement: u.bypassPlacement, level: lvl };
+  });
+  return NextResponse.json({ users: formatted });
 }
 
 export async function PUT(request: Request) {

@@ -33,7 +33,17 @@ export async function POST(
   }
   user.placementComplete = false
   user.level = null
-  user.placementClub = null
+  if (clubId) {
+    user.placementScores = user.placementScores.filter(
+      (p: any) => p.club.toString() !== clubId
+    )
+    if (user.placementClub && user.placementClub.toString() === clubId) {
+      user.placementClub = null
+    }
+  } else {
+    user.placementScores = []
+    user.placementClub = null
+  }
   await user.save()
 
   const resend = new Resend(process.env.RESEND_API_KEY || '')

@@ -141,7 +141,7 @@ export default function ClubLayout({
   }
 
   return (
-    <ClubDataContext.Provider value={{ clubData, fetchClubData, loading }}>
+    <ClubDataContext.Provider value={{ clubData, fetchClubData, setClubData, loading }}>
       <div className="min-h-screen">
         {/* Sticky Tabs */}
         <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-2">

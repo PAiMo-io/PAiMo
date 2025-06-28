@@ -242,6 +242,7 @@ export default function PlacementManagementPage() {
                       />
                     </div>
                     <Button
+                      type="button"
                       size="sm"
                       variant="ghost"
                       onClick={() =>
@@ -258,6 +259,7 @@ export default function PlacementManagementPage() {
                   </div>
                 ))}
                 <Button
+                  type="button"
                   variant="outline"
                   onClick={() =>
                     updatePart(pidx, pp => ({
@@ -273,6 +275,7 @@ export default function PlacementManagementPage() {
                   {t('addOption')}
                 </Button>
                 <Button
+                  type="button"
                   size="sm"
                   variant="ghost"
                   onClick={() =>
@@ -287,6 +290,7 @@ export default function PlacementManagementPage() {
               </div>
             ))}
             <Button
+              type="button"
               onClick={() =>
                 updatePart(pidx, pp => ({
                   ...pp,
@@ -298,12 +302,12 @@ export default function PlacementManagementPage() {
             </Button>
           </div>
           <div className="space-x-2">
-            <Button onClick={() => handleSave(pidx)}>{t('save')}</Button>
-            <Button variant="destructive" onClick={() => handleDelete(pidx)}>{t('remove')}</Button>
+            <Button type="button" onClick={() => handleSave(pidx)}>{t('save')}</Button>
+            <Button type="button" variant="destructive" onClick={() => handleDelete(pidx)}>{t('remove')}</Button>
           </div>
         </div>
       ))}
-      <Button onClick={() => setParts(prev => [...prev, { name: '', weight: 1, multiplier: 1, questions: [] }])}>
+      <Button type="button" onClick={() => setParts(prev => [...prev, { name: '', weight: 1, multiplier: 1, questions: [] }])}>
         {t('addPart')}
       </Button>
 
@@ -377,12 +381,12 @@ export default function PlacementManagementPage() {
             </div>
           </div>
           <div className="space-x-2">
-            <Button onClick={() => handleSaveLevel(lidx)}>{t('save')}</Button>
-            <Button variant="destructive" onClick={() => handleDeleteLevel(lidx)}>{t('remove')}</Button>
-          </div>
-        </div>
-      ))}
-      <Button onClick={() => setLevels(prev => [...prev, { code: '', name: '', min: 0, max: 0 }])}>
+            <Button type="button" onClick={() => handleSaveLevel(lidx)}>{t('save')}</Button>
+            <Button type="button" variant="destructive" onClick={() => handleDeleteLevel(lidx)}>{t('remove')}</Button>
+      </div>
+    </div>
+  ))}
+      <Button type="button" onClick={() => setLevels(prev => [...prev, { code: '', name: '', min: 0, max: 0 }])}>
         {t('addLevel')}
       </Button>
 
@@ -406,13 +410,13 @@ export default function PlacementManagementPage() {
                 <td className="border p-2 whitespace-nowrap">{u.level ?? '-'}</td>
                 <td className="border p-2">{u.bypassPlacement ? t('yes') : t('no')}</td>
                 <td className="border p-2 space-x-2">
-                  <Button size="sm" onClick={() => handleResetPlacement(u.username)}>{t('resetPlacement')}</Button>
+                  <Button type="button" size="sm" onClick={() => handleResetPlacement(u.username)}>{t('resetPlacement')}</Button>
                   {u.bypassPlacement ? (
-                    <Button size="sm" variant="outline" onClick={() => handleToggleBypass(u.username, false)}>
+                    <Button type="button" size="sm" variant="outline" onClick={() => handleToggleBypass(u.username, false)}>
                       {t('undoBypass')}
                     </Button>
                   ) : (
-                    <Button size="sm" variant="outline" onClick={() => handleToggleBypass(u.username, true)}>
+                    <Button type="button" size="sm" variant="outline" onClick={() => handleToggleBypass(u.username, true)}>
                       {t('bypassPlacement')}
                     </Button>
                   )}

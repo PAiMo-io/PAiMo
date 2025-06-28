@@ -14,10 +14,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false }, { status: 400 })
   }
   await connect()
-  await User.findByIdAndUpdate(session.user.id, {
-    level,
-    placementComplete: true,
-    placementClub: clubId,
-  })
+  const user = await User.findById(session.user.id)
+  if (!user) {
+    return NextResponse.json({ success: false }, { status: 404 })
+  }
+  user.level = level
+  user.placementComplete = true
+  user.placementClub = clubId
+  const existing = user.placementScores.find((p: any) => p.club.toString() === clubId)
+  if (existing) {
+    existing.score = level
+  } else {
+    user.placementScores.push({ club: clubId, score: level })
+  }
+  await user.save()
   return NextResponse.json({ success: true })
 }

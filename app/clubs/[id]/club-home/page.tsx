@@ -22,7 +22,7 @@ export default function ClubHomePage() {
   const { data: session, update } = useSession();
   const router = useRouter();
   const { request } = useApi();
-  const { clubData, fetchClubData } = useClubData();
+  const { clubData, fetchClubData, setClubData } = useClubData();
   const [newEventName, setNewEventName] = useState('');
   const [clubLocation, setClubLocation] = useState('');
   const [clubVisibility, setClubVisibility] = useState('private');
@@ -104,7 +104,10 @@ export default function ClubHomePage() {
       data: { placementRequired: val },
     });
     setSavingPlacement(false);
-    fetchClubData();
+    setClubData({
+      ...clubData,
+      club: { ...clubData.club, placementRequired: val },
+    });
   };
 
   // Filter ongoing events (not ended)
