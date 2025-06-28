@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import UserCard from '@/components/UserCard';
 import PageSkeleton from '@/components/PageSkeleton';
 import { useApi } from '@/lib/useApi';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface Member {
   id: string;
@@ -110,14 +109,6 @@ export default function ClubMembersPage({ params }: { params: { id: string } }) 
     }
   };
 
-  const handleRoleChange = async (memberId: string, role: string) => {
-    await request({
-      url: `/api/clubs/${params.id}/role`,
-      method: 'put',
-      data: { memberId, role },
-    });
-    fetchClubData();
-  };
 
   if (status === 'loading' || loading) {
     return <PageSkeleton />;
@@ -140,7 +131,6 @@ export default function ClubMembersPage({ params }: { params: { id: string } }) 
     !m.gender || (m.gender !== 'male' && m.gender !== 'Male' && m.gender !== 'female' && m.gender !== 'Female')
   ).length;
 
-  const currentUserRole = clubData.members.find(m => m.id === session?.user?.id)?.role;
 
   return (
     <div className="p-4">
@@ -196,21 +186,14 @@ export default function ClubMembersPage({ params }: { params: { id: string } }) 
                 <div key={member.id} className="flex items-center justify-between">
                   <UserCard user={member} />
                   <div className="flex items-center gap-2">
-                    {clubData.isAdmin && (
-                      <Select
-                        value={member.role || 'member'}
-                        onValueChange={value => handleRoleChange(member.id, value)}
-                        disabled={member.role === 'president' && currentUserRole !== 'president' && session?.user?.role !== 'super-admin'}
-                      >
-                        <SelectTrigger className="w-32 text-xs">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="president">{t('president')}</SelectItem>
-                          <SelectItem value="vice">{t('vicePresident')}</SelectItem>
-                          <SelectItem value="member">{t('member')}</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    {member.role && (
+                      <Badge variant="secondary" className="text-xs">
+                        {member.role === 'president'
+                          ? t('president')
+                          : member.role === 'vice'
+                          ? t('vicePresident')
+                          : t('member')}
+                      </Badge>
                     )}
                     {member.gender && (
                       <Badge
