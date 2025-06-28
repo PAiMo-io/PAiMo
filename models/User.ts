@@ -14,6 +14,7 @@ export interface IUser {
   level?: number;
   profileComplete?: boolean;
   placementComplete?: boolean;
+  bypassPlacement?: boolean;
   lang?: SupportedLanguage;
 }
 
@@ -34,6 +35,7 @@ const userSchema = new Schema({
   level: { type: Number },
   profileComplete: { type: Boolean, default: false },
   placementComplete: { type: Boolean, default: false },
+  bypassPlacement: { type: Boolean, default: false },
   lang: { type: String, enum: SUPPORTED_LANGUAGES, default: 'en' },
 });
 

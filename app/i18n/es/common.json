@@ -198,6 +198,14 @@
     "enterScore": "Ingresar puntuación",
     "completeMatch": "Completar partido",
     "rematch": "Repetir partido",
-    "swapRematch": "Intercambiar y repetir partido"
-  }
+  "swapRematch": "Intercambiar y repetir partido",
+  "userPlacementStatus": "Estado de placement de usuarios",
+  "placementStatus": "Estado de placement",
+  "bypassPlacement": "Omitir placement",
+  "undoBypass": "Cancelar omisión",
+  "notCompleted": "Sin completar",
+  "yes": "Sí",
+  "no": "No",
+  "actions": "Acciones"
+ }
   

@@ -20,7 +20,7 @@ function PlacementClient() {
   useEffect(() => {
     if (status === 'loading') return
     if (!session) { router.push('/login'); return }
-    if (session.user?.placementComplete) { router.push('/'); return }
+    if (session.user?.placementComplete || session.user?.bypassPlacement) { router.push('/'); return }
     const fetchParts = async () => {
       try {
         const res = await request<{ parts: any[] }>({ url: '/api/placement-parts', method: 'get' })

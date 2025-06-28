@@ -198,6 +198,14 @@
     "enterScore": "Nhập điểm số",
     "completeMatch": "Hoàn thành trận đấu",
     "rematch": "Trận đấu lại",
-    "swapRematch": "Hoán đổi & Trận đấu lại"
-  }
+  "swapRematch": "Hoán đổi & Trận đấu lại",
+  "userPlacementStatus": "Trạng thái đánh giá của người dùng",
+  "placementStatus": "Trạng thái đánh giá",
+  "bypassPlacement": "Bỏ qua đánh giá",
+  "undoBypass": "Hủy bỏ qua",
+  "notCompleted": "Chưa hoàn thành",
+  "yes": "Có",
+  "no": "Không",
+  "actions": "Hành động"
+ }
   

@@ -208,6 +208,14 @@
   "scoreMargin": "Score Margin",
   "avgScore": "Avg Score",
   "noMatchesPlayed": "No matches played",
-  "emailRequired": "Email is required"
-}
+  "emailRequired": "Email is required",
+  "userPlacementStatus": "User Placement Status",
+  "placementStatus": "Placement Status",
+  "bypassPlacement": "Bypass Placement",
+  "undoBypass": "Undo Bypass",
+  "notCompleted": "Not Completed",
+  "yes": "Yes",
+  "no": "No",
+  "actions": "Actions"
+ }
   

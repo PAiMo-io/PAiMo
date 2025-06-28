@@ -198,5 +198,13 @@
   "enterScore": "输入分数",
   "completeMatch": "完成比赛",
   "rematch": "再来一把",
-  "swapRematch": "换人再开"
-}
+  "swapRematch": "换人再开",
+  "userPlacementStatus": "用户定级状态",
+  "placementStatus": "定级状态",
+  "bypassPlacement": "跳过定级",
+  "undoBypass": "取消跳过",
+  "notCompleted": "未完成",
+  "yes": "是",
+  "no": "否",
+  "actions": "操作"
+ }

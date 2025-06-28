@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: false }, { status: 403 });
   }
   await connect();
-  const users = await User.find({}, { _id: 0, username: 1, role: 1 });
+  const users = await User.find({}, { _id: 0, username: 1, role: 1, placementComplete: 1, bypassPlacement: 1 });
   return NextResponse.json({ users });
 }
 
@@ -19,8 +19,11 @@ export async function PUT(request: Request) {
   if (!session || session.user?.role !== 'super-admin') {
     return NextResponse.json({ success: false }, { status: 403 });
   }
-  const { username, role } = await request.json();
+  const { username, role, bypassPlacement } = await request.json();
   await connect();
-  await User.updateOne({ username }, { role });
+  const update: any = {};
+  if (role !== undefined) update.role = role;
+  if (bypassPlacement !== undefined) update.bypassPlacement = bypassPlacement;
+  await User.updateOne({ username }, update);
   return NextResponse.json({ success: true });
 }

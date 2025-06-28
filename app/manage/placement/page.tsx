@@ -13,6 +13,7 @@ interface Option { text: string; score: number }
 interface Question { id?: string; question: string; options: Option[]; order?: number }
 interface Part { id?: string; name: string; weight: number; multiplier: number; order?: number; questions: Question[] }
 interface Level { id?: string; code: string; name: string; min: number; max: number; order?: number }
+interface UserRow { username: string; placementComplete: boolean; bypassPlacement?: boolean }
 
 export default function PlacementManagementPage() {
   const router = useRouter()
@@ -20,6 +21,7 @@ export default function PlacementManagementPage() {
   const { request, loading, error } = useApi()
   const [parts, setParts] = useState<Part[]>([])
   const [levels, setLevels] = useState<Level[]>([])
+  const [users, setUsers] = useState<UserRow[]>([])
   const { t } = useTranslation('common')
 
   useEffect(() => {
@@ -37,8 +39,13 @@ export default function PlacementManagementPage() {
       const res = await request<{ levels: Level[] }>({ url: '/api/placement-levels', method: 'get' })
       setLevels(res.levels)
     }
+    const fetchUsers = async () => {
+      const res = await request<{ users: UserRow[] }>({ url: '/api/users', method: 'get' })
+      setUsers(res.users)
+    }
     fetchParts()
     fetchLevels()
+    fetchUsers()
   }, [status, session, router, request])
 
   const handleSave = async (idx: number) => {
@@ -79,6 +86,15 @@ export default function PlacementManagementPage() {
       await request({ url: `/api/placement-levels/${level.id}`, method: 'delete' })
     }
     setLevels(prev => prev.filter((_, i) => i !== idx))
+  }
+
+  const handleResetPlacement = async (username: string) => {
+    await request({ url: `/api/users/${username}/reset-placement`, method: 'post' })
+  }
+
+  const handleToggleBypass = async (username: string, value: boolean) => {
+    await request({ url: '/api/users', method: 'put', data: { username, bypassPlacement: value } })
+    setUsers(prev => prev.map(u => u.username === username ? { ...u, bypassPlacement: value } : u))
   }
 
   if (status === 'loading' || loading) return <PageSkeleton />
@@ -290,6 +306,41 @@ export default function PlacementManagementPage() {
       <Button onClick={() => setLevels(prev => [...prev, { code: '', name: '', min: 0, max: 0 }])}>
         {t('addLevel')}
       </Button>
+
+      <h2 className="text-lg font-semibold pt-6">{t('userPlacementStatus')}</h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-xs sm:text-sm border">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="border p-2 text-left">{t('username')}</th>
+              <th className="border p-2 text-left">{t('placementStatus')}</th>
+              <th className="border p-2 text-left">{t('bypassPlacement')}</th>
+              <th className="border p-2 text-left">{t('actions')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((u, idx) => (
+              <tr key={idx} className="odd:bg-white even:bg-gray-50">
+                <td className="border p-2">{u.username}</td>
+                <td className="border p-2">{u.placementComplete ? t('completed') : t('notCompleted')}</td>
+                <td className="border p-2">{u.bypassPlacement ? t('yes') : t('no')}</td>
+                <td className="border p-2 space-x-2">
+                  <Button size="sm" onClick={() => handleResetPlacement(u.username)}>{t('resetPlacement')}</Button>
+                  {u.bypassPlacement ? (
+                    <Button size="sm" variant="outline" onClick={() => handleToggleBypass(u.username, false)}>
+                      {t('undoBypass')}
+                    </Button>
+                  ) : (
+                    <Button size="sm" variant="outline" onClick={() => handleToggleBypass(u.username, true)}>
+                      {t('bypassPlacement')}
+                    </Button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

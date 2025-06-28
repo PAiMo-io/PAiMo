@@ -35,7 +35,7 @@ export default function Home() {
       router.push('/create-profile');
       return
     }
-    if (session.user?.placementComplete === false) {
+    if (session.user?.placementComplete === false && !session.user?.bypassPlacement) {
       router.push('/placement');
       return
     }
