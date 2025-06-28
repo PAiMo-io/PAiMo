@@ -8,5 +8,6 @@
   "noEvents": "暂无活动。",
   "hi": "你好, {{name}}",
   "defaultName": "朋友",
-  "loading": "加载中"
+  "loading": "加载中",
+  "searchEvents": "搜索活动"
 }

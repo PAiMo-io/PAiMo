@@ -8,5 +8,6 @@
   "noEvents": "No events.",
   "hi": "Hi, {{name}}",
   "defaultName": "there",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "searchEvents": "Search events"
 }
