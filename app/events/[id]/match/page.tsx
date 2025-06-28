@@ -15,10 +15,10 @@ export default function MatchPage({ params }: { params: { id: string } }) {
   } = useEventData();
 
   const { t } = useTranslation();
-  
+
   // Check if current user has interaction permissions (admin or participant)
   const hasInteractionPermission = isAdmin || isParticipant;
-
+  console.log('MatchPage', { event, groups, matches, quickMatches, hasInteractionPermission });
   return (
     <div className="w-full">
       {(() => {
