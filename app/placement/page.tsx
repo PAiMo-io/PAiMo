@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import PageSkeleton from '@/components/PageSkeleton'
 import { useApi } from '@/lib/useApi'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
@@ -13,6 +13,8 @@ function PlacementClient() {
   const router = useRouter()
   const { data: session, status, update } = useSession()
   const { request, loading, error } = useApi()
+  const searchParams = useSearchParams()
+  const clubId = searchParams.get('clubId') || ''
   const [parts, setParts] = useState<any[]>([])
   const [answers, setAnswers] = useState<Record<string,string>>({})
   const { t } = useTranslation('common')
@@ -21,9 +23,10 @@ function PlacementClient() {
     if (status === 'loading') return
     if (!session) { router.push('/login'); return }
     if (session.user?.placementComplete || session.user?.bypassPlacement) { router.push('/'); return }
+    if (!clubId) { router.push('/') ; return }
     const fetchParts = async () => {
       try {
-        const res = await request<{ parts: any[] }>({ url: '/api/placement-parts', method: 'get' })
+        const res = await request<{ parts: any[] }>({ url: `/api/placement-parts?clubId=${clubId}`, method: 'get' })
         setParts(res.parts)
       } catch (e) {
         console.error('Failed to load placement questions', e)
@@ -46,7 +49,7 @@ function PlacementClient() {
   const handleSubmit = async () => {
     const level = calculateLevel()
     try {
-      await request({ url: '/api/placement', method: 'post', data: { level } })
+      await request({ url: '/api/placement', method: 'post', data: { level, clubId } })
       await update()
       router.push('/')
     } catch {

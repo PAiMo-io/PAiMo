@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import PageSkeleton from '../../../components/PageSkeleton'
 import { useApi } from '../../../lib/useApi'
 import { Input } from '../../../components/ui/input'
@@ -24,6 +24,8 @@ export default function PlacementManagementPage() {
   const router = useRouter()
   const { data: session, status } = useSession()
   const { request, loading, error } = useApi()
+  const searchParams = useSearchParams()
+  const clubId = searchParams.get('clubId') || ''
   const [parts, setParts] = useState<Part[]>([])
   const saveTimers = useRef<Record<number, NodeJS.Timeout>>({})
   const [levels, setLevels] = useState<Level[]>([])
@@ -33,20 +35,20 @@ export default function PlacementManagementPage() {
   useEffect(() => {
     if (status === 'loading') return
     if (!session) { router.push('/login'); return }
-    if (!(session.user?.role === 'super-admin' || session.user?.role === 'admin')) {
+    if (!(session.user?.role === 'super-admin' || session.user?.role === 'admin') || !clubId) {
       router.push('/')
       return
     }
     const fetchParts = async () => {
-      const res = await request<{ parts: Part[] }>({ url: '/api/placement-parts', method: 'get' })
+      const res = await request<{ parts: Part[] }>({ url: `/api/placement-parts?clubId=${clubId}`, method: 'get' })
       setParts(res.parts)
     }
     const fetchLevels = async () => {
-      const res = await request<{ levels: Level[] }>({ url: '/api/placement-levels', method: 'get' })
+      const res = await request<{ levels: Level[] }>({ url: `/api/placement-levels?clubId=${clubId}`, method: 'get' })
       setLevels(res.levels)
     }
     const fetchUsers = async () => {
-      const res = await request<{ users: UserRow[] }>({ url: '/api/users', method: 'get' })
+      const res = await request<{ users: UserRow[] }>({ url: `/api/users?clubId=${clubId}`, method: 'get' })
       setUsers(res.users)
     }
     fetchParts()
@@ -58,9 +60,9 @@ export default function PlacementManagementPage() {
     const part = parts[idx]
     if (!part.name.trim()) return
     if (part.id) {
-      await request({ url: `/api/placement-parts/${part.id}`, method: 'put', data: part })
+      await request({ url: `/api/placement-parts/${part.id}`, method: 'put', data: { ...part, clubId } })
     } else {
-      const res = await request<{ id: string }>({ url: '/api/placement-parts', method: 'post', data: part })
+      const res = await request<{ id: string }>({ url: '/api/placement-parts', method: 'post', data: { ...part, clubId } })
       part.id = res.id
       setParts(prev => prev.map((p, i) => i === idx ? part : p))
     }
@@ -81,7 +83,7 @@ export default function PlacementManagementPage() {
   const handleDelete = async (idx: number) => {
     const part = parts[idx]
     if (part.id) {
-      await request({ url: `/api/placement-parts/${part.id}`, method: 'delete' })
+      await request({ url: `/api/placement-parts/${part.id}?clubId=${clubId}`, method: 'delete' })
     }
     setParts(prev => prev.filter((_, i) => i !== idx))
   }
@@ -90,9 +92,9 @@ export default function PlacementManagementPage() {
     const level = levels[idx]
     if (!level.name.trim() || !level.code.trim()) return
     if (level.id) {
-      await request({ url: `/api/placement-levels/${level.id}`, method: 'put', data: level })
+      await request({ url: `/api/placement-levels/${level.id}`, method: 'put', data: { ...level, clubId } })
     } else {
-      const res = await request<{ id: string }>({ url: '/api/placement-levels', method: 'post', data: level })
+      const res = await request<{ id: string }>({ url: '/api/placement-levels', method: 'post', data: { ...level, clubId } })
       level.id = res.id
       setLevels(prev => prev.map((l, i) => i === idx ? level : l))
     }
@@ -101,17 +103,17 @@ export default function PlacementManagementPage() {
   const handleDeleteLevel = async (idx: number) => {
     const level = levels[idx]
     if (level.id) {
-      await request({ url: `/api/placement-levels/${level.id}`, method: 'delete' })
+      await request({ url: `/api/placement-levels/${level.id}?clubId=${clubId}`, method: 'delete' })
     }
     setLevels(prev => prev.filter((_, i) => i !== idx))
   }
 
   const handleResetPlacement = async (username: string) => {
-    await request({ url: `/api/users/${username}/reset-placement`, method: 'post' })
+    await request({ url: `/api/users/${username}/reset-placement?clubId=${clubId}`, method: 'post' })
   }
 
   const handleToggleBypass = async (username: string, value: boolean) => {
-    await request({ url: '/api/users', method: 'put', data: { username, bypassPlacement: value } })
+    await request({ url: '/api/users', method: 'put', data: { username, bypassPlacement: value, clubId } })
     setUsers(prev => prev.map(u => u.username === username ? { ...u, bypassPlacement: value } : u))
   }
 

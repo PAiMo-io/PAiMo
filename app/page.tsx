@@ -36,7 +36,8 @@ export default function Home() {
       return
     }
     if (session.user?.placementComplete === false && !session.user?.bypassPlacement) {
-      router.push('/placement');
+      const cid = session.user?.clubs && session.user.clubs[0];
+      router.push(cid ? `/placement?clubId=${cid}` : '/');
       return
     }
     const fetchUser = async () => {

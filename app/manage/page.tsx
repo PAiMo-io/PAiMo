@@ -198,9 +198,11 @@ export default function ManagePage() {
           </div>
         </div>
         <div className="pt-4">
-          <Link href="/manage/placement" className="underline text-blue-600">
-            {t('placementManagement')}
-          </Link>
+          {selectedClub && (
+            <Link href={`/manage/placement?clubId=${selectedClub}`} className="underline text-blue-600">
+              {t('placementManagement')}
+            </Link>
+          )}
         </div>
         {pendingUsers.length > 0 && (
           <div>

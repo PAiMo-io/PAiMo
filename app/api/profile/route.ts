@@ -23,8 +23,8 @@ export async function POST(request: Request) {
 
   let code: string | undefined
   let name: string | undefined
-  if (user && typeof user.level === 'number') {
-    const lvl = await PlacementLevel.findOne({ min: { $lte: user.level }, max: { $gte: user.level } })
+  if (user && typeof user.level === 'number' && user.placementClub) {
+    const lvl = await PlacementLevel.findOne({ club: user.placementClub, min: { $lte: user.level }, max: { $gte: user.level } })
     if (lvl) {
       code = lvl.code
       name = lvl.name
@@ -83,8 +83,8 @@ export async function GET() {
   const user = await User.findOne({ _id: session.user.id }).populate({ path: 'clubs', strictPopulate: false });
   let code: string | undefined
   let name: string | undefined
-  if (user && typeof user.level === 'number') {
-    const lvl = await PlacementLevel.findOne({ min: { $lte: user.level }, max: { $gte: user.level } })
+  if (user && typeof user.level === 'number' && user.placementClub) {
+    const lvl = await PlacementLevel.findOne({ club: user.placementClub, min: { $lte: user.level }, max: { $gte: user.level } })
     if (lvl) {
       code = lvl.code
       name = lvl.name

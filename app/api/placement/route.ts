@@ -9,14 +9,15 @@ export async function POST(request: Request) {
   if (!session) {
     return NextResponse.json({ success: false }, { status: 401 })
   }
-  const { level } = await request.json()
-  if (level == null) {
+  const { level, clubId } = await request.json()
+  if (level == null || !clubId) {
     return NextResponse.json({ success: false }, { status: 400 })
   }
   await connect()
   await User.findByIdAndUpdate(session.user.id, {
     level,
     placementComplete: true,
+    placementClub: clubId,
   })
   return NextResponse.json({ success: true })
 }

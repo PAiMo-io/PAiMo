@@ -13,6 +13,7 @@ const questionSchema = new Schema({
 })
 
 const partSchema = new Schema({
+  club: { type: Schema.Types.ObjectId, ref: 'Club', required: true },
   name: { type: String, required: true },
   order: Number,
   weight: { type: Number, default: 1 },

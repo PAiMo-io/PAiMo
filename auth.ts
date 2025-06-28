@@ -19,6 +19,7 @@ declare module "next-auth" {
       profileComplete?: boolean;
       placementComplete?: boolean;
       bypassPlacement?: boolean;
+      placementClub?: string | null;
     };
   }
 }
@@ -33,6 +34,7 @@ declare module "next-auth/jwt" {
     profileComplete?: boolean;
     placementComplete?: boolean;
     bypassPlacement?: boolean;
+    placementClub?: string | null;
   }
 }
 
@@ -95,6 +97,7 @@ export const authOptions: NextAuthOptions = {
       token.profileComplete = !!dbUser.profileComplete;
       token.placementComplete = !!dbUser.placementComplete;
       token.bypassPlacement = !!dbUser.bypassPlacement;
+      token.placementClub = dbUser.placementClub ? dbUser.placementClub.toString() : null;
 
       return token;
     },
@@ -108,6 +111,7 @@ export const authOptions: NextAuthOptions = {
         session.user.profileComplete = token.profileComplete as boolean;
         session.user.placementComplete = token.placementComplete as boolean;
         session.user.bypassPlacement = token.bypassPlacement as boolean;
+        session.user.placementClub = token.placementClub as string | null;
       }
       return session;
     },
