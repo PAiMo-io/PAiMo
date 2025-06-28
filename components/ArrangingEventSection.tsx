@@ -10,9 +10,10 @@ interface ArrangingEventSectionProps {
     onGroupsChange: (updatedGroups: IUser[][]) => void
     onGenerateGroups: () => void
     onGenerateMatches: () => void
+    disabled?: boolean
 }
 
-export default function ArrangingEventSection({ groups, onGroupsChange, onGenerateGroups, onGenerateMatches }: ArrangingEventSectionProps) {
+export default function ArrangingEventSection({ groups, onGroupsChange, onGenerateGroups, onGenerateMatches, disabled = false }: ArrangingEventSectionProps) {
     const moveUser = (fromGroup: number, toGroup: number, userIndex: number) => {
         // create a new copy of groups
         const updated = groups.map(group => [...group])
@@ -25,8 +26,8 @@ export default function ArrangingEventSection({ groups, onGroupsChange, onGenera
     return (
         <div>
             <div className="flex justify-start items-end gap-2 mb-4">
-                <Button onClick={onGenerateGroups}>Generate Groups</Button>
-                {groups && groups.length > 0 && <Button onClick={onGenerateMatches}>Generate Matches</Button>}
+                <Button onClick={onGenerateGroups} disabled={disabled}>Generate Groups</Button>
+                {groups && groups.length > 0 && <Button onClick={onGenerateMatches} disabled={disabled}>Generate Matches</Button>}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {groups.map((group, gi) => (
@@ -43,12 +44,12 @@ export default function ArrangingEventSection({ groups, onGroupsChange, onGenera
                                     </div>
                                     <div className="flex space-x-1">
                                         {gi > 0 && (
-                                            <Button size="icon" variant="outline" onClick={() => moveUser(gi, gi - 1, ui)}>
+                                            <Button size="icon" variant="outline" onClick={() => moveUser(gi, gi - 1, ui)} disabled={disabled}>
                                                 <ArrowUp size={16} />
                                             </Button>
                                         )}
                                         {gi < groups.length - 1 && (
-                                            <Button size="icon" variant="outline" onClick={() => moveUser(gi, gi + 1, ui)}>
+                                            <Button size="icon" variant="outline" onClick={() => moveUser(gi, gi + 1, ui)} disabled={disabled}>
                                                 <ArrowDown size={16} />
                                             </Button>
                                         )}
