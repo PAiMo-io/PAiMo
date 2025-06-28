@@ -13,6 +13,7 @@ interface Member {
   nickname?: string;
   gender?: string;
   image?: string | null;
+  role?: string;
 }
 
 interface AdminUser {

@@ -8,12 +8,22 @@ import { useTranslation } from 'react-i18next';
 import UserCard from '@/components/UserCard';
 import PageSkeleton from '@/components/PageSkeleton';
 import { useApi } from '@/lib/useApi';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface Member {
   id: string;
   username: string;
   nickname?: string;
   gender?: string;
+  image?: string | null;
+  role?: string;
+  avatarUpdatedAt?: string | number | null;
+}
+
+interface AdminUser {
+  id: string;
+  username: string;
+  nickname?: string;
   image?: string | null;
   avatarUpdatedAt?: string | number | null;
 }
@@ -45,6 +55,7 @@ interface ClubData {
   club: Club;
   members: Member[];
   events: EventItem[];
+  adminList: AdminUser[];
   isMember: boolean;
   isAdmin: boolean;
 }
@@ -67,12 +78,14 @@ export default function ClubMembersPage({ params }: { params: { id: string } }) 
 
   const fetchClubData = async () => {
     try {
-      const res = await request<{ club: any; members: Member[]; events: EventItem[] }>({
+      const res = await request<{ club: any; members: Member[]; events: EventItem[]; adminList: AdminUser[] }>({
         url: `/api/clubs/${params.id}`,
         method: 'get',
       });
-      
-      const isAdmin = session?.user?.role === 'admin' || session?.user?.role === 'super-admin';
+
+      const isClubAdmin = res.adminList.some((admin: AdminUser) => admin.id === session?.user?.id);
+      const isSuperAdmin = session?.user?.role === 'super-admin';
+      const isAdmin = isClubAdmin || isSuperAdmin;
       const isMember = res.members.some((m: Member) => m.id === session?.user?.id);
 
       setClubData({
@@ -88,12 +101,22 @@ export default function ClubMembersPage({ params }: { params: { id: string } }) 
         },
         members: res.members,
         events: res.events.map(e => ({ ...e, clubName: res.club.name })),
+        adminList: res.adminList,
         isMember,
         isAdmin,
       });
     } catch (err) {
       console.error('Failed to fetch club data:', err);
     }
+  };
+
+  const handleRoleChange = async (memberId: string, role: string) => {
+    await request({
+      url: `/api/clubs/${params.id}/role`,
+      method: 'put',
+      data: { memberId, role },
+    });
+    fetchClubData();
   };
 
   if (status === 'loading' || loading) {
@@ -113,9 +136,11 @@ export default function ClubMembersPage({ params }: { params: { id: string } }) 
     m.gender === 'female' || m.gender === 'Female'
   ).length;
   
-  const unknownCount = clubData.members.filter(m => 
+  const unknownCount = clubData.members.filter(m =>
     !m.gender || (m.gender !== 'male' && m.gender !== 'Male' && m.gender !== 'female' && m.gender !== 'Female')
   ).length;
+
+  const currentUserRole = clubData.members.find(m => m.id === session?.user?.id)?.role;
 
   return (
     <div className="p-4">
@@ -171,22 +196,38 @@ export default function ClubMembersPage({ params }: { params: { id: string } }) 
                 <div key={member.id} className="flex items-center justify-between">
                   <UserCard user={member} />
                   <div className="flex items-center gap-2">
+                    {clubData.isAdmin && (
+                      <Select
+                        value={member.role || 'member'}
+                        onValueChange={value => handleRoleChange(member.id, value)}
+                        disabled={member.role === 'president' && currentUserRole !== 'president' && session?.user?.role !== 'super-admin'}
+                      >
+                        <SelectTrigger className="w-32 text-xs">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="president">{t('president')}</SelectItem>
+                          <SelectItem value="vice">{t('vicePresident')}</SelectItem>
+                          <SelectItem value="member">{t('member')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
                     {member.gender && (
-                      <Badge 
-                        variant="outline" 
+                      <Badge
+                        variant="outline"
                         className={
-                          member.gender === 'male' || member.gender === 'Male' 
-                            ? 'border-blue-200 text-blue-600' 
+                          member.gender === 'male' || member.gender === 'Male'
+                            ? 'border-blue-200 text-blue-600'
                             : member.gender === 'female' || member.gender === 'Female'
-                            ? 'border-pink-200 text-pink-600'
-                            : 'border-gray-200 text-gray-600'
+                              ? 'border-pink-200 text-pink-600'
+                              : 'border-gray-200 text-gray-600'
                         }
                       >
-                        {member.gender === 'male' || member.gender === 'Male' 
-                          ? t('male') 
+                        {member.gender === 'male' || member.gender === 'Male'
+                          ? t('male')
                           : member.gender === 'female' || member.gender === 'Female'
-                          ? t('female')
-                          : member.gender
+                            ? t('female')
+                            : member.gender
                         }
                       </Badge>
                     )}

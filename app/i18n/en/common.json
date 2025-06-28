@@ -93,6 +93,8 @@
   "createClub": "Create Club",
   "superAdmin": "Super Admin",
   "admin": "Admin",
+  "president": "President",
+  "vicePresident": "Vice President",
   "member": "Member",
   "clubDirectory": "Club Directory",
   "myClubs": "My Clubs",

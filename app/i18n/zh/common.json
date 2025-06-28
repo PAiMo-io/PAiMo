@@ -93,6 +93,8 @@
   "createClub": "创建俱乐部",
   "superAdmin": "超级管理员",
   "admin": "管理员",
+  "president": "会长",
+  "vicePresident": "副会长",
   "member": "成员",
   "clubDirectory": "俱乐部目录",
   "myClubs": "我的俱乐部",
