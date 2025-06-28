@@ -8,5 +8,6 @@
   "noEvents": "Không có sự kiện nào.",
   "hi": "Chào, {{name}}",
   "defaultName": "Bạn bè",
-  "loading": "Đang tải..."
+  "loading": "Đang tải...",
+  "searchEvents": "Tìm kiếm sự kiện"
 }
