@@ -14,6 +14,7 @@ import EventCard from '@/components/EventCard';
 import UserCard from '@/components/UserCard';
 import LocationAutocomplete from '@/components/LocationAutocomplete';
 import ConfirmLeaveDialog from '@/components/club/ConfirmLeaveDialog';
+import ChatBox from '@/components/club/ChatBox';
 import { useClubData } from '../ClubContext';
 
 export default function ClubHomePage() {
@@ -292,6 +293,7 @@ export default function ClubHomePage() {
         onClose={() => setShowLeave(false)}
         onConfirm={leaveClub}
       />
+      <ChatBox clubId={clubData.club.id} />
       </div>
     </div>
   );
