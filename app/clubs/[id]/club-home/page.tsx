@@ -239,7 +239,8 @@ export default function ClubHomePage() {
         </Card>
       )}
 
-      {clubData.isAdmin && (
+      {(clubData.isAdmin &&
+        (session?.user?.role === 'super-admin' || currentUserRole === 'president')) && (
         <Card>
           <CardHeader>
             <CardTitle>{t('manageRoles')}</CardTitle>

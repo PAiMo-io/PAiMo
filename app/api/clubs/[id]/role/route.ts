@@ -21,7 +21,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   const requester = club.members.find((m: any) => m.id.toString() === session.user.id);
   const requesterRole = requester?.role;
   const isSuperAdmin = session.user.role === 'super-admin';
-  if (!isSuperAdmin && requesterRole !== 'president' && requesterRole !== 'vice') {
+  if (!isSuperAdmin && requesterRole !== 'president') {
     return NextResponse.json({ success: false }, { status: 403 });
   }
   const target = club.members.find((m: any) => m.id.toString() === memberId);
