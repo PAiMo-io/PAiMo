@@ -185,7 +185,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange }) => {
             <div className="flex justify-between items-center pt-2 border-t border-gray-100">
               <Button
                 onClick={() => setExpanded(false)}
-                className="text-sm hover:underline"
+                className="text-sm"
               >
                 Done
               </Button>
