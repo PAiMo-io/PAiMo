@@ -27,6 +27,7 @@ export default function ClubHomePage() {
   const [savingLocation, setSavingLocation] = useState(false);
   const [savingVisibility, setSavingVisibility] = useState(false);
   const [showLeave, setShowLeave] = useState(false);
+  const currentUserRole = clubData?.members.find(m => m.id === session?.user?.id)?.role;
 
   // Update local state when clubData changes
   useEffect(() => {
@@ -87,6 +88,15 @@ export default function ClubHomePage() {
       data: { visibility: newVisibility },
     });
     setSavingVisibility(false);
+    fetchClubData();
+  };
+
+  const handleRoleChange = async (memberId: string, role: string) => {
+    await request({
+      url: `/api/clubs/${clubData.club.id}/role`,
+      method: 'put',
+      data: { memberId, role },
+    });
     fetchClubData();
   };
 
@@ -225,6 +235,40 @@ export default function ClubHomePage() {
                 <UserCard key={admin.id} user={admin} />
               ))}
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {(clubData.isAdmin &&
+        (session?.user?.role === 'super-admin' || currentUserRole === 'president')) && (
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('manageRoles')}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {clubData.members.map(member => (
+              <div key={member.id} className="flex items-center justify-between">
+                <UserCard user={member} />
+                <Select
+                  value={member.role || 'member'}
+                  onValueChange={value => handleRoleChange(member.id, value)}
+                  disabled={
+                    member.role === 'president' &&
+                    currentUserRole !== 'president' &&
+                    session?.user?.role !== 'super-admin'
+                  }
+                >
+                  <SelectTrigger className="w-32 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="president">{t('president')}</SelectItem>
+                    <SelectItem value="vice">{t('vicePresident')}</SelectItem>
+                    <SelectItem value="member">{t('member')}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            ))}
           </CardContent>
         </Card>
       )}
