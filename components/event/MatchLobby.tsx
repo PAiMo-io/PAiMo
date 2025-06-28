@@ -244,6 +244,17 @@ export default function MatchLobby({
 			isUserInMatch(match)
 	}
 
+	// Check if user is already in an incomplete match
+	const isUserInIncompleteMatch = (): boolean => {
+		if (!currentUserId) return false
+		
+		return quickMatches.some(match => {
+			const status = getMatchStatus(match)
+			const isInMatch = isUserInMatch(match)
+			return isInMatch && status !== 'completed'
+		})
+	}
+
 	console.log('MatchLobby', {
 		eventId,
 		currentUserId,
@@ -251,7 +262,8 @@ export default function MatchLobby({
 		isCreating,
 		scoreDialogOpen,
 		activeMatch,
-		disabled
+		disabled,
+		isUserInIncompleteMatch: isUserInIncompleteMatch()
 	})
 
 	return (
@@ -269,10 +281,10 @@ export default function MatchLobby({
 				<h3 className="text-lg font-semibold">{t('quickMatches')}</h3>
 				<Button
 					onClick={handleCreateMatch}
-					disabled={isCreating || disabled}
+					disabled={isCreating || disabled || isUserInIncompleteMatch()}
 					className="bg-green-600"
 				>
-					{isCreating ? t('creating') : t('createMatch')}
+					{t('createMatch')}
 				</Button>
 			</div>
 
