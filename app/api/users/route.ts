@@ -10,7 +10,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: false }, { status: 403 });
   }
   await connect();
-  const users = await User.find({}, { _id: 0, username: 1, role: 1, placementComplete: 1, bypassPlacement: 1 });
+  const users = await User.find(
+    {},
+    { _id: 0, username: 1, role: 1, placementComplete: 1, bypassPlacement: 1, level: 1 }
+  );
   return NextResponse.json({ users });
 }
 

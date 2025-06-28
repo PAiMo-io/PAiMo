@@ -13,7 +13,12 @@ interface Option { text: string; score: number }
 interface Question { id?: string; question: string; options: Option[]; order?: number }
 interface Part { id?: string; name: string; weight: number; multiplier: number; order?: number; questions: Question[] }
 interface Level { id?: string; code: string; name: string; min: number; max: number; order?: number }
-interface UserRow { username: string; placementComplete: boolean; bypassPlacement?: boolean }
+interface UserRow {
+  username: string
+  placementComplete: boolean
+  bypassPlacement?: boolean
+  level?: number
+}
 
 export default function PlacementManagementPage() {
   const router = useRouter()
@@ -380,12 +385,13 @@ export default function PlacementManagementPage() {
       </Button>
 
       <h2 className="text-lg font-semibold pt-6">{t('userPlacementStatus')}</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-xs sm:text-sm border">
+      <div className="overflow-x-auto w-full">
+        <table className="min-w-full sm:min-w-[600px] text-xs sm:text-sm border">
           <thead className="bg-gray-100">
             <tr>
               <th className="border p-2 text-left">{t('username')}</th>
               <th className="border p-2 text-left">{t('placementStatus')}</th>
+              <th className="border p-2 text-left">{t('placementScore')}</th>
               <th className="border p-2 text-left">{t('bypassPlacement')}</th>
               <th className="border p-2 text-left">{t('actions')}</th>
             </tr>
@@ -395,6 +401,7 @@ export default function PlacementManagementPage() {
               <tr key={idx} className="odd:bg-white even:bg-gray-50">
                 <td className="border p-2">{u.username}</td>
                 <td className="border p-2">{u.placementComplete ? t('completed') : t('notCompleted')}</td>
+                <td className="border p-2 whitespace-nowrap">{u.level ?? '-'}</td>
                 <td className="border p-2">{u.bypassPlacement ? t('yes') : t('no')}</td>
                 <td className="border p-2 space-x-2">
                   <Button size="sm" onClick={() => handleResetPlacement(u.username)}>{t('resetPlacement')}</Button>

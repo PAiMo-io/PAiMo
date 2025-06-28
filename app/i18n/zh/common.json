@@ -204,7 +204,8 @@
   "bypassPlacement": "跳过定级",
   "undoBypass": "取消跳过",
   "notCompleted": "未完成",
+  "placementScore": "定级分数",
   "yes": "是",
   "no": "否",
   "actions": "操作"
- }
+}

@@ -204,8 +204,9 @@
   "bypassPlacement": "Omitir placement",
   "undoBypass": "Cancelar omisión",
   "notCompleted": "Sin completar",
+  "placementScore": "Puntuación de placement",
   "yes": "Sí",
   "no": "No",
   "actions": "Acciones"
- }
+}
   

@@ -214,8 +214,9 @@
   "bypassPlacement": "Bypass Placement",
   "undoBypass": "Undo Bypass",
   "notCompleted": "Not Completed",
+  "placementScore": "Placement Score",
   "yes": "Yes",
   "no": "No",
   "actions": "Actions"
- }
+}
   
