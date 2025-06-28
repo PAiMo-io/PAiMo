@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import PageSkeleton from '../../../components/PageSkeleton'
@@ -20,6 +20,7 @@ export default function PlacementManagementPage() {
   const { data: session, status } = useSession()
   const { request, loading, error } = useApi()
   const [parts, setParts] = useState<Part[]>([])
+  const saveTimers = useRef<Record<number, NodeJS.Timeout>>({})
   const [levels, setLevels] = useState<Level[]>([])
   const [users, setUsers] = useState<UserRow[]>([])
   const { t } = useTranslation('common')
@@ -58,6 +59,18 @@ export default function PlacementManagementPage() {
       part.id = res.id
       setParts(prev => prev.map((p, i) => i === idx ? part : p))
     }
+  }
+
+  const triggerAutoSave = (idx: number) => {
+    if (saveTimers.current[idx]) clearTimeout(saveTimers.current[idx])
+    saveTimers.current[idx] = setTimeout(() => {
+      handleSave(idx)
+    }, 1000)
+  }
+
+  const updatePart = (idx: number, updater: (p: Part) => Part) => {
+    setParts(prev => prev.map((p, i) => (i === idx ? updater(p) : p)))
+    triggerAutoSave(idx)
   }
 
   const handleDelete = async (idx: number) => {
@@ -116,7 +129,7 @@ export default function PlacementManagementPage() {
                 value={part.name}
                 onChange={e => {
                   const val = e.target.value
-                  setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, name: val } : pp))
+                  updatePart(pidx, pp => ({ ...pp, name: val }))
                 }}
               />
             </div>
@@ -132,7 +145,7 @@ export default function PlacementManagementPage() {
                   value={part.weight}
                   onChange={e => {
                     const val = parseFloat(e.target.value)
-                    setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, weight: val } : pp))
+                    updatePart(pidx, pp => ({ ...pp, weight: val }))
                   }}
                   className="w-24"
                 />
@@ -148,7 +161,7 @@ export default function PlacementManagementPage() {
                   value={part.multiplier}
                   onChange={e => {
                     const val = parseFloat(e.target.value)
-                    setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, multiplier: val } : pp))
+                    updatePart(pidx, pp => ({ ...pp, multiplier: val }))
                   }}
                   className="w-24"
                 />
@@ -168,12 +181,15 @@ export default function PlacementManagementPage() {
                     value={q.question}
                     onChange={e => {
                       const val = e.target.value
-                      setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, question: val } : qq) } : pp))
+                      updatePart(pidx, pp => ({
+                        ...pp,
+                        questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, question: val } : qq)
+                      }))
                     }}
                   />
                 </div>
                 {q.options.map((o, oidx) => (
-                  <div key={oidx} className="flex space-x-2">
+                  <div key={oidx} className="flex space-x-2 items-end">
                     <div className="flex-1">
                       <Label htmlFor={`q-${pidx}-${qidx}-opt-${oidx}-text`} className="block">
                         {t('optionText')}
@@ -184,7 +200,14 @@ export default function PlacementManagementPage() {
                         value={o.text}
                         onChange={e => {
                           const val = e.target.value
-                          setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, options: qq.options.map((oo, k) => k === oidx ? { ...oo, text: val } : oo) } : qq) } : pp))
+                          updatePart(pidx, pp => ({
+                            ...pp,
+                            questions: pp.questions.map((qq, j) =>
+                              j === qidx
+                                ? { ...qq, options: qq.options.map((oo, k) => (k === oidx ? { ...oo, text: val } : oo)) }
+                                : qq
+                            )
+                          }))
                         }}
                       />
                     </div>
@@ -199,22 +222,71 @@ export default function PlacementManagementPage() {
                         value={o.score}
                         onChange={e => {
                           const val = parseFloat(e.target.value)
-                          setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, options: qq.options.map((oo, k) => k === oidx ? { ...oo, score: val } : oo) } : qq) } : pp))
+                          updatePart(pidx, pp => ({
+                            ...pp,
+                            questions: pp.questions.map((qq, j) =>
+                              j === qidx
+                                ? { ...qq, options: qq.options.map((oo, k) => (k === oidx ? { ...oo, score: val } : oo)) }
+                                : qq
+                            )
+                          }))
                         }}
                         className="w-20"
                       />
                     </div>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() =>
+                        updatePart(pidx, pp => ({
+                          ...pp,
+                          questions: pp.questions.map((qq, j) =>
+                            j === qidx ? { ...qq, options: qq.options.filter((_, k) => k !== oidx) } : qq
+                          )
+                        }))
+                      }
+                    >
+                      {t('remove')}
+                    </Button>
                   </div>
                 ))}
                 <Button
                   variant="outline"
-                  onClick={() => setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: pp.questions.map((qq, j) => j === qidx ? { ...qq, options: [...qq.options, { text: '', score: 0 }] } : qq) } : pp))}
+                  onClick={() =>
+                    updatePart(pidx, pp => ({
+                      ...pp,
+                      questions: pp.questions.map((qq, j) =>
+                        j === qidx
+                          ? { ...qq, options: [...qq.options, { text: '', score: 0 }] }
+                          : qq
+                      )
+                    }))
+                  }
                 >
                   {t('addOption')}
                 </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() =>
+                    updatePart(pidx, pp => ({
+                      ...pp,
+                      questions: pp.questions.filter((_, j) => j !== qidx)
+                    }))
+                  }
+                >
+                  {t('remove')}
+                </Button>
               </div>
             ))}
-            <Button onClick={() => setParts(prev => prev.map((pp, i) => i === pidx ? { ...pp, questions: [...pp.questions, { question: '', options: [{ text: '', score: 0 }] }] } : pp))}>
+            <Button
+              onClick={() =>
+                updatePart(pidx, pp => ({
+                  ...pp,
+                  questions: [...pp.questions, { question: '', options: [{ text: '', score: 0 }] }]
+                }))
+              }
+            >
               {t('addQuestion')}
             </Button>
           </div>
