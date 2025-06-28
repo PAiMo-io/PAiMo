@@ -160,7 +160,7 @@ export default function EventsPage() {
       <PullToRefreshWrapper onRefresh={() => fetchData(true)}>
         <div className="space-y-4">
           <h1 className="text-2xl mb-2">{t("availableEvents")}</h1>
-          <div className="flex justify-between gap-4">
+          <div className="flex justify-between md:justify-start gap-4">
             {events.length > 0 && (
               <Input
                 placeholder={t("searchEvents")}
