@@ -10,6 +10,40 @@ interface VirtualResponsiveGridProps<T> {
   emptyComponent?: React.ReactNode;
 }
 
+const Scroller = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>((props, ref) => {
+  const { style, children } = props as React.HTMLAttributes<HTMLDivElement>;
+  return (
+    <div
+      ref={ref as React.RefObject<HTMLDivElement>}
+      style={style}
+      className="scrollbar-hide"
+    >
+      {children}
+    </div>
+  );
+});
+Scroller.displayName = "Scroller";
+
+const List = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ style, children, className = "", ...rest }, ref) => {
+  return (
+    <div
+      ref={ref}
+      style={style}
+      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ${className}`}
+      {...rest}
+    >
+      {children}
+    </div>
+  );
+});
+List.displayName = "List";
+
 function VirtualResponsiveGridInner<T>({
   data,
   renderItem,
@@ -19,41 +53,19 @@ function VirtualResponsiveGridInner<T>({
   emptyComponent,
 }: VirtualResponsiveGridProps<T>) {
   if (data.length === 0) {
-    return <div className="w-full text-center py-12">{emptyComponent || 'Currently no data available.'}</div>;
+    return (
+      <div className="w-full text-center py-12">
+        {emptyComponent || "Currently no data available."}
+      </div>
+    );
   }
   return (
     <VirtuosoGrid
       totalCount={data.length}
       itemContent={(index) => renderItem(data[index], index)}
       components={{
-        Scroller: React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-            (props, ref) => {
-          const { style, children } =
-            props as React.HTMLAttributes<HTMLDivElement>;
-          return (
-            <div
-              ref={ref as React.RefObject<HTMLDivElement>}
-              style={style}
-              className="scrollbar-hide"
-            >
-              {children}
-            </div>
-          );
-        }),
-        List: React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-            (props, ref) => {
-          const { style, children } =
-            props as React.HTMLAttributes<HTMLDivElement>;
-          return (
-            <div
-              ref={ref as React.RefObject<HTMLDivElement>}
-              style={style}
-              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ${gap} ${className}`}
-            >
-              {children}
-            </div>
-          );
-        }),
+        Scroller,
+        List,
         Item: ({ children, ...props }) => (
           <div {...props} className={itemClassName}>
             {children}
