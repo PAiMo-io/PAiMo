@@ -6,11 +6,39 @@ Welcome to the PIV Club's not-so-serious game scheduler. It's a Next.js app with
 ## Dangerously Quick Setup
 1. Clone this repo and run `npm install`. (Skip this and things will break, we warned you!)
 2. Drop a `.env.local` file at the project root with your `DB_URL`, a `NEXTAUTH_SECRET`, and variables for email verification:
-   ```env
-   DB_URL=your_mongodb_connection_string
-   AUTH_SECRET=some_complex_secret
-   NEXT_PUBLIC_APP_URL=http://localhost:3000
-   RESEND_API_KEY=your_resend_key
+## 🛠️ Environment Variables (`.env`)
+
+Create a `.env` file in the root of your project with the following variables:
+
+```env
+# MongoDB Database
+DB_URL=
+
+# Authentication
+AUTH_SECRET=
+NEXTAUTH_SECRET=
+
+# Google OAuth
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+# Resend Email Service
+RESEND_API_KEY=
+EMAIL_FROM=hello@paimo.io
+
+# Google Maps
+GOOGLE_MAPS_API_KEY=
+
+# App Base URL
+NEXT_PUBLIC_APP_URL=
+
+# Cloudflare R2 (Object Storage)
+R2_REGION=auto
+R2_ENDPOINT=
+R2_ACCESS_KEY_ID=
+R2_SECRET_ACCESS_KEY=
+R2_BUCKET_NAME=
+R2_PUBLIC_URL=
    ```
 3. Fire up the dev server with `npm run dev` and open `http://localhost:3000`.
 4. Head to `/signup` to create an account, then `/login` to start planning.
