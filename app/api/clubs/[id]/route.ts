@@ -15,15 +15,27 @@ export async function GET(
     return NextResponse.json({ success: false }, { status: 401 });
   }
   await connect();
-  const club: any = await Club.findById(params.id).populate('adminList', 'username nickname image').lean();
+  const club: any = await Club.findById(params.id).populate('adminList', 'username nickname image avatarUpdatedAt').lean();
   if (!club) {
     return NextResponse.json({ success: false }, { status: 404 });
   }
   const memberIds = club.members.map((m: any) => m.id);
   const members: any[] = await User.find(
     { _id: { $in: memberIds } },
-    { username: 1, nickname: 1, gender: 1, image: 1, role: 1 }
+    { username: 1, nickname: 1, gender: 1, image: 1, avatarUpdatedAt: 1 }
   ).lean();
+  const membersWithRole = members.map(m => {
+    const clubMember = club.members.find((cm: any) => cm.id.toString() === m._id.toString());
+    return {
+      id: m._id.toString(),
+      username: m.username,
+      nickname: m.nickname,
+      gender: m.gender,
+      image: m.image || null,
+      role: clubMember?.role || 'member',
+      avatarUpdatedAt: m.avatarUpdatedAt,
+    };
+  });
   const events: any[] = await Event.find({ club: params.id }, {
     name: 1,
     status: 1,
@@ -49,15 +61,9 @@ export async function GET(
       username: admin.username,
       nickname: admin.nickname,
       image: admin.image || null,
+      avatarUpdatedAt: admin.avatarUpdatedAt,
     })),
-    members: members.map(m => ({
-      id: m._id.toString(),
-      username: m.username,
-      nickname: m.nickname,
-      gender: m.gender,
-      image: m.image || null,
-      role: m.role,
-    })),
+    members: membersWithRole,
     events: events.map(e => ({
       id: e._id.toString(),
       name: e.name,
@@ -91,7 +97,7 @@ export async function POST(
   const username = user.username || user.email || 'unknown';
   const already = club.members.some((m: any) => m.id.toString() === user._id.toString());
   if (!already) {
-    club.members.push({ id: user._id, username });
+    club.members.push({ id: user._id, username, role: 'member' });
     await club.save();
   }
   if (!Array.isArray(user.clubs)) user.clubs = [];

@@ -7,5 +7,7 @@
   "availableEvents": "Sự kiện có sẵn",
   "noEvents": "Không có sự kiện nào.",
   "hi": "Chào, {{name}}",
-  "defaultName": "Bạn bè"
+  "defaultName": "Bạn bè",
+  "loading": "Đang tải...",
+  "searchEvents": "Tìm kiếm sự kiện"
 }

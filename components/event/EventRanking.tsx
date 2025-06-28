@@ -30,6 +30,7 @@ interface RankingData {
     username: string
     email: string
     image?: string
+    avatarUpdatedAt?: string | number | null
   }
   wins: number
   losses: number
@@ -78,7 +79,11 @@ export default function EventRanking({ eventId }: EventRankingProps) {
           <div className="flex items-center space-x-3">
             {user.image ? (
               <Image
-                src={user.image}
+                src={
+                  user.image
+                    ? `${user.image}${user.avatarUpdatedAt ? `?v=${new Date(user.avatarUpdatedAt).getTime()}` : ''}`
+                    : ''
+                }
                 alt={displayName}
                 width={32}
                 height={32}

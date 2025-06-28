@@ -30,6 +30,7 @@ export async function POST(request: Request) {
     nickname: user.nickname,
     role: user.role,
     image: user.image,
+    avatarUpdatedAt: user.avatarUpdatedAt,
     clubs: Array.isArray(user.clubs)
       ? (user.clubs as any[]).map(c => c.name)
       : [],
@@ -75,6 +76,7 @@ export async function GET() {
       nickname: user.nickname,
       role: user.role,
       image: user.image,
+      avatarUpdatedAt: user.avatarUpdatedAt,
       clubs: Array.isArray(user.clubs)
         ? (user.clubs as any[]).map(c => c.name)
         : [],

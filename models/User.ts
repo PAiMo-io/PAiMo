@@ -14,6 +14,7 @@ export interface IUser {
   level?: number;
   profileComplete?: boolean;
   lang?: SupportedLanguage;
+  avatarUpdatedAt?: Date | null; // Add this line
 }
 
 const userSchema = new Schema({
@@ -33,6 +34,7 @@ const userSchema = new Schema({
   level: { type: Number },
   profileComplete: { type: Boolean, default: false }, 
   lang: { type: String, enum: SUPPORTED_LANGUAGES, default: 'en' },
+  avatarUpdatedAt: { type: Date, default: null }, // Add this line
 });
 
 export default models.User || model('User', userSchema);
