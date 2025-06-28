@@ -59,7 +59,7 @@ function CreateProfileClient() {
       const lang = searchParams.get('lang');
       if (lang && SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)) i18n.changeLanguage(lang);
     }
-  }, [session, queryEmail, status, router]);
+  }, [session, queryEmail, status, router, searchParams, i18n]);
 
 
   if (status !== 'loading' && session?.user?.profileComplete) {

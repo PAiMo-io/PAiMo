@@ -54,7 +54,7 @@ export default function PlacementManagementPage() {
     fetchParts()
     fetchLevels()
     fetchUsers()
-  }, [status, session, router, request])
+  }, [status, session, router, request, clubId])
 
   const handleSave = async (idx: number) => {
     const part = parts[idx]
@@ -110,6 +110,7 @@ export default function PlacementManagementPage() {
 
   const handleResetPlacement = async (username: string) => {
     await request({ url: `/api/users/${username}/reset-placement?clubId=${clubId}`, method: 'post' })
+    setUsers(prev => prev.map(u => u.username === username ? { ...u, placementComplete: false, level: undefined } : u))
   }
 
   const handleToggleBypass = async (username: string, value: boolean) => {

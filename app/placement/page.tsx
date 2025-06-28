@@ -33,7 +33,7 @@ function PlacementClient() {
       }
     }
     fetchParts()
-  }, [status, session, router, request])
+  }, [status, session, router, request, clubId])
 
   const calculateLevel = () => {
     return parts.reduce((total, part) => {
