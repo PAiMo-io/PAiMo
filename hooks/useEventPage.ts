@@ -158,7 +158,7 @@ export function useEventPage(eventId: string) {
         }) as { groups?: IUser[][] };
         setGroups(groupResp.groups || []);
     };
-    const saveGroups = (g: IUser[][]) => setGroups(g);
+    const saveGroups = async (g: IUser[][]) => setGroups(g);
     const generateMatches = async () => {
         const matchResp = await request({
             url: `/api/create-matches`,

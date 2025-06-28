@@ -32,23 +32,11 @@ export default function EventLayout({
     } else if (pathname.endsWith('/event-home')) {
       setActiveTab('event');
     } else {
-      // Default behavior - redirect non-participants to match tab
-      if (!eventPageData.isParticipant && !eventPageData.isAdmin && eventPageData.event) {
-        router.replace(`/events/${params.id}/match`);
-      } else {
-        setActiveTab('event');
-      }
+      setActiveTab('event');
     }
   }, [pathname, eventPageData.isParticipant, eventPageData.isAdmin, eventPageData.event?.id, router, params.id]);
 
   const handleTabChange = (value: string) => {
-    // Non-participants can only access match and ranking tabs for viewing
-    if (!eventPageData.isParticipant && !eventPageData.isAdmin && value === 'event') {
-      // Redirect non-participants away from event tab to match tab
-      router.push(`/events/${params.id}/match`);
-      return;
-    }
-    
     setActiveTab(value);
     switch (value) {
       case 'event':
@@ -75,13 +63,7 @@ export default function EventLayout({
           <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-2">
             <Tabs value={activeTab} onValueChange={handleTabChange}>
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger 
-                  value="event" 
-                  disabled={!eventPageData.isParticipant && !eventPageData.isAdmin}
-                  className={!eventPageData.isParticipant && !eventPageData.isAdmin ? "opacity-50 cursor-not-allowed" : ""}
-                >
-                  {t('event')}
-                </TabsTrigger>
+                <TabsTrigger value="event" > {t('event')} </TabsTrigger>
                 <TabsTrigger value="match">{t('match')}</TabsTrigger>
                 <TabsTrigger value="ranking">{t('ranking')}</TabsTrigger>
               </TabsList>

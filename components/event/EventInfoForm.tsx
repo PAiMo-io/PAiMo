@@ -29,20 +29,6 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
   const { t } = useTranslation('common')
   const [isSaving, setIsSaving] = useState(false)
   
-  // Don't render the form if event data is not yet loaded
-  if (!event || !event.id) {
-    return (
-      <div className="p-4 border rounded-lg">
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-          <div className="h-10 bg-gray-200 rounded"></div>
-          <div className="h-10 bg-gray-200 rounded"></div>
-          <div className="h-10 bg-gray-200 rounded"></div>
-        </div>
-      </div>
-    )
-  }
-  
   const { control, reset, getValues, formState: { isDirty } } = useForm<FormData>({
     defaultValues: {
       name: '',
@@ -77,7 +63,21 @@ export default function EventInfoForm({ event, isAdmin, onSave }: Props) {
     }, 0)
     
     return () => clearTimeout(timeoutId)
-  }, [event?.id, event?.name, event?.visibility, event?.registrationEndTime, event?.playDate, event?.gymInfo, event?.gameStyle, event?.maxPoint, event?.courtCount, reset])
+  }, [event, reset])
+
+  // Don't render the form if event data is not yet loaded
+  if (!event || !event.id) {
+    return (
+      <div className="p-4 border rounded-lg">
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    )
+  }
 
   // Handle save button click
   const handleSave = async () => {

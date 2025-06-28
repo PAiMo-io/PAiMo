@@ -197,30 +197,30 @@ export default function MatchLobby({
 		const status = getMatchStatus(match)
 		if (status === 'waiting') {
 			// In waiting state, all players are in team 0
-                        return (match.teams[0]?.players || []).map(p => ({
-                                id: (p as any)._id || (p as any).id || '',
-                                username: p.username || p.nickname || p.email || 'Unknown',
-                                image: p.image || null,
-                                avatarUpdatedAt: (p as any).avatarUpdatedAt || null
-                        }))
-                } else {
-                        // In playing/completed state, players are in both teams
-                        return [
-                                ...(match.teams[0]?.players || []).map(p => ({
-                                        id: (p as any)._id || (p as any).id || '',
-                                        username: p.username || p.nickname || p.email || 'Unknown',
-                                        image: p.image || null,
-                                        avatarUpdatedAt: (p as any).avatarUpdatedAt || null
-                                })),
-                                ...(match.teams[1]?.players || []).map(p => ({
-                                        id: (p as any)._id || (p as any).id || '',
-                                        username: p.username || p.nickname || p.email || 'Unknown',
-                                        image: p.image || null,
-                                        avatarUpdatedAt: (p as any).avatarUpdatedAt || null
-                                }))
-                        ]
-                }
-        }
+			return (match.teams[0]?.players || []).map(p => ({
+				id: (p as any)._id || (p as any).id || '',
+				username: p.username || p.nickname || p.email || 'Unknown',
+				image: p.image || null,
+				avatarUpdatedAt: (p as any).avatarUpdatedAt || null
+			}))
+		} else {
+			// In playing/completed state, players are in both teams
+			return [
+				...(match.teams[0]?.players || []).map(p => ({
+					id: (p as any)._id || (p as any).id || '',
+					username: p.username || p.nickname || p.email || 'Unknown',
+					image: p.image || null,
+					avatarUpdatedAt: (p as any).avatarUpdatedAt || null
+				})),
+				...(match.teams[1]?.players || []).map(p => ({
+					id: (p as any)._id || (p as any).id || '',
+					username: p.username || p.nickname || p.email || 'Unknown',
+					image: p.image || null,
+					avatarUpdatedAt: (p as any).avatarUpdatedAt || null
+				}))
+			]
+		}
+	}
 
 	const isUserInMatch = (match: MatchUI): boolean => {
 		const allPlayers = getAllPlayers(match)
@@ -244,6 +244,16 @@ export default function MatchLobby({
 			isUserInMatch(match)
 	}
 
+	console.log('MatchLobby', {
+		eventId,
+		currentUserId,
+		quickMatches,
+		isCreating,
+		scoreDialogOpen,
+		activeMatch,
+		disabled
+	})
+
 	return (
 		<div className="space-y-4">
 			<ScoreEntryDialog
@@ -260,7 +270,7 @@ export default function MatchLobby({
 				<Button
 					onClick={handleCreateMatch}
 					disabled={isCreating || disabled}
-					className="bg-green-600 hover:bg-green-700"
+					className="bg-green-600"
 				>
 					{isCreating ? t('creating') : t('createMatch')}
 				</Button>
@@ -330,15 +340,15 @@ export default function MatchLobby({
 												{/* Team 1 */}
 												<div className="flex flex-col gap-2 flex-1 min-w-0 overflow-hidden">
 													{(match.teams?.[0]?.players || []).map((player, index) => (
-                                                                              <UserMiniCard
-                                                                              key={index}
-                                                                              user={{
-                                                                               id: (player as any)._id || (player as any).id || '',
-                                                                               username: player.username || player.nickname || player.email || 'Unknown',
-                                                                               image: player.image || null,
-                                                                               avatarUpdatedAt: (player as any).avatarUpdatedAt || null
-                                                                              }}
-                                                                              />
+														<UserMiniCard
+															key={index}
+															user={{
+																id: (player as any)._id || (player as any).id || '',
+																username: player.username || player.nickname || player.email || 'Unknown',
+																image: player.image || null,
+																avatarUpdatedAt: (player as any).avatarUpdatedAt || null
+															}}
+														/>
 													))}
 													{/* Team 1 Score */}
 													<div className="text-center mt-2">
@@ -354,16 +364,16 @@ export default function MatchLobby({
 												{/* Team 2 */}
 												<div className="flex flex-col gap-2 flex-1 min-w-0 overflow-hidden">
 													{(match.teams?.[1]?.players || []).map((player, index) => (
-                                                                              <UserMiniCard
-                                                                              key={index}
-                                                                              user={{
-                                                                               id: (player as any)._id || (player as any).id || '',
-                                                                               username: player.username || player.nickname || player.email || 'Unknown',
-                                                                               image: player.image || null,
-                                                                               avatarUpdatedAt: (player as any).avatarUpdatedAt || null
-                                                                              }}
-                                                                              className="w-full max-w-full"
-                                                                              />
+														<UserMiniCard
+															key={index}
+															user={{
+																id: (player as any)._id || (player as any).id || '',
+																username: player.username || player.nickname || player.email || 'Unknown',
+																image: player.image || null,
+																avatarUpdatedAt: (player as any).avatarUpdatedAt || null
+															}}
+															className="w-full max-w-full"
+														/>
 													))}
 													{/* Team 2 Score */}
 													<div className="text-center mt-2">
