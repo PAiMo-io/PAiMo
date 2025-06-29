@@ -12,6 +12,7 @@ export interface EventBodyProps {
     actions: any;
     isAdmin: boolean;
     user: any;
+    eventId: string;
 }
 
 export default function EventBody(props: EventBodyProps) {
@@ -30,7 +31,7 @@ export default function EventBody(props: EventBodyProps) {
             return (
                 <>
                     {props.matches.length > 0
-                        ? <MatchesScheduleSection matches={props.matches} />
+                        ? <MatchesScheduleSection eventId={props.eventId} currentUserId={user?.id} matches={props.matches} />
                         : <ArrangingEventSection
                             groups={props.groups}
                             onGroupsChange={actions.saveGroups}
@@ -41,10 +42,10 @@ export default function EventBody(props: EventBodyProps) {
             );
         case 'running':
             return (
-                <MatchesScheduleSection matches={props.matches} onScoreUpdated={actions.updateMatchScore} />
+                <MatchesScheduleSection eventId={props.eventId} currentUserId={user?.id} matches={props.matches} onScoreUpdated={actions.updateMatchScore} />
             );
         case 'ended':
-            return <MatchesScheduleSection matches={props.matches} />;
+            return <MatchesScheduleSection eventId={props.eventId} currentUserId={user?.id} matches={props.matches} />;
         default:
             return null;
     }
