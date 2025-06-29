@@ -42,7 +42,7 @@ export default function MatchPage({ params }: { params: { id: string } }) {
               <>
                 {event.status === 'arranging' ? (
                   matches.length > 0 ? (
-                    <MatchesScheduleSection matches={matches} disabled={!hasInteractionPermission} />
+                    <MatchesScheduleSection matches={matches} eventId={params.id} disabled={!hasInteractionPermission} />
                   ) : (
                     <ArrangingEventSection
                       groups={groups}
@@ -55,6 +55,7 @@ export default function MatchPage({ params }: { params: { id: string } }) {
                 ) : (
                   <MatchesScheduleSection
                     matches={matches}
+                    eventId={params.id}
                     onScoreUpdated={actions.updateMatchScore}
                     disabled={!hasInteractionPermission}
                   />
