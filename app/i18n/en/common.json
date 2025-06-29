@@ -45,7 +45,7 @@
   "eventTitle": "Event",
   "previous": "Previous",
   "next": "Next",
-  "location": "Location: {{location}}",
+  "location": "Location",
   "registerButton": "Register",
   "leaveButton": "Leave",
   "preparing": "Preparing",
@@ -181,4 +181,4 @@
   "noMatchesPlayed": "No matches played",
   "emailRequired": "Email is required"
 }
-  
+

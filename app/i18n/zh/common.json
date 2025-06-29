@@ -45,7 +45,7 @@
   "eventTitle": "活动",
   "previous": "上一步",
   "next": "下一步",
-  "location": "地点：{{location}}",
+  "location": "地点",
   "registerButton": "报名参加",
   "leaveButton": "退出活动",
   "preparing": "准备中",

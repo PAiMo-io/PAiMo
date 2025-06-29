@@ -45,7 +45,7 @@
     "eventTitle": "Evento",
     "previous": "Anterior",
     "next": "Siguiente",
-    "location": "Ubicación: {{location}}",
+    "location": "Ubicación",
     "registerButton": "Registrarse",
     "leaveButton": "Salir",
     "preparing": "Preparando",
