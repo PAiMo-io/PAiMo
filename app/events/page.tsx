@@ -182,7 +182,7 @@ export default function EventsPage() {
                 renderItem={(item) => (
                   <Link
                     key={item.id}
-                    href={`/events/${item.id}`}
+                    href={`/events/${item.id}/event-home`}
                     className="block"
                   >
                     <EventCard event={item} />
