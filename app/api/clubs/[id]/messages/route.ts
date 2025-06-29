@@ -6,6 +6,7 @@ import ChatMessage from '@/models/ChatMessage';
 import PushSubscription from '@/models/PushSubscription';
 import { pusherServer } from '@/lib/pusher-server';
 import { sendPush } from '@/lib/push';
+import User from '@/models/User';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     await connect();
@@ -20,11 +21,15 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     }
     const body = await req.json();
     await connect();
+
+    // Fetch user profile from DB
+    const user = (await User.findById(session.user.id).lean()) as { avatarUrl?: string; image?: string } | null;
+
     const message = await ChatMessage.create({
         clubId: params.id,
         senderId: session.user.id,
         senderNickname: session.user.nickname || session.user.name || 'Unknown',
-        senderAvatarUrl: session.user.image,
+        senderAvatarUrl: user?.avatarUrl || user?.image || '/default-avatar.png', // Use DB avatar or fallback
         content: body.content,
     });
     // broadcast via Pusher
