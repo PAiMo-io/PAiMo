@@ -46,6 +46,7 @@ interface Club {
     createdAt?: string;
     logoUrl?: string;
     visibility?: string;
+    pendingRequestsCount?: number;
 }
 
 export default function ClubLayout({ children, params }: { children: React.ReactNode; params: { id: string } }) {
@@ -113,7 +114,7 @@ export default function ClubLayout({ children, params }: { children: React.React
                     pendingRequestsCount: res.club.pendingRequestsCount || 0,
                 },
                 members: res.members,
-                events: res.events.map(e => ({ ...e, clubName: res.club.name })),
+                events: res.events.map((e) => ({ ...e, clubName: res.club.name })),
                 adminList: res.adminList,
                 isMember,
                 isAdmin,
@@ -154,25 +155,26 @@ export default function ClubLayout({ children, params }: { children: React.React
     }
 
     if (error) {
-        return <div className="p-4">Failed to load club data.</div>;
+        return <div className='p-4'>Failed to load club data.</div>;
     }
 
     return (
         <ClubDataContext.Provider value={{ clubData, fetchClubData, loading }}>
-            <div className="min-h-screen">
-                <PullToRefreshWrapper className="mt-4" onRefresh={() => fetchClubData(true)}>
+            <div className='min-h-screen'>
+                <PullToRefreshWrapper className='mt-4' onRefresh={() => fetchClubData(true)}>
                     {/* Sticky Tabs */}
-                    <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-2">
+                    <div className='sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-2'>
                         <Tabs value={activeTab} onValueChange={handleTabChange}>
-                            <TabsList className="grid w-full grid-cols-5">
-                                <TabsTrigger value="home">{t('home')}</TabsTrigger>
-                                <TabsTrigger value="event">{t('events')}</TabsTrigger>
-                                <TabsTrigger value="members">{t('members')}</TabsTrigger>
-                                <TabsTrigger value="requests">{t('requests')}</TabsTrigger>
-                                <TabsTrigger value="chat">Chat</TabsTrigger>
+                            <TabsList className='grid w-full grid-cols-5'>
+                                <TabsTrigger value='home'>{t('home')}</TabsTrigger>
+                                <TabsTrigger value='event'>{t('events')}</TabsTrigger>
+                                <TabsTrigger value='members'>{t('members')}</TabsTrigger>
+                                <TabsTrigger value='requests'>{t('requests')}</TabsTrigger>
+                                <TabsTrigger value='chat'>Chat</TabsTrigger>
                             </TabsList>
                         </Tabs>
                     </div>
+
                     {/* Page Content */}
                     {children}
                 </PullToRefreshWrapper>

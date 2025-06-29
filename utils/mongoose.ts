@@ -10,7 +10,6 @@ import '@/models/ClubJoinRequest';
 import '@/models/ChatMessage';
 import '@/models/PushSubscription';
 
-
 let cached: { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null } = (global as any).mongoose;
 
 if (!cached) {
