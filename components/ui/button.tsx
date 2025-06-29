@@ -6,8 +6,9 @@ import { cn } from '../../lib/utils'
 import LoadingDots from './loading-dots'
 import { useHaptic } from "use-haptic"
 
+// cva definition remains the same...
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background cursor-pointer select-none',
+  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:bg-gray-300 disabled:text-gray-500 disabled:pointer-events-none disabled:cursor-not-allowed ring-offset-background cursor-pointer select-none',
   {
     variants: {
       variant: {
@@ -34,7 +35,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean
   hapticEffect?: boolean
 }
@@ -47,13 +48,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const handleClick = async (event: React.MouseEvent) => {
       const { onClick } = props;
-
       event.stopPropagation();
-
       if (hapticEffect) {
         triggerHaptic();
       }
-
       if (onClick) {
         setLoading(true);
         await Promise.resolve(
@@ -61,36 +59,28 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         );
         setLoading(false);
       }
-
       if (event.defaultPrevented) return;
     };
-    
+
+    const buttonClasses = cn(buttonVariants({ variant, size, className }));
+    const isFullWidth = className?.includes('w-full');
+
     if (hapticEffect) {
       return (
         <motion.div
-          whileHover={
-            !disabled
-              ? {
-                  translateY: "-1px",
-                }
-              : {}
-          }
-          whileTap={
-            !disabled
-              ? {
-                  scale: 0.95,
-                }
-              : {}
-          }
-          className={cn(buttonVariants({ variant, size, className }))}
+          whileHover={!disabled && !loading ? { translateY: "-1px" } : {}}
+          whileTap={!disabled && !loading ? { scale: 0.95 } : {}}
+          className={isFullWidth ? 'w-full' : 'inline-block'}
         >
           {loading ? (
-            <LoadingDots />
+            <div className={cn(buttonClasses, 'flex items-center justify-center')}>
+              <LoadingDots />
+            </div>
           ) : (
             <Comp
+              {...props} // <-- FIX: Move props before onClick
+              className={buttonClasses}
               ref={ref}
-              {...props}
-              className={`w-full h-full ${className}`}
               disabled={disabled || loading}
               onClick={handleClick}
             />
@@ -98,14 +88,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         </motion.div>
       );
     }
-    
+
     return (
       <Comp
+        {...props} // <-- FIX: Move props before onClick
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-        {...props}
+        disabled={disabled || loading}
+        onClick={handleClick}
       />
-    )
+    );
   }
 )
 Button.displayName = 'Button'

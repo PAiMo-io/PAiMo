@@ -20,9 +20,10 @@ export interface MatchUI {
 interface MatchesScheduleSectionProps {
     matches: MatchUI[],
     onScoreUpdated?: (matchId: string, score: [number, number]) => void
+    disabled?: boolean
 }
 
-export default function MatchesScheduleSection({ matches, onScoreUpdated }: MatchesScheduleSectionProps) {
+export default function MatchesScheduleSection({ matches, onScoreUpdated, disabled = false }: MatchesScheduleSectionProps) {
     const [dialogOpen, setDialogOpen] = useState(false)
     const [activeMatch, setActiveMatch] = useState<MatchUI | null>(null)
 
@@ -83,8 +84,8 @@ export default function MatchesScheduleSection({ matches, onScoreUpdated }: Matc
                         <TabsContent key={groupIdx} value={String(groupIdx)}>
                             <div className="grid grid-cols-1 gap-4">
                                 {groupMatches.map(match => (
-                                    <Card key={match._id} className="overflow-visible"
-                                        onClick={() => openDialog(match)}>
+                                    <Card key={match._id} className={`overflow-visible ${!disabled ? 'cursor-pointer hover:bg-gray-50' : 'cursor-default'}`}
+                                        onClick={disabled ? undefined : () => openDialog(match)}>
                                         <CardHeader>
                                             <CardTitle>Round {match.round} — Court {match.court + 1}</CardTitle>
                                         </CardHeader>
