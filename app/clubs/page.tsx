@@ -6,6 +6,7 @@ import ClubCard from '../../components/ClubCard'
 import PageSkeleton from '../../components/PageSkeleton'
 import { useApi } from '../../lib/useApi'
 import { useTranslation } from 'react-i18next'
+import VirtualResponsiveGrid from '@/components/VirtualList'
 import { Input } from '../../components/ui/input'
 
 interface ClubItem {
@@ -52,6 +53,8 @@ export default function ClubsDirectory() {
     return <div className="p-4">{t('loadFailed')}</div>
   }
 
+  const emptyComponent = <div className="p-4">{t('noClubsAvailable')}</div>
+
   const filteredClubs = clubs.filter(c =>
     c.name.toLowerCase().includes(search.toLowerCase())
   )
@@ -67,17 +70,20 @@ export default function ClubsDirectory() {
           className="max-w-xs"
         />
       )}
-      {filteredClubs.length === 0 ? (
-        <p>{t('noClubsAvailable')}</p>
-      ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredClubs.map(c => (
-            <Link key={c.id} href={`/clubs/${c.id}`} className="block">
-              <ClubCard club={c} />
-            </Link>
-          ))}
+      <div className="flex flex-col h-screen">
+        <div className="flex-1 pb-[10px]">
+            <VirtualResponsiveGrid
+                data={filteredClubs}
+                emptyComponent={emptyComponent}
+                renderItem={(item) => (
+                    <Link key={item.id} href={`/clubs/${item.id}`} className="block">
+                        <ClubCard club={item} />
+                    </Link>
+                )}
+                gap="gap-4"
+            />
         </div>
-      )}
+      </div>
     </div>
   )
 }

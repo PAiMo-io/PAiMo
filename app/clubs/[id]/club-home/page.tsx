@@ -213,7 +213,7 @@ export default function ClubHomePage() {
                 {ongoingEvents
                   .filter(event => clubData.isMember || event.visibility !== 'private')
                   .map(event => (
-                    <Link key={event.id} href={`/events/${event.id}`}>
+                    <Link key={event.id} href={`/events/${event.id}`} className="block">
                       <EventCard event={event} />
                     </Link>
                   ))}

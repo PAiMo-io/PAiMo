@@ -99,7 +99,7 @@ export const PullToRefreshWrapper: React.FC<PullToRefreshWrapperProps> = ({
   }, [onRefresh, refreshing, debounceMs, threshold]);
   
   return (
-    <div ref={wrapperRef} className={`overflow-y-auto h-full ${className}`}>
+    <div ref={wrapperRef} className={`overflow-y-auto h-full scrollbar-hide ${className}`}>
       <div className="sticky top-0 z-10">
         {(pulling || refreshing) && <TopLoader />}
       </div>
