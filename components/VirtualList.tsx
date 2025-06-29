@@ -15,11 +15,31 @@ const Scroller = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >((props, ref) => {
   const { style, children } = props as React.HTMLAttributes<HTMLDivElement>;
+
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const atTop = el.scrollTop === 0;
+    const atBottom = el.scrollHeight - el.scrollTop === el.clientHeight;
+    const scrollingDown = e.deltaY > 0;
+
+    if ((scrollingDown && atBottom) || (!scrollingDown && atTop)) {
+      return;
+    }
+
+    e.stopPropagation();
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
       style={style}
       className="scrollbar-hide"
+      onWheel={handleWheel}
+      onTouchMove={handleTouchMove}
     >
       {children}
     </div>
@@ -61,8 +81,13 @@ function VirtualResponsiveGridInner<T>({
   }
   return (
     <VirtuosoGrid
-      totalCount={data.length}
-      itemContent={(index) => renderItem(data[index], index)}
+      totalCount={data.length + 1}
+      itemContent={(index) => {
+        if (index === data.length) {
+          return <div style={{ height: "48px" }} />;
+        }
+        return renderItem(data[index], index);
+      }}
       components={{
         Scroller,
         List,
