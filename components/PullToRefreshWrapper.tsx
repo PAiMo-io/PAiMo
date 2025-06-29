@@ -1,120 +1,118 @@
-import React, { useState, useRef, useEffect } from "react";
-import { TopLoader } from "./ui/top-loader";
-import { useHaptic } from "use-haptic";
+import React, { useState, useRef, useEffect } from 'react';
+import { TopLoader } from './ui/top-loader';
+import { useHaptic } from 'use-haptic';
 
 interface PullToRefreshWrapperProps {
-  onRefresh: () => Promise<void>;
-  children: React.ReactNode;
-  threshold?: number;
-  debounceMs?: number;
-  className?: string;
+    onRefresh: () => Promise<void>;
+    children: React.ReactNode;
+    threshold?: number;
+    debounceMs?: number;
+    className?: string;
 }
 
 export const PullToRefreshWrapper: React.FC<PullToRefreshWrapperProps> = ({
-  onRefresh,
-  children,
-  threshold = 60,
-  debounceMs = 1500,
-  className = "",
+    onRefresh,
+    children,
+    threshold = 60,
+    debounceMs = 1500,
+    className = '',
 }) => {
-  const [refreshing, setRefreshing] = useState(false);
-  const [pulling, setPulling] = useState(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const startYRef = useRef<number | null>(null);
-  const lastRefreshTimeRef = useRef<number>(0);
-  const deltaYRef = useRef(0);
-  const hasTriggeredHaptic = useRef(false);
-  const { triggerHaptic } = useHaptic();
+    const [refreshing, setRefreshing] = useState(false);
+    const [pulling, setPulling] = useState(false);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const startYRef = useRef<number | null>(null);
+    const lastRefreshTimeRef = useRef<number>(0);
+    const deltaYRef = useRef(0);
+    const hasTriggeredHaptic = useRef(false);
+    const { triggerHaptic } = useHaptic();
 
-  const now = () => Date.now();
+    const now = () => Date.now();
 
-  const canTrigger = () => {
-    return now() - lastRefreshTimeRef.current >= debounceMs && !refreshing;
-  };
-
-  const triggerRefresh = async () => {
-    if (!canTrigger()) return;
-    lastRefreshTimeRef.current = now();
-    setRefreshing(true);
-    await onRefresh();
-    setRefreshing(false);
-  };
-
-  useEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-
-    const isElementAtTop = (el: HTMLElement | null): boolean => {
-      while (el) {
-        if (el.scrollHeight > el.clientHeight && el.scrollTop > 0) {
-          return false;
-        }
-        el = el.parentElement;
-      }
-      return true;
+    const canTrigger = () => {
+        return now() - lastRefreshTimeRef.current >= debounceMs && !refreshing;
     };
 
-    const handleTouchStart = (e: TouchEvent) => {
-      const target = e.target as HTMLElement;
-      if (isElementAtTop(target)) {
-        startYRef.current = e.touches[0].clientY;
-      }
+    const triggerRefresh = async () => {
+        if (!canTrigger()) return;
+        lastRefreshTimeRef.current = now();
+        setRefreshing(true);
+        await onRefresh();
+        setRefreshing(false);
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      if (startYRef.current === null) return;
+    useEffect(() => {
+        const wrapper = wrapperRef.current;
+        if (!wrapper) return;
 
-      const delta = e.touches[0].clientY - startYRef.current;
-      deltaYRef.current = delta;
+        const isElementAtTop = (el: HTMLElement | null): boolean => {
+            while (el) {
+                if (el.scrollHeight > el.clientHeight && el.scrollTop > 0) {
+                    return false;
+                }
+                el = el.parentElement;
+            }
+            return true;
+        };
 
-      if (delta > threshold) {
-        setPulling(true);
+        const handleTouchStart = (e: TouchEvent) => {
+            const target = e.target as HTMLElement;
+            if (isElementAtTop(target)) {
+                startYRef.current = e.touches[0].clientY;
+            }
+        };
 
-        if (!hasTriggeredHaptic.current) {
-            triggerHaptic();
-            hasTriggeredHaptic.current = true;
-        }
-      } else {
-        setPulling(false);
-        hasTriggeredHaptic.current = false;
-      }
-    };
+        const handleTouchMove = (e: TouchEvent) => {
+            if (startYRef.current === null) return;
 
-    const handleTouchEnd = () => {
-      if (deltaYRef.current > threshold && canTrigger()) {
-        triggerRefresh();
-      }
-      startYRef.current = null;
-      deltaYRef.current = 0;
-      setPulling(false);
-      hasTriggeredHaptic.current = false;
-    };
+            const delta = e.touches[0].clientY - startYRef.current;
+            deltaYRef.current = delta;
 
-    const handleWheel = (e: WheelEvent) => {
-      if (wrapper.scrollTop === 0 && e.deltaY < -threshold) {
-        triggerRefresh();
-      }
-    };
+            if (delta > threshold) {
+                setPulling(true);
 
-    wrapper.addEventListener("touchstart", handleTouchStart, { passive: true });
-    wrapper.addEventListener("touchmove", handleTouchMove, { passive: true });
-    wrapper.addEventListener("touchend", handleTouchEnd);
-    wrapper.addEventListener("wheel", handleWheel);
+                if (!hasTriggeredHaptic.current) {
+                    triggerHaptic();
+                    hasTriggeredHaptic.current = true;
+                }
+            } else {
+                setPulling(false);
+                hasTriggeredHaptic.current = false;
+            }
+        };
 
-    return () => {
-      wrapper.removeEventListener("touchstart", handleTouchStart);
-      wrapper.removeEventListener("touchmove", handleTouchMove);
-      wrapper.removeEventListener("touchend", handleTouchEnd);
-      wrapper.removeEventListener("wheel", handleWheel);
-    };
-  }, [onRefresh, refreshing, debounceMs, threshold]);
-  
-  return (
-    <div ref={wrapperRef} className={`overflow-y-auto h-full scrollbar-hide ${className}`}>
-      <div className="sticky top-0 z-10">
-        {(pulling || refreshing) && <TopLoader />}
-      </div>
-      {children}
-    </div>
-  );
+        const handleTouchEnd = () => {
+            if (deltaYRef.current > threshold && canTrigger()) {
+                triggerRefresh();
+            }
+            startYRef.current = null;
+            deltaYRef.current = 0;
+            setPulling(false);
+            hasTriggeredHaptic.current = false;
+        };
+
+        const handleWheel = (e: WheelEvent) => {
+            if (wrapper.scrollTop === 0 && e.deltaY < -threshold) {
+                triggerRefresh();
+            }
+        };
+
+        wrapper.addEventListener('touchstart', handleTouchStart, { passive: true });
+        wrapper.addEventListener('touchmove', handleTouchMove, { passive: true });
+        wrapper.addEventListener('touchend', handleTouchEnd);
+        wrapper.addEventListener('wheel', handleWheel);
+
+        return () => {
+            wrapper.removeEventListener('touchstart', handleTouchStart);
+            wrapper.removeEventListener('touchmove', handleTouchMove);
+            wrapper.removeEventListener('touchend', handleTouchEnd);
+            wrapper.removeEventListener('wheel', handleWheel);
+        };
+    }, [onRefresh, refreshing, debounceMs, threshold]);
+
+    return (
+        <div ref={wrapperRef} className={`overflow-y-auto h-full scrollbar-hide ${className}`}>
+            <div className='sticky top-0 z-10'>{(pulling || refreshing) && <TopLoader />}</div>
+            {children}
+        </div>
+    );
 };
