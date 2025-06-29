@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Filter as FilterIcon } from "lucide-react";
-import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "./ui/button";
 import { FloatingLabelInput } from "./ui/floating-label-input";
 
