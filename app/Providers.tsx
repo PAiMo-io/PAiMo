@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import type { ReactNode } from "react";
 import type { Session } from "next-auth";
 import { I18nProvider } from "./providers/I18nProvider";
+import PushInit from "./PushInit";
 
 export function Providers({
   children,
@@ -17,6 +18,7 @@ export function Providers({
   return (
     <SessionProvider session={session}>
       <I18nProvider>
+        <PushInit />
         <div className="flex flex-col h-full w-full">
           <AppBar />
           <main className="flex-grow overflow-y-auto">{children}</main>

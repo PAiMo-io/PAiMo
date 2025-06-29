@@ -4,6 +4,7 @@ import { authOptions } from '../../../../../auth'
 import { getDb } from '@/lib/db'
 import { ObjectId } from 'mongodb'
 import Pusher from 'pusher'
+import { sendPushNotification } from '@/lib/push'
 
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID!,
@@ -89,5 +90,13 @@ export async function POST(
     content: doc.content,
     timestamp: doc.timestamp,
   })
+  await sendPushNotification(
+    {
+      title: doc.senderNickname,
+      body: doc.content,
+      icon: doc.senderAvatarUrl || undefined,
+    },
+    doc.senderId
+  )
   return NextResponse.json({ success: true })
 }

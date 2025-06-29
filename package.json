@@ -37,6 +37,8 @@
     "motion": "^12.19.1",
     "next": "^14.2.30",
     "next-auth": "^4.24.11",
+    "pusher": "^5.2.0",
+    "pusher-js": "^8.2.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.58.1",
@@ -46,8 +48,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "use-haptic": "^1.1.11",
-    "pusher": "^5.2.0",
-    "pusher-js": "^8.2.0"
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.18",
