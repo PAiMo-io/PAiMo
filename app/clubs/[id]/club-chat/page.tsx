@@ -21,7 +21,7 @@ export default function ClubChatPage() {
   }
 
   return (
-    <div className='p-4'>
+    <div className="flex flex-col h-full">
       <ChatBox clubId={clubData.club.id} />
     </div>
   )

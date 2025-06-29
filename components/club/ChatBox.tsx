@@ -74,10 +74,14 @@ export default function ChatBox({ clubId }: { clubId: string }) {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col w-full min-h-screen">{/* Removed h-screen */}
       <div
-        className="flex-1 overflow-y-auto p-4 space-y-4"
-        style={{ scrollBehavior: 'smooth' }}
+        className="overflow-y-auto p-4 space-y-4"
+        style={{
+          scrollBehavior: 'smooth',
+          maxHeight: '60vh', // Limit chat area height to 60% of viewport
+          minHeight: '200px', // Optional: minimum height for aesthetics
+        }}
       >
         {messages.map((m, idx) => (
           <div key={idx} className="flex items-start gap-2">
@@ -111,7 +115,7 @@ export default function ChatBox({ clubId }: { clubId: string }) {
         ))}
         <div ref={bottomRef} />
       </div>
-      <div className="p-2 border-t bg-white flex gap-2 sticky bottom-0">
+      <div className="p-2 border-t bg-white flex gap-2">
         <Input
           value={input}
           onChange={e => setInput(e.target.value)}
