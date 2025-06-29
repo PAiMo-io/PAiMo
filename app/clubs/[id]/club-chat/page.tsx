@@ -20,8 +20,11 @@ export default function ClubChatPage() {
     return <div className='p-4'>Loading...</div>
   }
 
+  // The surrounding layout already handles full screen height. Here we simply
+  // fill the remaining space between the sticky top tabs and the page bottom so
+  // that only the message list scrolls.
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col flex-1 overflow-hidden">
       <ChatBox clubId={clubData.club.id} />
     </div>
   )
