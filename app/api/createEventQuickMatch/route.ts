@@ -31,14 +31,15 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: false, error: 'Must be event participant' }, { status: 403 });
     }
 
-    // Check if user already has a waiting quick match
+    // Check if user already has an incomplete quick match
     const existingMatch = await Match.findOne({
         event: eventId,
         isQuickMatch: true,
+        status: { $ne: 'completed' },
         $or: [{ 'teams.0.players': session.user.id }, { 'teams.1.players': session.user.id }],
     });
 
-    if (existingMatch && existingMatch.teams.some((team: any) => team.score === 0)) {
+    if (existingMatch) {
         return NextResponse.json(
             {
                 success: false,
@@ -94,6 +95,7 @@ export async function POST(request: Request) {
         court: 0,
         group: 0,
         isQuickMatch: true,
+        status: 'waiting',
         teams: [
             { players: team1Players, score: 0 },
             { players: team2Players, score: 0 },
@@ -167,11 +169,12 @@ export async function PUT(request: Request) {
             const existingMatch = await Match.findOne({
                 event: quickMatch.event,
                 isQuickMatch: true,
+                status: { $ne: 'completed' },
                 _id: { $ne: matchId },
                 $or: [{ 'teams.0.players': userId }, { 'teams.1.players': userId }],
             });
 
-            if (existingMatch && existingMatch.teams.some((team: any) => team.score === 0)) {
+            if (existingMatch) {
                 return NextResponse.json(
                     {
                         success: false,
@@ -196,8 +199,8 @@ export async function PUT(request: Request) {
                 );
             }
 
-            // Check if match has started (both teams have players)
-            if (quickMatch.teams[1].players.length > 0) {
+            // Check if match has started (status is playing or completed)
+            if (quickMatch.status === 'playing' || quickMatch.status === 'completed') {
                 return NextResponse.json(
                     {
                         success: false,
@@ -231,7 +234,7 @@ export async function PUT(request: Request) {
                 );
             }
 
-            if (quickMatch.teams[1].players.length > 0) {
+            if (quickMatch.status !== 'waiting') {
                 return NextResponse.json(
                     {
                         success: false,
@@ -255,6 +258,7 @@ export async function PUT(request: Request) {
             const shuffledPlayers = [...quickMatch.teams[0].players].sort(() => Math.random() - 0.5);
             quickMatch.teams[0].players = shuffledPlayers.slice(0, 2);
             quickMatch.teams[1].players = shuffledPlayers.slice(2, 4);
+            quickMatch.status = 'playing';
             break;
 
         case 'complete':
@@ -268,11 +272,11 @@ export async function PUT(request: Request) {
                 );
             }
 
-            if (quickMatch.teams[1].players.length === 0) {
+            if (quickMatch.status !== 'playing') {
                 return NextResponse.json(
                     {
                         success: false,
-                        error: 'Match not started yet',
+                        error: 'Match not in playing state',
                     },
                     { status: 400 }
                 );
@@ -297,6 +301,7 @@ export async function PUT(request: Request) {
                     }
                 }
             }
+            quickMatch.status = 'completed';
             break;
 
         default:

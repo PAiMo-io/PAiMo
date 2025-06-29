@@ -143,7 +143,7 @@ export default function ScoreEntryDialog({
                     })}
                 </div>
 
-                <DialogFooter className='mt-6 flex justify-end space-x-2'>
+                <DialogFooter className='mt-6 flex justify-center gap-2'>
                     <Button variant='outline' onClick={onClose} disabled={saving} className='w-full'>
                         Cancel
                     </Button>
