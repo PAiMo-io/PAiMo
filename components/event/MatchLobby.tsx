@@ -158,6 +158,12 @@ export default function MatchLobby({
 
     // Helper functions to work with MatchUI structure for quick matches
     const getMatchStatus = (match: MatchUI): 'waiting' | 'playing' | 'completed' => {
+        // Use status from API data if available, otherwise fall back to calculated status
+        if (match.status) {
+            return match.status as 'waiting' | 'playing' | 'completed';
+        }
+
+        // Fallback logic for backward compatibility
         // Check if teams structure exists and has both teams
         if (!match.teams || match.teams.length < 2) return 'waiting';
 
