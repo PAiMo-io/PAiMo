@@ -1,3 +1,6 @@
 {
-    "home": "Home"
+    "home": "Home",
+    "events": "Events",
+    "members": "Members",
+    "requests": "Requests"
 }

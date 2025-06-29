@@ -25,6 +25,7 @@ const clubSchema = new Schema({
     },
   ],
   adminList: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  pendingRequestsCount: { type: Number, default: 0 },
 });
 
 export default models.Club || model('Club', clubSchema);

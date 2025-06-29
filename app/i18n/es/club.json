@@ -1,3 +1,6 @@
 {
-    "home":"Inicio"
+    "home": "Inicio",
+    "events": "Eventos",
+    "members": "Miembros",
+    "requests": "Solicitudes"
 }
