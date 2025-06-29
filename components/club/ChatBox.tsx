@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Avatar from 'boring-avatars'
 import dayjs from 'dayjs'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 
 interface Message {
   senderId: string
@@ -22,9 +22,10 @@ export default function ChatBox({ clubId }: { clubId: string }) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    async function load() {
+    const load = async () => {
       try {
         const res = await axios.get(`/api/clubs/${clubId}/messages`)
         setMessages(res.data.messages || [])
@@ -40,9 +41,7 @@ export default function ChatBox({ clubId }: { clubId: string }) {
     const pusherCluster = process.env.NEXT_PUBLIC_PUSHER_CLUSTER
     if (!pusherKey || !pusherCluster) return
 
-    const pusher = new Pusher(pusherKey, {
-      cluster: pusherCluster,
-    })
+    const pusher = new Pusher(pusherKey, { cluster: pusherCluster })
     const channel = pusher.subscribe(`club-${clubId}`)
 
     channel.bind('message', (data: Message) => {
@@ -57,32 +56,25 @@ export default function ChatBox({ clubId }: { clubId: string }) {
   }, [clubId])
 
   useEffect(() => {
-    const container = bottomRef.current?.parentElement
-    if (container) {
-      container.scrollTop = container.scrollHeight
-    }
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
   const sendMessage = async () => {
-    if (!input.trim()) return
+    const trimmed = input.trim()
+    if (!trimmed) return
     try {
-      await axios.post(`/api/clubs/${clubId}/messages`, { content: input })
+      await axios.post(`/api/clubs/${clubId}/messages`, { content: trimmed })
       setInput('')
+      textareaRef.current?.focus()
     } catch (err) {
       console.error('Failed to send message', err)
     }
   }
 
   return (
-    <div className="flex flex-col w-full min-h-screen">{/* Removed h-screen */}
-      <div
-        className="overflow-y-auto p-4 space-y-4"
-        style={{
-          scrollBehavior: 'smooth',
-          maxHeight: '60vh', // Limit chat area height to 60% of viewport
-          minHeight: '200px', // Optional: minimum height for aesthetics
-        }}
-      >
+    <div className="flex flex-col flex-1 overflow-hidden h-full">
+      {/* Scrollable message list */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth">
         {messages.map((m, idx) => (
           <div key={idx} className="flex items-start gap-2">
             {m.senderAvatarUrl ? (
@@ -115,12 +107,22 @@ export default function ChatBox({ clubId }: { clubId: string }) {
         ))}
         <div ref={bottomRef} />
       </div>
-      <div className="p-2 border-t bg-white flex gap-2">
-        <Input
+
+      {/* Input bar */}
+      <div className="p-2 border-t bg-white flex gap-2 items-end">
+        <Textarea
+          ref={textareaRef}
           value={input}
           onChange={e => setInput(e.target.value)}
-          placeholder="Type a message"
-          className="flex-1"
+          onKeyDown={e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              sendMessage()
+            }
+          }}
+          placeholder="Type a message (Shift+Enter for newline)"
+          className="flex-1 resize-none"
+          rows={1}
         />
         <Button onClick={sendMessage}>Send</Button>
       </div>
