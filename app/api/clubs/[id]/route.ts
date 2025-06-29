@@ -5,6 +5,7 @@ import connect from '../../../../utils/mongoose';
 import Club from '../../../../models/Club';
 import Event from '../../../../models/Event';
 import User from '../../../../models/User';
+import ClubJoinRequest from '../../../../models/ClubJoinRequest';
 
 export async function GET(
   request: Request,
@@ -55,6 +56,7 @@ export async function GET(
       visibility: club.visibility,
       createdBy: club.createdBy,
       createdAt: club.createdAt,
+      pendingRequestsCount: club.pendingRequestsCount || 0,
     },
     adminList: (club.adminList || []).map((admin: any) => ({
       id: admin._id.toString(),
@@ -85,27 +87,46 @@ export async function POST(
   if (!session || !session.user?.id) {
     return NextResponse.json({ success: false }, { status: 401 });
   }
+
   await connect();
+  const { message } = await request.json();
+
+  // check if club exists
   const club = await Club.findById(params.id);
   if (!club) {
     return NextResponse.json({ success: false }, { status: 404 });
   }
-  const user = await User.findById(session.user.id);
-  if (!user) {
-    return NextResponse.json({ success: false }, { status: 404 });
+
+  // check if user is already a member
+  const isAlreadyMember = club.members.some((m: any) => m.id.toString() === session.user.id);
+  if (isAlreadyMember) {
+    return NextResponse.json({ success: false, message: 'Already a member' }, { status: 400 });
   }
-  const username = user.username || user.email || 'unknown';
-  const already = club.members.some((m: any) => m.id.toString() === user._id.toString());
-  if (!already) {
-    club.members.push({ id: user._id, username, role: 'member' });
-    await club.save();
+
+  // check if there is already a pending request
+  const existingRequest = await ClubJoinRequest.findOne({
+    userId: session.user.id,
+    clubId: params.id,
+    status: 'pending'
+  });
+
+  if (existingRequest) {
+    return NextResponse.json({ success: false, message: 'Request already pending' }, { status: 400 });
   }
-  if (!Array.isArray(user.clubs)) user.clubs = [];
-  if (!user.clubs.some((c: any) => c.toString() === club._id.toString())) {
-    user.clubs.push(club._id);
-    await user.save();
-  }
-  return NextResponse.json({ success: true });
+
+  // create a new join request
+  await ClubJoinRequest.create({
+    userId: session.user.id,
+    clubId: params.id,
+    message: message || '',
+    status: 'pending'
+  });
+
+  // update the pending requests count
+  club.pendingRequestsCount = (club.pendingRequestsCount || 0) + 1;
+  await club.save();
+
+  return NextResponse.json({ success: true, message: 'Join request submitted' });
 }
 
 export async function PUT(

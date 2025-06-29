@@ -77,7 +77,7 @@ export default function ClubsDirectory() {
                 emptyComponent={emptyComponent}
                 renderItem={(item) => (
                     <Link key={item.id} href={`/clubs/${item.id}`} className="block">
-                        <ClubCard club={item} />
+                        <ClubCard club={item} isAdmin={false} />
                     </Link>
                 )}
                 gap="gap-4"

@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   await connect();
   const url = new URL(request.url);
   const showAll = url.searchParams.get('all') === '1';
-  const query = showAll ? {} : { visibility: 'public' };
+  const query = showAll ? {} : { visibility: { $in: ['publicView', 'publicJoin'] } };
   const clubs = await Club.find(query, {
     name: 1,
     description: 1,

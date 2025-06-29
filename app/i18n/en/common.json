@@ -179,6 +179,24 @@
   "scoreMargin": "Score Margin",
   "avgScore": "Avg Score",
   "noMatchesPlayed": "No matches played",
-  "emailRequired": "Email is required"
+  "emailRequired": "Email is required",
+  "joinMessage": "Join Message",
+  "joinMessagePlaceholder": "Tell us why you want to join this club...",
+  "submitRequest": "Submit Request",
+  "submitting": "Submitting...",
+  "submit": "Submit",
+  "joinRequests": "Join Requests",
+  "noJoinRequests": "No join requests",
+  "approve": "Approve",
+  "reject": "Reject",
+  "approved": "Approved",
+  "rejected": "Rejected",
+  "message": "Message",
+  "pendingRequests": "{{count}} pending",
+  "leaveClubDescription": "Are you sure you want to leave this club? You will lose access to all club events and activities.",
+  "noPendingRequests": "No pending requests",
+  "rejectRequest": "Reject Request",
+  "rejectRequestDescription": "Are you sure you want to reject this join request?",
+  "noPermission": "You don't have permission to access this page",
+  "clickToViewRequests": "Click to view pending requests"
 }
-  

@@ -20,6 +20,8 @@ interface Club {
   createdBy?: string
   createdAt?: string
   logoUrl?: string
+  pendingRequestsCount?: number
+  isAdmin?: boolean
 }
 
 export default function MyClubPage() {
@@ -89,7 +91,7 @@ export default function MyClubPage() {
                   emptyComponent={emptyComponent}
                   renderItem={(item) => (
                       <Link key={item.id} href={`/clubs/${item.id}`} className="block">
-                          <ClubCard club={item} />
+                          <ClubCard club={item} isAdmin={false} />
                       </Link>
                   )}
                   gap="gap-4"

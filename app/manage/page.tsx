@@ -191,7 +191,7 @@ export default function ManagePage() {
           <div className="space-y-2">
             {clubs.map(c => (
               <Link key={c.id} href={`/clubs/${c.id}`}>
-                <ClubCard club={c} />
+                <ClubCard club={c} isAdmin={true} />
               </Link>
             ))}
           </div>

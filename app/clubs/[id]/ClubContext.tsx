@@ -40,6 +40,7 @@ interface Club {
   createdAt?: string;
   logoUrl?: string;
   visibility?: string;
+  pendingRequestsCount?: number;
 }
 
 export interface ClubData {

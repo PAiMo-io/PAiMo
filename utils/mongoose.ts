@@ -6,6 +6,7 @@ import '@/models/Event';
 import '@/models/Match';
 import '@/models/PendingUser';
 import '@/models/PasswordReset';
+import '@/models/ClubJoinRequest';
 
 
 

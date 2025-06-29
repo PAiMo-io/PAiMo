@@ -37,9 +37,20 @@ function CreateProfileClient() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [genderError, setGenderError] = useState('');
   const { t, i18n } = useTranslation('common');
 
   const effectiveEmail = session?.user?.email || queryEmail;
+
+  // Validate form
+  const isFormValid = gender && password && !confirmPasswordError;
+
+  // Clear gender error when gender is selected
+  useEffect(() => {
+    if (gender) {
+      setGenderError('');
+    }
+  }, [gender]);
 
   // Populate email from NextAuth session or query param
   useEffect(() => {
@@ -133,8 +144,8 @@ function CreateProfileClient() {
             <SelectValue placeholder={t('genderPlaceholder')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Male">{t('genderMale')}</SelectItem>
-            <SelectItem value="Female">{t('genderFemale')}</SelectItem>
+            <SelectItem value="male">{t('genderMale')}</SelectItem>
+            <SelectItem value="female">{t('genderFemale')}</SelectItem>
           </SelectContent>
         </Select>
         <Input
