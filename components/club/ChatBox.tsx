@@ -51,7 +51,10 @@ export default function ChatBox({ clubId }: { clubId: string }) {
   }, [clubId])
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const container = bottomRef.current?.parentElement
+    if (container) {
+      container.scrollTop = container.scrollHeight
+    }
   }, [messages])
 
   const sendMessage = async () => {
@@ -66,7 +69,7 @@ export default function ChatBox({ clubId }: { clubId: string }) {
 
   return (
     <div className="border rounded-md p-4 space-y-2">
-      <div className="h-64 overflow-y-auto space-y-1">
+      <div className="h-64 sm:h-96 max-h-[70vh] overflow-y-auto space-y-1" style={{ scrollBehavior: 'smooth' }}>
         {messages.map((m, idx) => (
           <div key={idx} className="p-1 border-b text-sm">
             <strong>{m.senderName}: </strong>
