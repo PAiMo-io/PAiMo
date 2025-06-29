@@ -72,6 +72,8 @@ export default function ClubLayout({
       setActiveTab('event');
     } else if (pathname.endsWith('/club-members')) {
       setActiveTab('members');
+    } else if (pathname.endsWith('/club-requests')) {
+      setActiveTab('requests');
     } else {
       setActiveTab('home');
     }
@@ -113,6 +115,7 @@ export default function ClubLayout({
           createdAt: res.club.createdAt || '',
           logoUrl: res.club.logoUrl || '',
           visibility: res.club.visibility || 'private',
+          pendingRequestsCount: res.club.pendingRequestsCount || 0,
         },
         members: res.members,
         events: res.events.map(e => ({ ...e, clubName: res.club.name })),
@@ -142,6 +145,9 @@ export default function ClubLayout({
       case 'members':
         router.push(`/clubs/${params.id}/club-members`);
         break;
+      case 'requests':
+        router.push(`/clubs/${params.id}/club-requests`);
+        break;
     }
   };
 
@@ -160,10 +166,11 @@ export default function ClubLayout({
         {/* Sticky Tabs */}
         <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-2">
           <Tabs value={activeTab} onValueChange={handleTabChange}>
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="home">{t('home')}</TabsTrigger>
               <TabsTrigger value="event">{t('events')}</TabsTrigger>
               <TabsTrigger value="members">{t('members')}</TabsTrigger>
+              <TabsTrigger value="requests">{t('requests')}</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>

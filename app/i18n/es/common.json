@@ -169,6 +169,26 @@
     "enterScore": "Ingresar puntuación",
     "completeMatch": "Completar partido",
     "rematch": "Repetir partido",
-    "swapRematch": "Intercambiar y repetir partido"
+    "swapRematch": "Intercambiar y repetir partido",
+    "noMatchesPlayed": "No se han jugado partidos",
+    "joinMessage": "Mensaje de solicitud",
+    "joinMessagePlaceholder": "Cuéntanos por qué quieres unirte a este club...",
+    "submitRequest": "Enviar solicitud",
+    "submitting": "Enviando...",
+    "submit": "Enviar",
+    "joinRequests": "Solicitudes de unión",
+    "noJoinRequests": "No hay solicitudes de unión",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "approved": "Aprobado",
+    "rejected": "Rechazado",
+    "message": "Mensaje",
+    "pendingRequests": "{{count}} pendientes",
+    "leaveClubDescription": "¿Estás seguro de que quieres dejar este club? Perderás acceso a todos los eventos y actividades del club.",
+    "noPendingRequests": "No hay solicitudes pendientes",
+    "rejectRequest": "Rechazar solicitud",
+    "rejectRequestDescription": "¿Estás seguro de que quieres rechazar esta solicitud de unión?",
+    "noPermission": "No tienes permiso para acceder a esta página",
+    "clickToViewRequests": "Haz clic para ver solicitudes pendientes"
   }
   

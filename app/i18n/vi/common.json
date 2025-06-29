@@ -169,6 +169,24 @@
     "enterScore": "Nhập điểm số",
     "completeMatch": "Hoàn thành trận đấu",
     "rematch": "Trận đấu lại",
-    "swapRematch": "Hoán đổi & Trận đấu lại"
+    "swapRematch": "Hoán đổi & Trận đấu lại",
+    "noMatchesPlayed": "Chưa có trận đấu nào",
+    "joinMessage": "Tin nhắn tham gia",
+    "joinMessagePlaceholder": "Hãy cho chúng tôi biết lý do bạn muốn tham gia câu lạc bộ này...",
+    "submitRequest": "Gửi yêu cầu",
+    "submitting": "Đang gửi...",
+    "submit": "Gửi",
+    "joinRequests": "Yêu cầu tham gia",
+    "noJoinRequests": "Không có yêu cầu tham gia",
+    "approve": "Chấp thuận",
+    "reject": "Từ chối",
+    "message": "Tin nhắn",
+    "pendingRequests": "{{count}} đang chờ",
+    "leaveClubDescription": "Bạn có chắc chắn muốn rời khỏi câu lạc bộ này không? Bạn sẽ mất quyền truy cập vào tất cả các hoạt động và sự kiện của câu lạc bộ.",
+    "noPendingRequests": "Không có yêu cầu đang chờ",
+    "rejectRequest": "Từ chối yêu cầu",
+    "rejectRequestDescription": "Bạn có chắc chắn muốn từ chối yêu cầu tham gia này không?",
+    "noPermission": "Bạn không có quyền truy cập trang này",
+    "clickToViewRequests": "Nhấp để xem yêu cầu đang chờ"
   }
   
