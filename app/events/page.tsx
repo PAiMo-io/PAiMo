@@ -174,8 +174,7 @@ export default function EventsPage() {
               onChange={handleFilterChange}
             />
           </div>
-        </div>
-        <div className="flex flex-col h-screen pt-4">
+          <div className="flex flex-col h-screen">
             <div className="flex-1 h-full pb-[10px]">
               <VirtualResponsiveGrid
                 data={filteredEvents}
@@ -192,6 +191,7 @@ export default function EventsPage() {
                 gap="gap-4"
               />
             </div>
+          </div>
         </div>
       </PullToRefreshWrapper>
     </div>
