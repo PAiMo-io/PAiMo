@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["r2.paimo.io"],
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "r2.paimo.io",
+        port: "",
+        pathname: "/**",
+      },
       {
         protocol: "https",
         hostname: "*.googleusercontent.com",
