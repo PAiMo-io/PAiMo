@@ -24,6 +24,7 @@ export default function ChatBox({ clubId }: { clubId: string }) {
     const bottomRef = useRef<HTMLDivElement>(null);
     const { data: session } = useSession();
     const [lastSenderId, setLastSenderId] = useState<string | null>(null);
+    const [sending, setSending] = useState(false);
 
     useEffect(() => {
         fetchMessages();
@@ -51,6 +52,12 @@ export default function ChatBox({ clubId }: { clubId: string }) {
         };
     }, [clubId, hasLoaded, session?.user?.id]);
 
+    useEffect(() => {
+        if (hasLoaded) {
+            bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages, hasLoaded]);
+
     const fetchMessages = async () => {
         const data = await request<Message[]>({
             url: `/api/clubs/${clubId}/messages`,
@@ -62,14 +69,19 @@ export default function ChatBox({ clubId }: { clubId: string }) {
     };
 
     const sendMessage = async () => {
-        if (!input.trim()) return;
-        await request({
-            url: `/api/clubs/${clubId}/messages`,
-            method: 'post',
-            data: { content: input },
-        });
-        setLastSenderId(session?.user?.id || null); // Track last sender
-        setInput('');
+        if (!input.trim() || sending) return;
+        setSending(true);
+        try {
+            await request({
+                url: `/api/clubs/${clubId}/messages`,
+                method: 'post',
+                data: { content: input },
+            });
+            setLastSenderId(session?.user?.id || null);
+            setInput('');
+        } finally {
+            setSending(false);
+        }
     };
 
     const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -123,9 +135,10 @@ export default function ChatBox({ clubId }: { clubId: string }) {
                     autoComplete='off'
                 />
                 <button
-                    className='px-5 py-2 bg-blue-500 text-white rounded-full font-semibold shadow hover:bg-blue-600 transition'
+                    className='px-5 py-2 bg-blue-500 text-white rounded-full font-semibold shadow hover:bg-blue-600 transition disabled:opacity-50'
                     onClick={sendMessage}
                     type='button'
+                    disabled={sending || !input.trim()}
                 >
                     Send
                 </button>
