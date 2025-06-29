@@ -166,7 +166,19 @@ export default function ClubLayout({
 
   return (
     <ClubDataContext.Provider value={{ clubData, fetchClubData, loading }}>
-      <div className={activeTab === 'chat' ? 'h-screen' : 'min-h-screen'}>
+      {/*
+        The chat page should not allow the overall document to scroll.
+        When on the chat tab we make the wrapper a full height flex container
+        so the inner ChatBox can occupy the remaining space below the sticky
+        tab bar. Other tabs retain min-h-screen for natural page height.
+      */}
+      <div
+        className={
+          activeTab === 'chat'
+            ? 'h-screen flex flex-col overflow-hidden'
+            : 'min-h-screen flex flex-col'
+        }
+      >
         {activeTab === 'chat' ? (
           // No PullToRefresh on chat tab
           <>
