@@ -3,11 +3,17 @@
 import { useEffect, useRef, useState } from 'react'
 import Pusher from 'pusher-js'
 import axios from 'axios'
+import Image from 'next/image'
+import Avatar from 'boring-avatars'
+import dayjs from 'dayjs'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 interface Message {
+  senderId: string
   senderName: string
+  senderNickname?: string
+  senderAvatarUrl?: string | null
   content: string
   timestamp?: string
 }
@@ -68,17 +74,44 @@ export default function ChatBox({ clubId }: { clubId: string }) {
   }
 
   return (
-    <div className="border rounded-md p-4 space-y-2">
-      <div className="h-64 sm:h-96 max-h-[70vh] overflow-y-auto space-y-1" style={{ scrollBehavior: 'smooth' }}>
+    <div className="flex flex-col h-screen">
+      <div
+        className="flex-1 overflow-y-auto p-4 space-y-4"
+        style={{ scrollBehavior: 'smooth' }}
+      >
         {messages.map((m, idx) => (
-          <div key={idx} className="p-1 border-b text-sm">
-            <strong>{m.senderName}: </strong>
-            {m.content}
+          <div key={idx} className="flex items-start gap-2">
+            {m.senderAvatarUrl ? (
+              <Image
+                src={m.senderAvatarUrl}
+                alt={m.senderNickname || m.senderName}
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <Avatar size={32} name={m.senderNickname || m.senderName} variant="beam" />
+            )}
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-sm">
+                  {m.senderNickname || m.senderName}
+                </span>
+                {m.timestamp && (
+                  <span className="text-xs text-gray-500">
+                    {dayjs(m.timestamp).format('HH:mm')}
+                  </span>
+                )}
+              </div>
+              <div className="bg-gray-100 rounded-lg px-3 py-2 mt-1 text-sm whitespace-pre-wrap break-words">
+                {m.content}
+              </div>
+            </div>
           </div>
         ))}
         <div ref={bottomRef} />
       </div>
-      <div className="flex gap-2">
+      <div className="p-2 border-t bg-white flex gap-2 sticky bottom-0">
         <Input
           value={input}
           onChange={e => setInput(e.target.value)}
