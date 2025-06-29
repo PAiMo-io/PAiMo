@@ -55,7 +55,7 @@ const List = React.forwardRef<
     <div
       ref={ref}
       style={style}
-      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 h-full ${className}`}
+      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ${className}`}
       {...rest}
     >
       {children}
@@ -79,6 +79,7 @@ function VirtualResponsiveGridInner<T>({
       </div>
     );
   }
+
   return (
     <VirtuosoGrid
       totalCount={data.length + 1}
