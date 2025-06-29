@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Filter as FilterIcon } from "lucide-react";
-import DatePicker from "react-datepicker";
-import { parseISO } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "./ui/button";
+import { FloatingLabelInput } from "./ui/floating-label-input";
 
 type FilterType = "select" | "multi" | "daterange";
 
@@ -134,46 +133,32 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange }) => {
                 {/* Daterange */}
                 {filter.type === "daterange" && (
                   <div className="flex flex-col gap-2">
-                    <div className="flex gap-2 items-center">
-                      <span className="text-sm text-gray-500">From</span>
-                      <DatePicker
-                        selected={
-                          selected[filter.key]?.from
-                            ? parseISO(selected[filter.key].from)
-                            : null
+                    <div className="flex gap-2 pt-2 items-center">
+                      <FloatingLabelInput
+                        type="date"
+                        value={selected[filter.key]?.from || ''}
+                        onChange={(e) =>
+                          updateFilter(filter.key, {
+                            ...selected[filter.key],
+                            from: e.target.value,
+                          })
                         }
-                        onChange={(date: Date | null) => {
-                          if (date) {
-                            updateFilter(filter.key, {
-                              ...selected[filter.key],
-                              from: date.toISOString().split("T")[0],
-                            });
-                          }
-                        }}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="Start Date"
-                        className="border px-2 py-1 rounded text-sm"
+                        label="From"
+                        id={`from-${filter.key}`}
                       />
                     </div>
-                    <div className="flex gap-2 items-center">
-                      <span className="text-sm text-gray-500">To</span>
-                      <DatePicker
-                        selected={
-                          selected[filter.key]?.to
-                            ? parseISO(selected[filter.key].to)
-                            : null
+                    <div className="flex gap-2 pt-2 items-center">
+                      <FloatingLabelInput
+                        type="date"
+                        value={selected[filter.key]?.to || ""}
+                        onChange={(e) =>
+                          updateFilter(filter.key, {
+                            ...selected[filter.key],
+                            to: e.target.value,
+                          })
                         }
-                        onChange={(date: Date | null) => {
-                          if (date) {
-                            updateFilter(filter.key, {
-                              ...selected[filter.key],
-                              to: date.toISOString().split("T")[0],
-                            });
-                          }
-                        }}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="End Date"
-                        className="border px-2 py-1 rounded text-sm"
+                        label="To"
+                        id={`to-${filter.key}`}
                       />
                     </div>
                   </div>
