@@ -121,7 +121,7 @@ export default function ChatBox({ clubId }: { clubId: string }) {
             }
           }}
           placeholder="Type a message (Shift+Enter for newline)"
-          className="flex-1 resize-none"
+          className="flex-1 resize-none text-base" // Add text-base for 16px font
           rows={1}
         />
         <Button onClick={sendMessage}>Send</Button>
