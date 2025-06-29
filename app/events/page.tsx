@@ -174,9 +174,8 @@ export default function EventsPage() {
               onChange={handleFilterChange}
             />
           </div>
-
           <div className="flex flex-col h-screen">
-            <div className="flex-1 pb-[10px]">
+            <div className="flex-1 h-full pb-[10px]">
               <VirtualResponsiveGrid
                 data={filteredEvents}
                 emptyComponent={emptyComponent}

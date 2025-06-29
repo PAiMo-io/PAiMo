@@ -44,8 +44,19 @@ export const PullToRefreshWrapper: React.FC<PullToRefreshWrapperProps> = ({
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
 
+    const isElementAtTop = (el: HTMLElement | null): boolean => {
+      while (el) {
+        if (el.scrollHeight > el.clientHeight && el.scrollTop > 0) {
+          return false;
+        }
+        el = el.parentElement;
+      }
+      return true;
+    };
+
     const handleTouchStart = (e: TouchEvent) => {
-      if (wrapper.scrollTop === 0) {
+      const target = e.target as HTMLElement;
+      if (isElementAtTop(target)) {
         startYRef.current = e.touches[0].clientY;
       }
     };
