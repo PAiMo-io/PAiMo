@@ -11,6 +11,12 @@ Welcome to the PIV Club's not-so-serious game scheduler. It's a Next.js app with
    AUTH_SECRET=some_complex_secret
    NEXT_PUBLIC_APP_URL=http://localhost:3000
    RESEND_API_KEY=your_resend_key
+   PUSHER_APP_ID=your_pusher_app_id
+   PUSHER_KEY=your_pusher_key
+   PUSHER_SECRET=your_pusher_secret
+   PUSHER_CLUSTER=your_pusher_cluster
+   NEXT_PUBLIC_PUSHER_KEY=your_pusher_key
+   NEXT_PUBLIC_PUSHER_CLUSTER=your_pusher_cluster
    ```
 3. Fire up the dev server with `npm run dev` and open `http://localhost:3000`.
 4. Head to `/signup` to create an account, then `/login` to start planning. Use the Google option on the login page for a quick sign in—you can change your password later in the profile page.

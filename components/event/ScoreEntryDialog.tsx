@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Pusher from 'pusher-js'
+import axios from 'axios'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -23,8 +25,10 @@ interface Team {
 
 interface ScoreEntryDialogProps {
     open: boolean
+    eventId: string
     matchId: string
     initialScores: [number, number]
+    userId?: string
     teams?: [Team, Team]
     onClose: () => void
     handleSaveScores: (matchId: string, scores: [number, number]) => void
@@ -32,14 +36,38 @@ interface ScoreEntryDialogProps {
 
 export default function ScoreEntryDialog({
     open,
+    eventId,
     matchId,
     initialScores,
+    userId,
     teams,
     onClose,
     handleSaveScores,
 }: ScoreEntryDialogProps) {
     const [scores, setScores] = useState<[number, number]>(initialScores)
     const [saving, setSaving] = useState(false)
+
+    useEffect(() => {
+        const key = process.env.NEXT_PUBLIC_PUSHER_KEY
+        const cluster = process.env.NEXT_PUBLIC_PUSHER_CLUSTER
+        if (!key || !cluster) return
+
+        const pusher = new Pusher(key, { cluster })
+        const channel = pusher.subscribe(`score-entry-${eventId}`)
+
+        const handler = (data: { matchId: string; scores: [number, number]; senderId: string }) => {
+            if (data.senderId === userId) return
+            if (data.matchId === matchId) {
+                setScores(data.scores)
+            }
+        }
+
+        channel.bind('update', handler)
+        return () => {
+            channel.unbind('update', handler)
+            pusher.disconnect()
+        }
+    }, [eventId, matchId, userId])
 
     // Reset when opened
     useEffect(() => {
@@ -53,6 +81,16 @@ export default function ScoreEntryDialog({
         setScores(prev => {
             const next = [...prev] as [number, number]
             next[teamIndex] = newScore
+            // send to API for real-time sync
+            if (userId) {
+                axios.post(`/api/events/${eventId}/score-sync`, {
+                    matchId,
+                    scores: next,
+                    senderId: userId,
+                }).catch(err => {
+                    console.error('score sync failed', err)
+                })
+            }
             return next
         })
     }

@@ -115,7 +115,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
 										<>
 											{event.status === 'arranging' ? (
 												matches.length > 0 ? (
-													<MatchesScheduleSection matches={matches} />
+                                                                               <MatchesScheduleSection eventId={params.id} currentUserId={session?.user?.id} matches={matches} />
 												) : (
 													<ArrangingEventSection
 														groups={groups}
@@ -125,10 +125,12 @@ export default function EventPage({ params }: { params: { id: string } }) {
 													/>
 												)
 											) : (
-												<MatchesScheduleSection
-													matches={matches}
-													onScoreUpdated={actions.updateMatchScore}
-												/>
+                                                                               <MatchesScheduleSection
+                                                                               eventId={params.id}
+                                                                               currentUserId={session?.user?.id}
+                                                                               matches={matches}
+                                                                               onScoreUpdated={actions.updateMatchScore}
+                                                                               />
 											)}
 										</>
 									);

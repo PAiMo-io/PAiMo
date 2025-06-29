@@ -244,14 +244,16 @@ export default function MatchLobby({
 
 	return (
 		<div className="space-y-4">
-			<ScoreEntryDialog
-				open={scoreDialogOpen}
-				matchId={activeMatch?._id || ''}
-				initialScores={activeMatch ? [activeMatch.teams[0].score, activeMatch.teams[1].score] : [0, 0]}
-				teams={activeMatch?.teams as [any, any] | undefined}
-				onClose={() => setScoreDialogOpen(false)}
-				handleSaveScores={handleUpdateScore}
-			/>
+                        <ScoreEntryDialog
+                                open={scoreDialogOpen}
+                                eventId={eventId}
+                                matchId={activeMatch?._id || ''}
+                                initialScores={activeMatch ? [activeMatch.teams[0].score, activeMatch.teams[1].score] : [0, 0]}
+                                userId={currentUserId}
+                                teams={activeMatch?.teams as [any, any] | undefined}
+                                onClose={() => setScoreDialogOpen(false)}
+                                handleSaveScores={handleUpdateScore}
+                        />
 
 			<div className="flex justify-between items-center">
 				<h3 className="text-lg font-semibold">{t('quickMatches')}</h3>
