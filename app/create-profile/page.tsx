@@ -31,12 +31,14 @@ function CreateProfileClient() {
     const [error, setError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
     const [genderError, setGenderError] = useState('');
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
     const { t, i18n } = useTranslation('common');
 
     const effectiveEmail = session?.user?.email || queryEmail;
 
     // Validate form
-    const isFormValid = gender && password && !confirmPasswordError;
+    const isFormValid = gender && password && !confirmPasswordError && avatarFile;
 
     // Clear gender error when gender is selected
     useEffect(() => {
@@ -44,6 +46,15 @@ function CreateProfileClient() {
             setGenderError('');
         }
     }, [gender]);
+
+    useEffect(() => {
+        if (avatarFile) {
+            const url = URL.createObjectURL(avatarFile);
+            setAvatarPreview(url);
+            return () => URL.revokeObjectURL(url);
+        }
+        setAvatarPreview(null);
+    }, [avatarFile]);
 
     // Populate email from NextAuth session or query param
     useEffect(() => {
@@ -77,6 +88,10 @@ function CreateProfileClient() {
             setError(t('genderRequired'));
             return;
         }
+        if (!avatarFile) {
+            setError('Profile picture is required');
+            return;
+        }
         if (!password) {
             setError('Password is required');
             return;
@@ -86,10 +101,21 @@ function CreateProfileClient() {
             return;
         }
         try {
+            const form = new FormData();
+            form.append('email', email);
+            form.append('username', username);
+            form.append('gender', gender);
+            form.append('nickname', nickname);
+            form.append('wechatId', wechatId);
+            form.append('password', password);
+            form.append('lang', i18n.language);
+            form.append('avatar', avatarFile);
+
             const res = await request<{ user: { email: string } }>({
                 url: '/api/complete-profile',
                 method: 'post',
-                data: { email, username, gender, nickname, wechatId, password, lang: i18n.language },
+                data: form,
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             await signIn('credentials', {
@@ -158,9 +184,17 @@ function CreateProfileClient() {
                         }
                     }}
                 />
+                <Input
+                    type='file'
+                    accept='image/png,image/jpeg,image/svg+xml'
+                    onChange={(e) => setAvatarFile(e.target.files ? e.target.files[0] : null)}
+                />
+                {avatarPreview && (
+                    <img src={avatarPreview} alt='Preview' className='h-24 w-24 rounded-full object-cover' />
+                )}
                 {confirmPasswordError && <p className='text-red-500 text-sm'>{confirmPasswordError}</p>}
                 {error && <p className='text-red-500 text-sm'>{error}</p>}
-                <Button className='w-full' onClick={handleSubmit}>
+                <Button className='w-full' onClick={handleSubmit} disabled={!isFormValid}>
                     {t('saveProfile')}
                 </Button>
                 <Button variant='outline' className='w-full'>
