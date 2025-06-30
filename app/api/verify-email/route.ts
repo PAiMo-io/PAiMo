@@ -4,28 +4,38 @@ import User from '@/models/User';
 import PendingUser from '@/models/PendingUser';
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const token = searchParams.get('token');
-  const lang = searchParams.get('lang');
-  if (!token) {
+    const { searchParams } = new URL(req.url);
+    const token = searchParams.get('token');
+    const lang = searchParams.get('lang');
+    if (!token) {
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/verify-email/error`);
+    }
+    await connect();
+    const pending = await PendingUser.findOne({ token });
+    if (!pending) {
+        const fallbackUser = await User.findOne({
+            emailVerified: true,
+            createProfile: false,
+        });
+        if (fallbackUser) {
+            return NextResponse.redirect(
+                `${process.env.NEXT_PUBLIC_APP_URL}/create-profile?email=${encodeURIComponent(
+                    fallbackUser.email
+                )}&lang=${lang}`
+            );
+        }
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/verify-email/error`);
+    }
+    const { email } = pending;
+    const existing = await User.findOne({ email });
+    if (!existing) {
+        await User.create({ email, emailVerified: true, createProfile: false });
+    } else {
+        existing.emailVerified = true;
+        await existing.save();
+    }
+    await PendingUser.deleteOne({ token });
     return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_APP_URL}/verify-email/error`
+        `${process.env.NEXT_PUBLIC_APP_URL}/create-profile?email=${encodeURIComponent(email)}&lang=${lang}`
     );
-  }
-  await connect();
-  const pending = await PendingUser.findOne({ token });
-  if (!pending) {
-    return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_APP_URL}/verify-email/error`
-    );
-  }
-  const { email } = pending;
-  const existing = await User.findOne({ email });
-  if (!existing) {
-    await User.create({ email });
-  }
-  await PendingUser.deleteOne({ token });
-  return NextResponse.redirect(
-    `${process.env.NEXT_PUBLIC_APP_URL}/create-profile?email=${encodeURIComponent(email)}&lang=${lang}`
-  );
 }
