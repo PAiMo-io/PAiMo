@@ -9,7 +9,7 @@ export default function ClubChatPage({ params }: { params: { id: string } }) {
     }, []);
 
     return (
-        <div className='h-[calc(100vh-100px)]'>
+        <div className='h-screen'>
             <ChatBox clubId={params.id} />
         </div>
     );

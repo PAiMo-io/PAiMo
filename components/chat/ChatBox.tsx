@@ -92,7 +92,7 @@ export default function ChatBox({ clubId }: { clubId: string }) {
     };
 
     return (
-        <div className='flex flex-col bg-gray-50 rounded-xl shadow-md' style={{ height: '80vh' }}>
+        <div className='flex flex-col bg-gray-50 rounded-xl shadow-md h-screen'>
             <div className='flex-1 overflow-y-auto p-4 space-y-3 rounded-t-xl'>
                 <AnimatePresence initial={false}>
                     {messages.map((msg) => (
