@@ -3,8 +3,6 @@ import connect from '../../../utils/mongoose';
 import User from '../../../models/User';
 import PendingUser from '../../../models/PendingUser';
 import bcrypt from 'bcryptjs';
-import AvatarModule from 'boring-avatars';
-const Avatar = (AvatarModule as any).default;
 import { uploadAvatar } from '../../../lib/r2';
 import sharp from 'sharp';
 
@@ -65,33 +63,19 @@ export async function POST(request: Request) {
             { new: true, upsert: true }
         );
 
-        // remove pending user once profile is complete
+        // Remove pending user once profile is complete
         await PendingUser.deleteOne({ email });
 
-        if (user) {
-            if (file && file instanceof File) {
-                const arrayBuffer = await file.arrayBuffer();
-                const compressed = await compressAvatar(Buffer.from(arrayBuffer));
-                const key = `avatars/${user._id}.webp`;
-                const url = await uploadAvatar(key, compressed, 'image/webp');
-                user.image = url;
-                await user.save();
-            } else if (!user.image) {
-                const { createElement } = await import('react');
-                const { renderToStaticMarkup } = await import('react-dom/server');
-                const svg = renderToStaticMarkup(
-                    createElement(Avatar, {
-                        size: 256,
-                        name: user.username || user.email,
-                        variant: 'beam',
-                    })
-                );
-                const key = `avatars/${user._id}.svg`;
-                const url = await uploadAvatar(key, Buffer.from(svg), 'image/svg+xml');
-                user.image = url;
-                await user.save();
-            }
+        // Handle avatar upload
+        if (user && !user.image && file && file instanceof File) {
+            const arrayBuffer = await file.arrayBuffer();
+            const compressed = await compressAvatar(Buffer.from(arrayBuffer));
+            const key = `avatars/${user._id}.webp`;
+            const url = await uploadAvatar(key, compressed, 'image/webp');
+            user.image = url;
+            await user.save();
         }
+
         return NextResponse.json({ success: true, user });
     } catch (err: any) {
         console.error('Failed to upsert user:', err);
