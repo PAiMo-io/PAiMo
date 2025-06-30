@@ -26,15 +26,17 @@ export async function GET(req: Request) {
         }
         return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/verify-email/error`);
     }
+
+    pending.emailVerified = true;
+    await pending.save();
+
     const { email } = pending;
-    const existing = await User.findOne({ email });
-    if (!existing) {
-        await User.create({ email, emailVerified: true, createProfile: false });
-    } else {
-        existing.emailVerified = true;
-        await existing.save();
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        existingUser.emailVerified = true;
+        await existingUser.save();
     }
-    await PendingUser.deleteOne({ token });
+
     return NextResponse.redirect(
         `${process.env.NEXT_PUBLIC_APP_URL}/create-profile?email=${encodeURIComponent(email)}&lang=${lang}`
     );
