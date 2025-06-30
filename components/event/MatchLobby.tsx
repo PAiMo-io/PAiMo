@@ -254,6 +254,7 @@ export default function MatchLobby({
         <div className='space-y-4'>
             <ScoreEntryDialog
                 open={scoreDialogOpen}
+                eventId={eventId}
                 matchId={activeMatch?._id || ''}
                 initialScores={activeMatch ? [activeMatch.teams[0].score, activeMatch.teams[1].score] : [0, 0]}
                 teams={activeMatch?.teams as [any, any] | undefined}

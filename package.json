@@ -14,6 +14,7 @@
     "lint": "next lint",
     "create-test-data": "tsx scripts/createTestData.ts",
     "fill-avatars": "tsx scripts/updateMissingAvatars.ts",
+    "seed-test-users": "tsx scripts/seed-test-users.ts",
     "prepare": "husky"
   },
   "dependencies": {
@@ -42,6 +43,8 @@
     "motion": "^12.19.1",
     "next": "^14.2.30",
     "next-auth": "^4.24.11",
+    "pusher": "^5.2.0",
+    "pusher-js": "^8.4.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.58.1",

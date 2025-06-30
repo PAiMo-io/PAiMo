@@ -75,3 +75,14 @@ npm run fill-avatars
 The script scans for users without an avatar, generates one using Boring
 Avatars, uploads it to R2, and updates each user record with the new image URL.
 
+
+## Real-time Score Sync
+To enable live score updates, set these Pusher environment variables in `.env.local`:
+```env
+PUSHER_APP_ID=<app id>
+PUSHER_KEY=<public key>
+PUSHER_SECRET=<secret>
+PUSHER_CLUSTER=<cluster>
+NEXT_PUBLIC_PUSHER_KEY=<public key>
+NEXT_PUBLIC_PUSHER_CLUSTER=<cluster>
+```
