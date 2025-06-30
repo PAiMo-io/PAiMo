@@ -14,6 +14,7 @@
     "lint": "next lint",
     "create-test-data": "tsx scripts/createTestData.ts",
     "fill-avatars": "tsx scripts/updateMissingAvatars.ts",
+    "seed-test-users": "tsx scripts/seed-test-users.ts",
     "prepare": "husky"
   },
   "dependencies": {
