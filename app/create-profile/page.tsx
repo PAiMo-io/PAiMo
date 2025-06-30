@@ -93,7 +93,8 @@ function CreateProfileClient() {
             });
 
             await signIn('credentials', {
-                email: res.user.email,
+                email,
+                password,
                 redirect: true,
                 callbackUrl: '/dashboard',
             });
