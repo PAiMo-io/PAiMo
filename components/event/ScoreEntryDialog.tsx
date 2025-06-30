@@ -1,11 +1,13 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { useSession } from 'next-auth/react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Image from 'next/image'
 import Avatar from 'boring-avatars'
+import { createPusherClient } from '@/lib/pusher-client'
 
 interface Player {
     _id?: string
@@ -23,6 +25,7 @@ interface Team {
 
 interface ScoreEntryDialogProps {
     open: boolean
+    eventId: string
     matchId: string
     initialScores: [number, number]
     teams?: [Team, Team]
@@ -32,6 +35,7 @@ interface ScoreEntryDialogProps {
 
 export default function ScoreEntryDialog({
     open,
+    eventId,
     matchId,
     initialScores,
     teams,
@@ -40,6 +44,9 @@ export default function ScoreEntryDialog({
 }: ScoreEntryDialogProps) {
     const [scores, setScores] = useState<[number, number]>(initialScores)
     const [saving, setSaving] = useState(false)
+    const { data: session } = useSession()
+    const senderId = session?.user?.id || 'unknown'
+    const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
     // Reset when opened
     useEffect(() => {
@@ -49,12 +56,51 @@ export default function ScoreEntryDialog({
         }
     }, [open, initialScores])
 
+    // Listen for live score updates via Pusher
+    useEffect(() => {
+        if (!open) return
+        const pusher = createPusherClient()
+        const channel = pusher.subscribe(`score-entry-${eventId}`)
+
+        const handler = (data: { teamIndex: number; scoreValue: number; senderId: string }) => {
+            if (data.senderId === senderId) return
+            setScores(prev => {
+                const next = [...prev] as [number, number]
+                next[data.teamIndex as 0 | 1] = data.scoreValue
+                return next
+            })
+        }
+
+        channel.bind('score-update', handler)
+        return () => {
+            channel.unbind('score-update', handler)
+            pusher.unsubscribe(`score-entry-${eventId}`)
+            pusher.disconnect()
+        }
+    }, [eventId, open, senderId])
+
+    const broadcastScore = async (teamIdx: 0 | 1, value: number) => {
+        try {
+            await fetch('/api/score-sync', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ eventId, teamIndex: teamIdx, scoreValue: value, senderId }),
+            })
+        } catch (err) {
+            console.error('broadcast error', err)
+        }
+    }
+
     const updateScore = (teamIndex: 0 | 1, newScore: number) => {
         setScores(prev => {
             const next = [...prev] as [number, number]
             next[teamIndex] = newScore
             return next
         })
+        if (debounceRef.current) clearTimeout(debounceRef.current)
+        debounceRef.current = setTimeout(() => {
+            broadcastScore(teamIndex, newScore)
+        }, 300)
     }
 
     const onConfirm = async () => {

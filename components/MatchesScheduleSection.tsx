@@ -19,11 +19,12 @@ export interface MatchUI {
 
 interface MatchesScheduleSectionProps {
     matches: MatchUI[],
+    eventId: string,
     onScoreUpdated?: (matchId: string, score: [number, number]) => void
     disabled?: boolean
 }
 
-export default function MatchesScheduleSection({ matches, onScoreUpdated, disabled = false }: MatchesScheduleSectionProps) {
+export default function MatchesScheduleSection({ matches, eventId, onScoreUpdated, disabled = false }: MatchesScheduleSectionProps) {
     const [dialogOpen, setDialogOpen] = useState(false)
     const [activeMatch, setActiveMatch] = useState<MatchUI | null>(null)
 
@@ -59,6 +60,7 @@ export default function MatchesScheduleSection({ matches, onScoreUpdated, disabl
 
             <ScoreEntryDialog
                 open={dialogOpen}
+                eventId={eventId}
                 matchId={activeMatch?._id || ''}
                 initialScores={activeMatch ? [activeMatch.teams[0].score, activeMatch.teams[1].score] : [0, 0]}
                 teams={activeMatch?.teams}

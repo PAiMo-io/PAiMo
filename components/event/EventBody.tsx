@@ -6,6 +6,7 @@ import { EventStep } from '../StepIndicator';
 
 export interface EventBodyProps {
     status: EventStep;
+    eventId: string;
     participants: any[];
     groups: any[][];
     matches: any[];
@@ -15,7 +16,7 @@ export interface EventBodyProps {
 }
 
 export default function EventBody(props: EventBodyProps) {
-    const { status, participants, actions, isAdmin, user } = props;
+    const { status, participants, actions, isAdmin, user, eventId } = props;
 
     switch (status) {
         case 'preparing':
@@ -30,7 +31,7 @@ export default function EventBody(props: EventBodyProps) {
             return (
                 <>
                     {props.matches.length > 0
-                        ? <MatchesScheduleSection matches={props.matches} />
+                        ? <MatchesScheduleSection eventId={eventId} matches={props.matches} />
                         : <ArrangingEventSection
                             groups={props.groups}
                             onGroupsChange={actions.saveGroups}
@@ -41,10 +42,10 @@ export default function EventBody(props: EventBodyProps) {
             );
         case 'running':
             return (
-                <MatchesScheduleSection matches={props.matches} onScoreUpdated={actions.updateMatchScore} />
+                <MatchesScheduleSection eventId={eventId} matches={props.matches} onScoreUpdated={actions.updateMatchScore} />
             );
         case 'ended':
-            return <MatchesScheduleSection matches={props.matches} />;
+            return <MatchesScheduleSection eventId={eventId} matches={props.matches} />;
         default:
             return null;
     }
